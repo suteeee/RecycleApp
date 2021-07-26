@@ -1,4 +1,4 @@
-package com.kt.recycleapp;
+package java.recycleapp;
 
 import org.junit.Test;
 

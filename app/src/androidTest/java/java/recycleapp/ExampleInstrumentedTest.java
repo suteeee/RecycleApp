@@ -1,4 +1,4 @@
-package com.kt.recycleapp;
+package java.recycleapp;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.kt.recycleapp", appContext.getPackageName());
+        assertEquals("java.recycleapp", appContext.getPackageName());
     }
 }
