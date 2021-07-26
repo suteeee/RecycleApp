@@ -17,16 +17,28 @@
             android:id="@+id/mainToolBar_tb1"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:background="#123456"
+            android:background="#D4F5BA"
+            android:gravity="center"
             android:minHeight="?attr/actionBarSize"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:menu="@menu/toolbar_menu"
             app:layout_constraintEnd_toEndOf="parent"
-
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:title="title"
             app:titleTextColor="#000000" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:textColor="@color/sub_color"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@+id/mainToolBar_tb1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/mainToolBar_tb1" />
 
         <SurfaceView
             android:id="@+id/surfaceView"
@@ -39,13 +51,27 @@
             app:layout_constraintTop_toBottomOf="@+id/mainToolBar_tb1" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/bottom_layout"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:background="@color/main_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/surfaceView">
+            app:layout_constraintTop_toBottomOf="@+id/surfaceView"
+            >
 
+            <ImageButton
+                android:id="@+id/History_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/main_color"
+                android:src="@drawable/ic_history"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.05"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -54,6 +80,9 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:background="@color/main_color"
         android:fitsSystemWindows="true"
+        app:headerLayout="@layout/navi_header"
+        app:itemTextColor="@color/sub_color"
         app:menu="@menu/navi_menu" />
 </androidx.drawerlayout.widget.DrawerLayout>

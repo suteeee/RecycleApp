@@ -1,12 +1,20 @@
 package com.kt.recycleapp.kt.activity
 
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
+import com.kt.recycleapp.java.fragment.AdvancedSearchFragment
+import com.kt.recycleapp.java.fragment.AppSettingFragment
+import com.kt.recycleapp.java.fragment.DailyTipFragment
+import com.kt.recycleapp.java.fragment.HistoryFragment
+import com.kt.recycleapp.kt.fragment.CameraSettingFragment
+import com.kt.recycleapp.kt.fragment.FavoriteItemFragment
 import com.kt.recycleapp.kt.fragment.FindFragment
+import com.kt.recycleapp.kt.fragment.RecycleDayInfoFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import java.recycleapp.R
 
@@ -20,6 +28,7 @@ class MainActivity : AppCompatActivity() {
         val actionBar =supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
         actionBar?.setHomeAsUpIndicator(R.drawable.ic_menu)
+        actionBar?.setDisplayShowTitleEnabled(false)
 
         navi_nv.setNavigationItemSelectedListener { menuItem ->
             var fragment : Fragment? = null
@@ -29,17 +38,40 @@ class MainActivity : AppCompatActivity() {
             drawer_layout.closeDrawers()
             val id = menuItem.itemId
             val title = menuItem.title.toString()
-            if (id == R.id.t) {
+            if (id == R.id.find) {
                 Toast.makeText(this, "$title: find", Toast.LENGTH_SHORT).show()
                 fragment = FindFragment()
-            } else if (id == R.id.tt) {
-                Toast.makeText(this, "$title: 126.", Toast.LENGTH_SHORT).show()
-                //fragment = A
-            } else if (id == R.id.ttt) {
-                Toast.makeText(this, "$title: 5465", Toast.LENGTH_SHORT).show()
+            } else if (id == R.id.advancedSearch) {
+                Toast.makeText(this, "$title: adv", Toast.LENGTH_SHORT).show()
+                fragment = AdvancedSearchFragment()
+            } else if (id == R.id.cameraSetting) {
+                Toast.makeText(this, "$title: cs", Toast.LENGTH_SHORT).show()
+                fragment = CameraSettingFragment()
+            }
+            else if (id == R.id.favoriteItem) {
+                Toast.makeText(this, "$title: cs", Toast.LENGTH_SHORT).show()
+                fragment = FavoriteItemFragment()
+            }
+            else if (id == R.id.history) {
+                Toast.makeText(this, "$title: cs", Toast.LENGTH_SHORT).show()
+                fragment = HistoryFragment()
+            }
+            else if (id == R.id.recycleDayInfo) {
+                Toast.makeText(this, "$title: cs", Toast.LENGTH_SHORT).show()
+                fragment = RecycleDayInfoFragment()
+            }
+            else if (id == R.id.dailyTip) {
+                Toast.makeText(this, "$title: cs", Toast.LENGTH_SHORT).show()
+                fragment = DailyTipFragment()
+            }
+            else if (id == R.id.AppSetting) {
+                Toast.makeText(this, "$title: cs", Toast.LENGTH_SHORT).show()
+                fragment = AppSettingFragment()
             }
 
-            supportFragmentManager.beginTransaction().replace(R.id.container_layout1,fragment!!).commit()
+            if (fragment != null) {
+                supportFragmentManager.beginTransaction().replace(R.id.container_layout1,fragment).commit()
+            }
             true
         }
     }
@@ -53,5 +85,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.toolbar_menu,menu)
+        return true
     }
 }
