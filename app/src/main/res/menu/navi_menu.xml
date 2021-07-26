@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    package = "com.kt.recycleapp.kt.activity">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/t"
+            android:icon="@drawable/ic_launcher_foreground"
+            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+            android:title="t"
+            />
+        <item
+            android:id="@+id/tt"
+            android:icon="@drawable/ic_launcher_foreground"
+            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+            android:title="tt"
+            />
+        <item
+            android:id="@+id/ttt"
+            android:icon="@drawable/ic_launcher_foreground"
+            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+            android:title="ttt"
+            />
+    </group>
+</menu>
