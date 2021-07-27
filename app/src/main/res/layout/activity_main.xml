@@ -17,7 +17,7 @@
             android:id="@+id/mainToolBar_tb1"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:background="#D4F5BA"
+            android:background="@color/main_color"
             android:gravity="center"
             android:minHeight="?attr/actionBarSize"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"

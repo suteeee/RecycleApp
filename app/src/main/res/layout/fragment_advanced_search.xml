@@ -1,13 +1,41 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.kt.recycleapp.java.fragment.AdvancedSearchFragment">
+    android:clickable="true"
+    android:background="#ffffff"
+    tools:context="com.kt.recycleapp.java.fragment.AdvancedSearchFragment"
+    android:focusable="true">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <!--
+      android:inputType 멀까?
+      http://search.me.go.kr/search/totalSearch/search.jsp?q=검색어
+
+      -->
+
+    <SearchView
+        android:id="@+id/searchtext_sv1"
+        android:layout_width="280dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="600dp"
+        android:background="@drawable/button_ractangle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.50" />
+
+    <WebView
+        android:id="@+id/webresult_wv1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="600dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchtext_sv1"
+        app:layout_constraintVertical_bias="1.0" />
 
-</FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

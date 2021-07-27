@@ -1,6 +1,6 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
-
+    <!--
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/appsettingToolBar_tb1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -15,6 +15,7 @@
         android:background="#123456"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+    -->
     <!--
     android:title 화면에 보여지는 글자
     android:summary 간단 설명
