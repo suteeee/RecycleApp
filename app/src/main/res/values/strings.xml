@@ -1,5 +1,14 @@
 <resources>
-    <string name="app_name">RecycleApp</string>
+    <string name="app_name">오늘도 수거했어!</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="additionFunction">부가기능</string>
+    <string name="findModeTitle">찾아보기 모드</string>
+    <string name="advancedSearchTitle">상세정보검색</string>
+    <string name="favoriteItemTitle">즐겨찾기</string>
+    <string name="historyTitle">히스토리</string>
+    <string name="recycleDayInfo">분리수거 요일제 안내</string>
+    <string name="dailyTipTitle">오늘의 팁</string>
+    <string name="cameraSettingTitle">카메라 설정</string>
+    <string name="appSettingTitle">환경 설정</string>
 </resources>

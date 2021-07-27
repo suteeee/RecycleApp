@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "5657047477",
+    "project_id": "recycleapp-e6ed9",
+    "storage_bucket": "recycleapp-e6ed9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:5657047477:android:f68a0f175e36c468a429fc",
+        "android_client_info": {
+          "package_name": "com.kt.recycleapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "5657047477-n0d7vaik1uf9o4slnmj978ueotq5uis5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgKdAlgjU3rEHH00rh-5rJhUWP9J3aMYQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "5657047477-n0d7vaik1uf9o4slnmj978ueotq5uis5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
