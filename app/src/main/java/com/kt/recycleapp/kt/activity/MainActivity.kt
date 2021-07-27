@@ -5,8 +5,11 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.camera.core.Preview
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
+import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode
+import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetectorOptions
 import com.kt.recycleapp.java.fragment.AdvancedSearchFragment
 import com.kt.recycleapp.java.fragment.AppSettingFragment
 import com.kt.recycleapp.java.fragment.DailyTipFragment
@@ -90,5 +93,18 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.toolbar_menu,menu)
         return true
+    }
+
+    fun cameraSet() {
+        val preview = Preview.Builder().build()
+        //val viewFinder :PreviewView =
+    }
+
+    fun barcodeOption() {
+        val options = FirebaseVisionBarcodeDetectorOptions.Builder()
+            .setBarcodeFormats(
+                FirebaseVisionBarcode.FORMAT_EAN_8,
+                FirebaseVisionBarcode.FORMAT_EAN_13)
+            .build()
     }
 }

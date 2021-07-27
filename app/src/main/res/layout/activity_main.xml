@@ -40,8 +40,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/mainToolBar_tb1" />
 
-        <SurfaceView
-            android:id="@+id/surfaceView"
+        <androidx.camera.view.PreviewView
+            android:id="@+id/previewView"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginBottom="50dp"
@@ -58,7 +58,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/surfaceView"
+            app:layout_constraintTop_toBottomOf="@+id/previewView"
             >
 
             <ImageButton
