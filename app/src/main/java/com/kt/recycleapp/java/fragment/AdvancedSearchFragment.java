@@ -10,11 +10,7 @@ import android.view.ViewGroup;
 
 import java.recycleapp.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link AdvancedSearchFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class AdvancedSearchFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
