@@ -1,7 +1,21 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/appsettingToolBar_tb1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:title="title"
+        app:titleTextColor="#000000"
 
-
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#123456"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+    -->
     <!--
     android:title 화면에 보여지는 글자
     android:summary 간단 설명
