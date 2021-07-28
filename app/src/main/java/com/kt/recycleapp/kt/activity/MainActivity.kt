@@ -1,11 +1,11 @@
 package com.kt.recycleapp.kt.activity
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.camera.core.*
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import com.kt.recycleapp.java.fragment.*
@@ -14,11 +14,13 @@ import com.kt.recycleapp.kt.fragment.FindFragment
 import com.kt.recycleapp.kt.fragment.MainFragment
 import com.kt.recycleapp.kt.fragment.RecycleDayInfoFragment
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.android.synthetic.main.navi_header.view.*
 import java.recycleapp.R
 
 
 class MainActivity : AppCompatActivity() {
+    var mBackPressListener : OnBackPressListener? = null
+    var pressedTime = 0L
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -38,6 +40,12 @@ class MainActivity : AppCompatActivity() {
         naviSet()
 
         supportFragmentManager.beginTransaction().replace(R.id.small_layout1,MainFragment()).commit()
+
+        val header = navi_nv.getHeaderView(0)
+
+        header.drawerClose_btn.setOnClickListener{
+            drawer_layout.closeDrawer(GravityCompat.START)
+        }
 
     }
 
@@ -116,5 +124,31 @@ class MainActivity : AppCompatActivity() {
         //메뉴 지정
         menuInflater.inflate(R.menu.toolbar_menu,menu)
         return true
+    }
+
+    fun setOnBackPressListener(listener: OnBackPressListener?){
+            mBackPressListener = listener
+    }
+
+    override fun onBackPressed() {
+        if(mBackPressListener != null){
+            mBackPressListener?.onBack()
+        }
+        else{
+            if (pressedTime == 0L) {
+                Toast.makeText(this, "한번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
+                pressedTime = System.currentTimeMillis()
+            } else {
+                val second = (System.currentTimeMillis() - pressedTime).toInt()
+                if (second > 2000) {
+                    Toast.makeText(this, "한번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
+                    pressedTime = 0
+                } else {
+                    super.onBackPressed()
+                    Log.e("!!!", "OnBackPressed:Finished, killProcess")
+                    finish()
+                }
+            }
+        }
     }
 }

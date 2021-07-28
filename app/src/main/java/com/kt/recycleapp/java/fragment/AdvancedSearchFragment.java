@@ -1,5 +1,7 @@
 package com.kt.recycleapp.java.fragment;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,10 +14,14 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.SearchView;
 
+import com.kt.recycleapp.kt.activity.MainActivity;
+import com.kt.recycleapp.kt.activity.OnBackPressListener;
+import com.kt.recycleapp.kt.fragment.MainFragment;
+
 import java.recycleapp.R;
 
 
-public class AdvancedSearchFragment extends Fragment {
+public class AdvancedSearchFragment extends Fragment implements OnBackPressListener {
 
     private WebView webView;
     private String url = "http://m.me.go.kr/m/mob/search/list.do"; //모바일 링크
@@ -46,5 +52,16 @@ public class AdvancedSearchFragment extends Fragment {
 
 
         return rootView;
+    }
+
+    public void onBack() {
+        MainActivity act = (MainActivity)getActivity();
+        ((MainActivity) act).setOnBackPressListener(null);
+        act.getSupportFragmentManager().beginTransaction().replace(R.id.small_layout1,new MainFragment()).commit();
+    }
+
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        ((MainActivity)context).setOnBackPressListener(this);
     }
 }

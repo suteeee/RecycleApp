@@ -17,10 +17,14 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.barcode.BarcodeDetector
 import com.kt.recycleapp.kt.`class`.ScaleListener
+import com.kt.recycleapp.kt.activity.OnBackPressListener
 import com.kt.recycleapp.kt.camera.MyImageAnalyzer
 import com.kt.recycleapp.kt.viewmodel.CameraSettingFragmenViewModel
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.android.synthetic.main.navi_header.*
+import kotlinx.android.synthetic.main.navi_header.view.*
 import java.io.File
 import java.recycleapp.R
 import java.recycleapp.databinding.FragmentMainBinding
@@ -91,6 +95,7 @@ class MainFragment : Fragment() {
         return rootView
     }
 
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             android.R.id.home->{
@@ -140,16 +145,6 @@ class MainFragment : Fragment() {
                 cameraController = camera!!.cameraControl
                 cameraInfo = camera!!.cameraInfo
 
-
-
-                binding.HistoryBtn.setOnClickListener {
-                    Log.d("d","asdgasdg")
-                    //cameraController!!.setZoomRatio(3f)
-                    viewModel.zoomCnt.value = 3f
-                }
-
-
-
             } catch (e: Exception) {
                 Log.e("PreviewUseCase", "Binding failed! :(", e)
             }
@@ -157,24 +152,16 @@ class MainFragment : Fragment() {
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
-        ContextCompat.checkSelfPermission(
-            requireContext(), it
-        ) == PackageManager.PERMISSION_GRANTED
+        ContextCompat.checkSelfPermission(requireContext(), it) == PackageManager.PERMISSION_GRANTED
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<String>, grantResults:
-        IntArray
-    ) {
+        requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (allPermissionsGranted()) {
                 startCamera()
             } else {
-                Toast.makeText(
-                    requireContext(),
-                    "Permissions not granted by the user.",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(requireContext(), "Permissions not granted by the user.", Toast.LENGTH_SHORT).show()
             }
         }
     }
