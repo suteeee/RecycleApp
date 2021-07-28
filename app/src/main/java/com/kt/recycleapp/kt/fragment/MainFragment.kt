@@ -7,28 +7,22 @@ import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageAnalysis
-import androidx.camera.core.ImageCapture
-import androidx.camera.core.Preview
+import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.barcode.BarcodeDetector
-import com.kt.recycleapp.java.fragment.AdvancedSearchFragment
-import com.kt.recycleapp.java.fragment.AppSettingFragment
-import com.kt.recycleapp.java.fragment.DailyTipFragment
-import com.kt.recycleapp.java.fragment.HistoryFragment
-import com.kt.recycleapp.kt.activity.MainActivity
 import com.kt.recycleapp.kt.camera.MyImageAnalyzer
+import com.kt.recycleapp.kt.viewmodel.CameraSettingFragmenViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_main.*
 import java.io.File
 import java.recycleapp.R
-import java.recycleapp.databinding.ActivityMainBinding
+import java.recycleapp.databinding.FragmentMainBinding
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicBoolean
@@ -45,23 +39,42 @@ class MainFragment : Fragment() {
     private lateinit var detector: BarcodeDetector
     private lateinit var cameraSource: CameraSource
     var processingBarcode = AtomicBoolean(false)
+    lateinit var binding: FragmentMainBinding
+    lateinit var viewModel:CameraSettingFragmenViewModel
+
+    private var camera: Camera? = null
+    private var cameraController: CameraControl? = null
+    private var cameraInfo :CameraInfo? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         cameraExecutor = Executors.newSingleThreadExecutor()
+
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val rootView = inflater.inflate(R.layout.fragment_main, container, false)
+        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_main, container, false)
+        viewModel = ViewModelProvider(this).get(CameraSettingFragmenViewModel::class.java)
+        binding.apply {
+            lifecycleOwner = viewLifecycleOwner
+            viewmodel = viewModel
+        }
+
+        val rootView = binding.root
+
+        binding.captureBtn.setOnClickListener {
+            when(cameraInfo?.torchState?.value){
+                TorchState.ON->{
+                    cameraController?.enableTorch(false)
+                    Log.d("torch","on")
+                }
+                TorchState.OFF->{
+                    cameraController?.enableTorch(true)
+                    Log.d("torch","off")
+                }
+            }
+        }
+
         return rootView
-
-        val act :MainActivity = getActivity() as MainActivity
-        act.setSupportActionBar(fragment_toolbar)
-        val actionBar = act.supportActionBar
-        actionBar?.setDisplayShowTitleEnabled(false)
-        actionBar?.setDisplayHomeAsUpEnabled(true)
-        actionBar?.setHomeAsUpIndicator(R.drawable.ic_menu)
-
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -108,7 +121,28 @@ class MainFragment : Fragment() {
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
             try {
                 cameraProvider.unbindAll()
-                cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageAnalysis)
+                camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageAnalysis)
+                cameraController = camera!!.cameraControl
+                cameraInfo = camera!!.cameraInfo
+
+                cameraInfo!!.zoomState.observe(viewLifecycleOwner, Observer {
+                    viewModel.zoomState.value = it.zoomRatio
+                })
+
+
+                viewModel.zoomCnt.observe(viewLifecycleOwner,{
+                    Log.d("see",it.toString())
+                    cameraController?.setZoomRatio(it)
+                    binding.invalidateAll()
+                })
+
+                binding.HistoryBtn.setOnClickListener {
+                    Log.d("d","asdgasdg")
+                    //cameraController.setLinearZoom()
+
+                }
+
+
             } catch (e: Exception) {
                 Log.e("PreviewUseCase", "Binding failed! :(", e)
             }
