@@ -1,6 +1,7 @@
 package com.kt.recycleapp.kt.fragment
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -12,10 +13,10 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.barcode.BarcodeDetector
+import com.kt.recycleapp.kt.`class`.ScaleListener
 import com.kt.recycleapp.kt.camera.MyImageAnalyzer
 import com.kt.recycleapp.kt.viewmodel.CameraSettingFragmenViewModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -32,12 +33,7 @@ typealias BarcodeListener = (barcode: String) -> Unit
 class MainFragment : Fragment() {
     private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
     private val REQUEST_CODE_PERMISSIONS = 10
-    private var preview: Preview? = null
-    private var imageCapture: ImageCapture? = null
-    private lateinit var outputDirectory: File
     private lateinit var cameraExecutor: ExecutorService
-    private lateinit var detector: BarcodeDetector
-    private lateinit var cameraSource: CameraSource
     var processingBarcode = AtomicBoolean(false)
     lateinit var binding: FragmentMainBinding
     lateinit var viewModel:CameraSettingFragmenViewModel
@@ -46,17 +42,23 @@ class MainFragment : Fragment() {
     private var cameraController: CameraControl? = null
     private var cameraInfo :CameraInfo? = null
 
+    private lateinit var mScaleGestureDetector : ScaleGestureDetector
+    private var mScaleFactor = 1.0f
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         cameraExecutor = Executors.newSingleThreadExecutor()
 
     }
+
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_main, container, false)
         viewModel = ViewModelProvider(this).get(CameraSettingFragmenViewModel::class.java)
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
-            viewmodel = viewModel
+            binding.viewmodel = viewModel
+            binding.invalidateAll()
         }
 
         val rootView = binding.root
@@ -74,7 +76,17 @@ class MainFragment : Fragment() {
             }
         }
 
-            //binding.HistoryBtn.s
+        mScaleGestureDetector = ScaleGestureDetector(rootView.context, ScaleListener(viewModel,mScaleFactor))
+
+        binding.previewView.setOnTouchListener{view, motionEvent->
+            mScaleGestureDetector.onTouchEvent(motionEvent)
+            return@setOnTouchListener false
+        }
+
+        viewModel.zoomCnt.observe(viewLifecycleOwner,{
+            cameraController!!.setZoomRatio(it)
+            binding.invalidateAll()
+        })
 
         return rootView
     }
@@ -94,6 +106,7 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         if (allPermissionsGranted()) {
             startCamera()
+
         } else {
             requestPermissions(REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
         }
@@ -127,21 +140,14 @@ class MainFragment : Fragment() {
                 cameraController = camera!!.cameraControl
                 cameraInfo = camera!!.cameraInfo
 
-                cameraInfo!!.zoomState.observe(viewLifecycleOwner, Observer {
-                    viewModel.zoomState.value = it.zoomRatio
-                })
 
-
-                viewModel.zoomCnt.observe(viewLifecycleOwner,{
-                    Log.d("see",it.toString())
-                    cameraController?.setZoomRatio(it)
-                    binding.invalidateAll()
-                })
 
                 binding.HistoryBtn.setOnClickListener {
                     Log.d("d","asdgasdg")
-                    cameraController!!.setLinearZoom(0.5f)
+                    //cameraController!!.setZoomRatio(3f)
+                    viewModel.zoomCnt.value = 3f
                 }
+
 
 
             } catch (e: Exception) {

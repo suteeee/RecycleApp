@@ -9,9 +9,9 @@ import androidx.camera.core.*
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import com.kt.recycleapp.java.fragment.*
-import com.kt.recycleapp.kt.fragment.CameraSettingFragment
 import com.kt.recycleapp.kt.fragment.FavoriteItemFragment
 import com.kt.recycleapp.kt.fragment.FindFragment
+import com.kt.recycleapp.kt.fragment.MainFragment
 import com.kt.recycleapp.kt.fragment.RecycleDayInfoFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_main.*
@@ -37,6 +37,8 @@ class MainActivity : AppCompatActivity() {
         //메뉴 세팅하는 함수
         naviSet()
 
+        supportFragmentManager.beginTransaction().replace(R.id.small_layout1,MainFragment()).commit()
+
     }
 
     fun naviSet() {
@@ -61,10 +63,6 @@ class MainActivity : AppCompatActivity() {
             } else if (id == R.id.advancedSearch) {
                 Toast.makeText(this, "$title: adv", Toast.LENGTH_SHORT).show()
                 fragment = AdvancedSearchFragment()
-            } else if (id == R.id.cameraSetting) {
-                Toast.makeText(this, "$title: cs", Toast.LENGTH_SHORT).show()
-                fragment = CameraSettingFragment()
-                supportFragmentManager.beginTransaction().add(R.id.small_layout1,fragment).commit()
             }
             else if (id == R.id.favoriteItem) {
                 Toast.makeText(this, "$title: cs", Toast.LENGTH_SHORT).show()
@@ -90,7 +88,7 @@ class MainActivity : AppCompatActivity() {
                 fragment = AnnounceRecyclePageFragment()
             }
 
-            if (fragment != null && id != R.id.cameraSetting) {
+            if (fragment != null) {
                 //프래그먼트 트랜잭션(프래그먼트 전환)
                 supportFragmentManager.beginTransaction().replace(R.id.small_layout1,fragment).commit()
             }
