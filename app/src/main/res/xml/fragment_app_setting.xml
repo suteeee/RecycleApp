@@ -5,6 +5,7 @@
     android:id="@+id/app_setting_layout"
     android:background="#ffffff"
     android:clickable="true">
+
     <!--
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/appsettingToolBar_tb1"
