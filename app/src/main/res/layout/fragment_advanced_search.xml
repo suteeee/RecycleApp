@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/advanced_search_layout"
     android:clickable="true"
     android:background="#ffffff"
     tools:context="com.kt.recycleapp.java.fragment.AdvancedSearchFragment"

@@ -1,5 +1,11 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/app_setting_layout"
+    android:background="#ffffff"
+    android:clickable="true">
+
     <!--
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/appsettingToolBar_tb1"
@@ -25,20 +31,20 @@
 
     <PreferenceCategory android:title="음성 설정">
         <SwitchPreference
-            android:title="소리"
+            android:defaultValue="true"
             android:key="soundcontrol1"
-            android:defaultValue="true"/>
+            android:title="소리" />
         <SwitchPreference
-            android:title="진동"
+            android:defaultValue="true"
             android:key="vibrationcontrol1"
-            android:defaultValue="true"/>
+            android:title="진동" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="시각 요소">
         <SwitchPreference
-            android:title="다크모드"
+            android:defaultValue="false"
             android:key="darkmode1"
-            android:defaultValue="false"/>
+            android:title="다크모드" />
     </PreferenceCategory>
 
 </PreferenceScreen>
