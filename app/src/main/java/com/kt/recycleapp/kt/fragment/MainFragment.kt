@@ -74,6 +74,8 @@ class MainFragment : Fragment() {
             }
         }
 
+            //binding.HistoryBtn.s
+
         return rootView
     }
 
@@ -138,8 +140,7 @@ class MainFragment : Fragment() {
 
                 binding.HistoryBtn.setOnClickListener {
                     Log.d("d","asdgasdg")
-                    //cameraController.setLinearZoom()
-
+                    cameraController!!.setLinearZoom(0.5f)
                 }
 
 

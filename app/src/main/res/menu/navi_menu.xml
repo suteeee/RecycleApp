@@ -35,6 +35,11 @@
                     android:icon="@drawable/ic_launcher_foreground"
                     android:title="@string/dailyTipTitle"
                     />
+                <item
+                    android:id="@+id/test"
+                    android:icon="@drawable/ic_launcher_foreground"
+                    android:title="test"
+                    />
             </menu>
         </item>
     </group>

@@ -8,10 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
-import com.kt.recycleapp.java.fragment.AdvancedSearchFragment
-import com.kt.recycleapp.java.fragment.AppSettingFragment
-import com.kt.recycleapp.java.fragment.DailyTipFragment
-import com.kt.recycleapp.java.fragment.HistoryFragment
+import com.kt.recycleapp.java.fragment.*
 import com.kt.recycleapp.kt.fragment.CameraSettingFragment
 import com.kt.recycleapp.kt.fragment.FavoriteItemFragment
 import com.kt.recycleapp.kt.fragment.FindFragment
@@ -89,9 +86,11 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "$title: cs", Toast.LENGTH_SHORT).show()
                 fragment = AppSettingFragment()
             }
+            else if(id == R.id.test) {
+                fragment = AnnounceRecyclePageFragment()
+            }
 
             if (fragment != null && id != R.id.cameraSetting) {
-
                 //프래그먼트 트랜잭션(프래그먼트 전환)
                 supportFragmentManager.beginTransaction().replace(R.id.small_layout1,fragment).commit()
             }
