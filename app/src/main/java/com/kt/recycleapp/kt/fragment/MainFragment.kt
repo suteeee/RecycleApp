@@ -111,7 +111,7 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         if (allPermissionsGranted()) {
             startCamera()
-
+            //binding.targetIv.invalidate()
         } else {
             requestPermissions(REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
         }
@@ -145,6 +145,7 @@ class MainFragment : Fragment() {
                 cameraController = camera!!.cameraControl
                 cameraInfo = camera!!.cameraInfo
 
+
             } catch (e: Exception) {
                 Log.e("PreviewUseCase", "Binding failed! :(", e)
             }
@@ -170,5 +171,7 @@ class MainFragment : Fragment() {
         cameraExecutor.shutdown()
         super.onDestroy()
     }
+
+
 
 }

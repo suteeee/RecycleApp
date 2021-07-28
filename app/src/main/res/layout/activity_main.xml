@@ -15,7 +15,7 @@
         android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/smalllayout2"
+            android:id="@+id/small_layout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
@@ -61,21 +61,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/smalllayout2"
+            app:layout_constraintTop_toBottomOf="@+id/small_layout2"
             app:layout_constraintVertical_weight="3">
-
-            <!--
-            <androidx.fragment.app.FragmentContainerView
-
-                android:id="@+id/mainFragment_layout"
-                android:name="com.kt.recycleapp.kt.fragment.MainFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-                -->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -90,5 +77,7 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/navi_header"
         app:itemTextColor="@color/sub_color"
-        app:menu="@menu/navi_menu" />
+        app:menu="@menu/navi_menu" >
+
+    </com.google.android.material.navigation.NavigationView>
 </androidx.drawerlayout.widget.DrawerLayout>
