@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.SearchView;
 
 import java.recycleapp.R;
@@ -17,7 +18,7 @@ import java.recycleapp.R;
 public class AdvancedSearchFragment extends Fragment {
 
     private WebView webView;
-    private String url = "https://search.me.go.kr/search/totalSearch/search.jsp?q=%EC%97%84%EC%A4%80%EC%8B%9D";
+    private String url = "http://m.me.go.kr/m/mob/search/list.do"; //모바일 링크
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -30,8 +31,17 @@ public class AdvancedSearchFragment extends Fragment {
 
         webView = (WebView)rootView.findViewById(R.id.webresult_wv1);
         webView.loadUrl(url);
+        webView.setWebViewClient(new WebViewClient()); // 클릭시 새창 안뜨게
+
+        //아래코드는 무조건 webView아래에 있어야함
         WebSettings webSettings = webView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
+        webSettings.setJavaScriptEnabled(true); //자바 스크립트 허용
+        webSettings.setUseWideViewPort(true); // 화면 사이즈 맞추기 허용 여부
+        webSettings.setSupportZoom(true); // 화면 줌 허용 여부
+        webSettings.setBuiltInZoomControls(true); // 화면 확대 축소 허용 여부
+        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN); // 컨텐츠 사이즈 맞추기
+
+
 
 
 
