@@ -43,3 +43,4 @@ public class AppSettingFragment extends PreferenceFragmentCompat implements OnBa
         ((MainActivity)context).setOnBackPressListener(this);
     }
 }
+
