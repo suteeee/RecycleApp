@@ -45,7 +45,7 @@ public class DailyTipFragment extends Fragment implements OnBackPressListener {
     private TextView textView;
     private Button button;
 
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
 
 
     @Override
@@ -53,7 +53,7 @@ public class DailyTipFragment extends Fragment implements OnBackPressListener {
         //rootView는 액티비티를 나타냄 (container는 우리끼리 mainactivity레이아웃을 의미하는 것으로 약속)
         //아래 코드는 액티비티 자체를 가져오는 것이다
         View rootView = inflater.inflate(R.layout.fragment_daily_tip, container, false);
-
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
         textView = (TextView)rootView.findViewById(R.id.todaytip_tv1);
         button = (Button)rootView.findViewById(R.id.nexttip_bt1);
 
@@ -74,7 +74,7 @@ public class DailyTipFragment extends Fragment implements OnBackPressListener {
 
 
 
-
+                            //test
 
                             //그걸 todaytip_tv1 의 text를 변경한다.
                             //textView.setText();
