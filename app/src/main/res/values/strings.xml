@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">오늘도 수거했어!</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="app_name">수거했어 오늘도!</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="additionFunction">부가기능</string>
     <string name="findModeTitle">찾아보기 모드</string>

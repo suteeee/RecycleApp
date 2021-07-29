@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-             <variable
+        <variable
             name="big"
             type="com.kt.recycleapp.kt.etc.FindBigData" />
 
@@ -13,30 +13,30 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="400dp"
         android:layout_height="120dp"
-        android:id="@+id/recycler_layout_unit"
+        android:id="@+id/findBig_layout"
         android:background="@color/white"
         android:clickable="true">
 
         <ImageView
-            android:id="@+id/recyclepic_iv1"
+            android:id="@+id/findBig_iv"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginStart="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@tools:sample/avatars" />
+            app:imgRes="@{big.id}"/>
 
         <TextView
-            android:id="@+id/recyclepicannounce_tv1"
+            android:id="@+id/findBig_tv"
             android:layout_width="250dp"
             android:layout_height="100dp"
             android:fontFamily="@font/gmarket_middle"
-            android:text="내용적는곳 내용적는곳 내용적는곳 내용적는곳 내용적는곳 내용적는곳내용적는곳내용적는곳내용적는곳내용적는곳내용적는곳"
+            android:text="@{big.str}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.529"
-            app:layout_constraintStart_toEndOf="@+id/recyclepic_iv1"
+            app:layout_constraintStart_toEndOf="@+id/findBig_iv"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
