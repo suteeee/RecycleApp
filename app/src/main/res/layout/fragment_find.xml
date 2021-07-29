@@ -1,20 +1,28 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/find_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#ffffff"
-    android:clickable="true"
-    tools:context="com.kt.recycleapp.kt.fragment.FindFragment">
+    xmlns:bind="http://schemas.android.com/tools">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="411dp"
-        android:layout_height="731dp"
-        android:text="@string/hello_blank_fragment"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
+        <variable
+            name="bigItem"
+            type="com.kt.recycleapp.kt.viewmodel.FindFragmentViewModel" />
+    </data>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:id="@+id/find_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        android:clickable="true"
+        android:orientation="vertical"
+        tools:context="com.kt.recycleapp.kt.fragment.FindFragment"
+        android:focusable="true">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/findBig_rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            bind:item = "@{bigItem.itemList}" />
+    </LinearLayout>
+</layout>

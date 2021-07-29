@@ -1,4 +1,4 @@
-package com.kt.recycleapp.kt.`class`
+package com.kt.recycleapp.kt.etc
 
 import android.util.Log
 import android.view.ScaleGestureDetector

@@ -14,10 +14,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.gms.vision.CameraSource
-import com.google.android.gms.vision.barcode.BarcodeDetector
-import com.kt.recycleapp.kt.`class`.ScaleListener
-import com.kt.recycleapp.kt.activity.OnBackPressListener
 import com.kt.recycleapp.kt.camera.MyImageAnalyzer
 import com.kt.recycleapp.kt.viewmodel.CameraSettingFragmenViewModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -25,12 +21,11 @@ import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.navi_header.*
 import kotlinx.android.synthetic.main.navi_header.view.*
-import java.io.File
-import java.recycleapp.R
 import java.recycleapp.databinding.FragmentMainBinding
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicBoolean
+import java.recycleapp.R
 
 typealias BarcodeListener = (barcode: String) -> Unit
 
@@ -52,7 +47,6 @@ class MainFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         cameraExecutor = Executors.newSingleThreadExecutor()
-
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -80,7 +74,9 @@ class MainFragment : Fragment() {
             }
         }
 
-        mScaleGestureDetector = ScaleGestureDetector(rootView.context, ScaleListener(viewModel,mScaleFactor))
+        mScaleGestureDetector = ScaleGestureDetector(rootView.context,
+            com.kt.recycleapp.kt.etc.ScaleListener(viewModel, mScaleFactor)
+        )
 
         binding.previewView.setOnTouchListener{view, motionEvent->
             mScaleGestureDetector.onTouchEvent(motionEvent)
