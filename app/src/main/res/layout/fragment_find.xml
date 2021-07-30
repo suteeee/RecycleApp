@@ -9,20 +9,33 @@
             type="com.kt.recycleapp.kt.viewmodel.FindFragmentViewModel" />
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/find_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#ffffff"
         android:clickable="true"
-        android:orientation="vertical"
-        tools:context="com.kt.recycleapp.kt.fragment.FindFragment"
-        android:focusable="true">
+        android:focusable="true"
+        tools:context="com.kt.recycleapp.kt.fragment.FindFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/findBig_rv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            bind:item = "@{bigItem.itemList}" />
-    </LinearLayout>
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            bind:item="@{bigItem.itemList}" />
+
+        <ProgressBar
+            android:id="@+id/findBig_pb"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/findBig_rv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/findBig_rv" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

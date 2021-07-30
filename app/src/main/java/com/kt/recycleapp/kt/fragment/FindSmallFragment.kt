@@ -7,31 +7,56 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import com.kt.recycleapp.kt.activity.MainActivity
 import com.kt.recycleapp.kt.activity.OnBackPressListener
+import com.kt.recycleapp.kt.adapter.FindSmallAdapter
 import com.kt.recycleapp.kt.viewmodel.FindFragmentViewModel
 import java.recycleapp.R
+import java.recycleapp.databinding.FragmentFindSmallBinding
 
 class FindSmallFragment : Fragment(), OnBackPressListener {
+    lateinit var binding:FragmentFindSmallBinding
+    lateinit var viewModel: FindFragmentViewModel
+    lateinit var mAdapter: FindSmallAdapter
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
+        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_find_small, container, false)
+        binding.lifecycleOwner = viewLifecycleOwner
 
-        val v = FindFragmentViewModel()
-        val arr = v.findSmall()
+        viewModel = ViewModelProvider(this).get(FindFragmentViewModel::class.java)
+        viewModel.findSmall()
+        binding.smallItem = viewModel
 
-        v.findSmallProgress.observe(viewLifecycleOwner,{
+        mAdapter = FindSmallAdapter()
+        binding.findSmallRv.adapter = mAdapter
+
+
+        viewModel.findSmallProgress.observe(viewLifecycleOwner,{
             if(it == "finish"){
-                arr.forEach { res -> Log.d(res.toString(),"123") }
+                binding.findSmallPb.visibility = View.INVISIBLE
+                var idx = 0
+                when(FindFragmentViewModel.selectDoc){
+                    "종이"->idx = 0
+                    "플라스틱"->idx = 1
+                }
+                viewModel.itemDataSmall[idx].forEach {
+                    Log.d("check",it.toString())
+                }
+                for(i in 0 until viewModel.itemDataSmall[idx].size){
+                    viewModel.addSmallItem(i,idx)
+                }
             }
         })
 
-        return inflater.inflate(R.layout.fragment_find_small, container, false)
+        return binding.root
     }
 
     override fun onBack() {
         val act = activity as MainActivity
         act.setOnBackPressListener(null)
-        act.supportFragmentManager.beginTransaction().replace(R.id.small_layout1,MainFragment()).commit()
+        act.supportFragmentManager.beginTransaction().replace(R.id.small_layout1,FindFragment()).commit()
     }
 
     override fun onAttach(context: Context) {

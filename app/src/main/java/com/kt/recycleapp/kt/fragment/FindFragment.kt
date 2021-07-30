@@ -27,7 +27,7 @@ class FindFragment : Fragment(),OnBackPressListener{
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_find, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
-        binding.findBigRv.layoutManager = LinearLayoutManager(binding.root.context)
+       // binding.findBigRv.layoutManager = LinearLayoutManager(binding.root.context)
 
         viewModel = ViewModelProvider(this).get(FindFragmentViewModel::class.java)
         binding.bigItem =viewModel
@@ -35,11 +35,10 @@ class FindFragment : Fragment(),OnBackPressListener{
         mAdapter = FindBigAdapter()
         binding.findBigRv.adapter = mAdapter
 
-        mAdapter.viewModel = viewModel
-
         viewModel.findBig()
         viewModel.findBigProgress.observe(viewLifecycleOwner,{
             if(it == "finish"){
+                binding.findBigPb.visibility = View.INVISIBLE
                 for(i in 0 until viewModel.itemData.size){
                     viewModel.addItem(i)
                 }
@@ -52,12 +51,17 @@ class FindFragment : Fragment(),OnBackPressListener{
         click.observe(viewLifecycleOwner,{
             if(it == "start"){
                 viewClick()
+                click.value = "stop"
             }
             Log.d("c3",it.toString())
         })
 
-
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.findBigRv.adapter?.notifyDataSetChanged()
     }
 
     fun viewClick() {
