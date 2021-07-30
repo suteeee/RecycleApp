@@ -85,14 +85,7 @@ public class DailyTipFragment extends Fragment implements OnBackPressListener {
                     }
                 });
             }
-
-
         });
-
-
-
-
-
         return rootView;
     }
 

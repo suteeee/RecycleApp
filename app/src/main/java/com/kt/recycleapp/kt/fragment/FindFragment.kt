@@ -2,15 +2,15 @@ package com.kt.recycleapp.kt.fragment
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.ObservableArrayList
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.kt.recycleapp.kt.etc.FindBigData
 import com.kt.recycleapp.kt.activity.MainActivity
 import com.kt.recycleapp.kt.activity.OnBackPressListener
 import com.kt.recycleapp.kt.adapter.FindBigAdapter
@@ -19,32 +19,50 @@ import java.recycleapp.R
 import java.recycleapp.databinding.FragmentFindBinding
 
 class FindFragment : Fragment(),OnBackPressListener{
+    companion object{ var click = MutableLiveData<String>()}
     lateinit var binding:FragmentFindBinding
     lateinit var mAdapter : FindBigAdapter
     lateinit var viewModel:FindFragmentViewModel
-    val imgArr = arrayOf(R.drawable.paper, R.drawable.plastic, R.drawable.vinyl, R.drawable.iron, R.drawable.delivery, R.drawable.constore, R.drawable.baterry, R.drawable.trash, R.drawable.pet)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_find, container, false)
-        viewModel = ViewModelProvider(this).get(FindFragmentViewModel::class.java)
-        viewModel.findBig()
-        mAdapter = FindBigAdapter()
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.findBigRv.layoutManager = LinearLayoutManager(binding.root.context)
+
+        viewModel = ViewModelProvider(this).get(FindFragmentViewModel::class.java)
         binding.bigItem =viewModel
 
+        mAdapter = FindBigAdapter()
+        binding.findBigRv.adapter = mAdapter
+
+        mAdapter.viewModel = viewModel
+
+        viewModel.findBig()
         viewModel.findBigProgress.observe(viewLifecycleOwner,{
             if(it == "finish"){
                 for(i in 0 until viewModel.itemData.size){
                     viewModel.addItem(i)
                 }
-
             }
         })
-        binding.findBigRv.adapter = mAdapter
+
+        Log.d((binding.findBigRv.adapter as FindBigAdapter).toString(),mAdapter.toString())
+
+
+        click.observe(viewLifecycleOwner,{
+            if(it == "start"){
+                viewClick()
+            }
+            Log.d("c3",it.toString())
+        })
 
 
         return binding.root
+    }
 
+    fun viewClick() {
+        Log.d("click","click")
+        activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.small_layout1,FindSmallFragment())?.commit()
     }
 
     override fun onBack() {
@@ -58,9 +76,4 @@ class FindFragment : Fragment(),OnBackPressListener{
         val act = activity as MainActivity
         act.setOnBackPressListener(this)
     }
-
-   /* fun addItem(id:Int, text:String) {
-        val data = FindBigData(id, text)
-        viewModel.itemList.add(data)
-    }*/
 }
