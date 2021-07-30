@@ -3,7 +3,7 @@
     package="java.recycleapp">
 
     <uses-feature android:name="android.hardware.camera.any" />
-
+    <uses-permission android:name ="android.permission.VIBRATE"/> //진동 권한 요청
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
 

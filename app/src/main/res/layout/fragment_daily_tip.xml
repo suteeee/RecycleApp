@@ -11,29 +11,35 @@
         android:id="@+id/todaytip_tv1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="20dp"
         android:fontFamily="@font/gmarket_middle"
         android:textSize="20sp"
-        android:text="버튼을 눌러보세요!"
+        android:text="버튼을 눌러보세요!\n 분리수거 꿀팁을 볼 수 있습니다."
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/picture_iv1"
+        android:id="@+id/tippicture_iv1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/todaytip_tv1"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.672"
         tools:src="@tools:sample/avatars" />
 
     <Button
         android:id="@+id/nexttip_bt1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="다음"
+        android:background="@drawable/common_buttom_design"
+        android:text="->"
+        android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"

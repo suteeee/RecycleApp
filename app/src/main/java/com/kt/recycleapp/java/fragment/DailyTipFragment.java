@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +36,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.recycleapp.R;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
@@ -43,8 +45,14 @@ import java.util.Set;
 
 public class DailyTipFragment extends Fragment implements OnBackPressListener {
     private TextView textView;
+    private ImageView imageView;
     private Button button;
-
+    private int[] images = {R.drawable.tip1,R.drawable.tip2,R.drawable.tip3,R.drawable.tip4,R.drawable.tip5,
+            R.drawable.tip6,R.drawable.tip7,R.drawable.tip8,R.drawable.tip9,R.drawable.tip10,
+            R.drawable.tip11,R.drawable.tip12,R.drawable.tip13,R.drawable.tip14,R.drawable.tip15,
+            R.drawable.tip16,R.drawable.tip17,R.drawable.tip18,R.drawable.tip19,R.drawable.tip20,
+            R.drawable.tip21,R.drawable.tip22,R.drawable.tip23,R.drawable.tip24,R.drawable.tip25,
+            R.drawable.tip26,R.drawable.tip27,R.drawable.tip28,R.drawable.tip29,R.drawable.tip30};
 
 
 
@@ -55,29 +63,28 @@ public class DailyTipFragment extends Fragment implements OnBackPressListener {
         View rootView = inflater.inflate(R.layout.fragment_daily_tip, container, false);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         textView = (TextView)rootView.findViewById(R.id.todaytip_tv1);
+        imageView = (ImageView)rootView.findViewById(R.id.tippicture_iv1);
         button = (Button)rootView.findViewById(R.id.nexttip_bt1);
 
         button.setOnClickListener(new View.OnClickListener(){
             @Override   //ctrl+o를 누른다
             public void onClick(View view) {
                 db.collection("recycleApp").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
                     @Override   //성공하면 불러온다
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        //랜덤한 데이터를 하나 가져온다
-                        int k = (int)(Math.random()*30);
+                        //랜덤한 데이터를 하나 가져온다x
+                        int k = (int)(Math.random()*29);
                         if(task.isSuccessful()){
-                            Set<String> tmp = new HashSet<>();
+                            Collection<Object> tmp = new HashSet<>();
                             //for(QueryDocumentSnapshot document : task.getResult()){ //문서 전체 가져옴, //document("")를 했기 때문에 할 필요 없어짐
                             for(QueryDocumentSnapshot document : task.getResult()) {    //docunment가 하나이므로 한번만 돔
-                                tmp=document.getData().keySet();    //즉 한번에 keySet 다가져옴
+                                tmp=document.getData().values();    //set에 keyset넣음
                             }
 
-
-
-                            //test
-
-                            //그걸 todaytip_tv1 의 text를 변경한다.
-                            //textView.setText();
+                            String arr[] = tmp.toArray(new String[0]); //set을 배열로 전환(0 넣으면 전체가 옴)
+                            textView.setText(arr[k]);
+                            imageView.setImageResource(images[k]);
                         }
                         else{
                             Toast.makeText(getContext(), "에러 발생!", Toast.LENGTH_SHORT).show();
