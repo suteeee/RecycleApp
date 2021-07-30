@@ -4,10 +4,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
+import android.preference.PreferenceFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,19 +19,14 @@ import com.kt.recycleapp.kt.fragment.MainFragment;
 
 import java.recycleapp.R;
 
-public class AppSettingFragment extends PreferenceFragmentCompat implements OnBackPressListener {
-    SharedPreferences pref;
+public class AppSettingFragment extends Fragment implements OnBackPressListener {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View rootView = inflater.inflate(R.xml.fragment_app_setting, container, false);
 
-    @Override
-    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        setPreferencesFromResource(R.xml.fragment_app_setting, rootKey);
-
-        pref = PreferenceManager.getDefaultSharedPreferences(getActivity());    //잘 모르겠으나 SharedPreference객체 참조하여 설정상태 제어
-        boolean soundButton = pref.getBoolean("soundcontrol1", true);   //key값 찾아서 default값체크
-
-
-
+        return rootView;
     }
+
 
     public void onBack() {
         MainActivity act = (MainActivity)getActivity();
