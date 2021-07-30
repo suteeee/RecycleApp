@@ -47,7 +47,7 @@ public class DailyTipFragment extends Fragment implements OnBackPressListener {
     private TextView textView;
     private ImageView imageView;
     private Button button;
-    private int[] images = {R.drawable.tip1,R.drawable.tip2,R.drawable.tip3,R.drawable.tip4,R.drawable.tip5,
+    private int[] images = {0, R.drawable.tip1,R.drawable.tip2,R.drawable.tip3,R.drawable.tip4,R.drawable.tip5,
             R.drawable.tip6,R.drawable.tip7,R.drawable.tip8,R.drawable.tip9,R.drawable.tip10,
             R.drawable.tip11,R.drawable.tip12,R.drawable.tip13,R.drawable.tip14,R.drawable.tip15,
             R.drawable.tip16,R.drawable.tip17,R.drawable.tip18,R.drawable.tip19,R.drawable.tip20,
@@ -74,16 +74,26 @@ public class DailyTipFragment extends Fragment implements OnBackPressListener {
                     @Override   //성공하면 불러온다
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         //랜덤한 데이터를 하나 가져온다x
-                        int k = (int)(Math.random()*29);
+                        int k = (int)(Math.random()*29)+1;
                         if(task.isSuccessful()){
-                            Collection<Object> tmp = new HashSet<>();
-                            //for(QueryDocumentSnapshot document : task.getResult()){ //문서 전체 가져옴, //document("")를 했기 때문에 할 필요 없어짐
-                            for(QueryDocumentSnapshot document : task.getResult()) {    //docunment가 하나이므로 한번만 돔
-                                tmp=document.getData().values();    //set에 keyset넣음
+                            Set<String> tmp = new HashSet<>();  //keyset 저장용
+                            QueryDocumentSnapshot doc = null;   //value를 가져오기 위한 것
+                            for(QueryDocumentSnapshot document : task.getResult()) {    //docunment가 하나이므로 한번만
+                                tmp=document.getData().keySet();    //set에 keyset넣음
+                                doc=document;   //value 저장(values해야하는거 아닌가?)
                             }
 
-                            String arr[] = tmp.toArray(new String[0]); //set을 배열로 전환(0 넣으면 전체가 옴)
-                            textView.setText(arr[k]);
+                            String arr[] = doc.getData().values().toArray(new String[0]); //배열로 전환(0 넣으면 전체가 옴)
+
+                            int target = 0;
+                            for(String i : tmp){
+                                target++;
+                                if(i.equals(Integer.toString(k))) {
+                                    break;
+                                }
+                            }
+
+                            textView.setText(arr[target-1]);
                             imageView.setImageResource(images[k]);
                         }
                         else{
