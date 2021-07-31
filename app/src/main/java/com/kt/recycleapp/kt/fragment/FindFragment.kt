@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.kt.recycleapp.kt.activity.MainActivity
 import com.kt.recycleapp.kt.activity.OnBackPressListener
 import com.kt.recycleapp.kt.adapter.FindBigAdapter

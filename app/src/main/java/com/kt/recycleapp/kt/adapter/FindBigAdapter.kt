@@ -1,16 +1,11 @@
 package com.kt.recycleapp.kt.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
-import com.kt.recycleapp.kt.activity.MainActivity
 import com.kt.recycleapp.kt.etc.FindBigData
 import com.kt.recycleapp.kt.fragment.FindFragment
-import com.kt.recycleapp.kt.fragment.FindSmallFragment
 import com.kt.recycleapp.kt.viewmodel.FindFragmentViewModel
-import java.recycleapp.R
 import java.recycleapp.databinding.FindBigLayoutUnitBinding
 
 class FindBigAdapter : RecyclerView.Adapter<FindBigAdapter.MyViewHolder>() {

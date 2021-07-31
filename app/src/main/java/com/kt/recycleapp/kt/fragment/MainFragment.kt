@@ -3,6 +3,8 @@ package com.kt.recycleapp.kt.fragment
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import android.media.Image
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -14,6 +16,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import com.kt.recycleapp.java.fragment.AnnounceRecyclePageFragment
 import com.kt.recycleapp.kt.camera.MyImageAnalyzer
 import com.kt.recycleapp.kt.viewmodel.CameraSettingFragmenViewModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -21,16 +24,20 @@ import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.navi_header.*
 import kotlinx.android.synthetic.main.navi_header.view.*
+import java.io.File
 import java.recycleapp.databinding.FragmentMainBinding
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicBoolean
 import java.recycleapp.R
+import java.text.SimpleDateFormat
+import androidx.camera.core.CameraSelector
+import androidx.lifecycle.MutableLiveData
 
 typealias BarcodeListener = (barcode: String) -> Unit
 
 class MainFragment : Fragment() {
-    private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
+    private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE)
     private val REQUEST_CODE_PERMISSIONS = 10
     private lateinit var cameraExecutor: ExecutorService
     var processingBarcode = AtomicBoolean(false)
@@ -41,11 +48,17 @@ class MainFragment : Fragment() {
     private var cameraController: CameraControl? = null
     private var cameraInfo :CameraInfo? = null
 
+    private var imageCapture :ImageCapture?= null
+    private lateinit var outputDirectory:File
+
     private lateinit var mScaleGestureDetector : ScaleGestureDetector
     private var mScaleFactor = 1.0f
 
+    var captureIsFinish = MutableLiveData<String>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        outputDirectory = getOutputDirectory()
         cameraExecutor = Executors.newSingleThreadExecutor()
     }
 
@@ -60,6 +73,7 @@ class MainFragment : Fragment() {
         }
 
         val rootView = binding.root
+
 
         binding.captureBtn.setOnClickListener {
             when(cameraInfo?.torchState?.value){
@@ -113,6 +127,32 @@ class MainFragment : Fragment() {
         }
     }
 
+    fun takePhoto() {
+        val imageCapture = imageCapture?:return
+        val photoFile = File(outputDirectory,newPngFileName())
+        val outputOption = ImageCapture.OutputFileOptions.Builder(photoFile).build()
+
+        imageCapture.takePicture(outputOption,ContextCompat.getMainExecutor(requireContext()),object:ImageCapture.OnImageSavedCallback{
+            override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
+                captureIsFinish.value="no"
+                val saveUri = Uri.fromFile(photoFile)
+                Toast.makeText(context,"카메라 캡쳐 & 저장 $saveUri",Toast.LENGTH_SHORT).show()
+                captureIsFinish.value="yes"
+            }
+
+            override fun onError(exception: ImageCaptureException) {
+                exception.printStackTrace()
+                Toast.makeText(context,"캡쳐 에러 발생",Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun newPngFileName():String{
+        val sdf = SimpleDateFormat("yyyyMMdd_HHmmss")
+        val filename = "Recycle_${sdf.format(System.currentTimeMillis())}"
+        return "${filename}.png"
+    }
+
     private fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
 
@@ -123,13 +163,22 @@ class MainFragment : Fragment() {
                     previewView.surfaceProvider
                 )
             }
+            imageCapture = ImageCapture.Builder().build()
 
             val imageAnalysis = ImageAnalysis.Builder()
                 .build()
                 .also {
                     it.setAnalyzer(cameraExecutor, MyImageAnalyzer { barcode ->
                         if (processingBarcode.compareAndSet(false, true)) {
+                            takePhoto()
                             Toast.makeText(activity?.baseContext,barcode,Toast.LENGTH_SHORT).show()
+
+                            captureIsFinish.observe(viewLifecycleOwner,{
+                                if(it=="yes"){
+                                    captureIsFinish.value="no"
+                                    activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.small_layout1,AnnounceRecyclePageFragment())?.commit()
+                                }
+                            })
                         }
                     })
                 }
@@ -137,7 +186,7 @@ class MainFragment : Fragment() {
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
             try {
                 cameraProvider.unbindAll()
-                camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageAnalysis)
+                camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageAnalysis,imageCapture)
                 cameraController = camera!!.cameraControl
                 cameraInfo = camera!!.cameraInfo
 
@@ -162,6 +211,15 @@ class MainFragment : Fragment() {
             }
         }
     }
+
+    private fun getOutputDirectory():File{
+        val mediaDir = activity?.externalMediaDirs?.firstOrNull()?.let {
+            File(it,resources.getString(R.string.app_name)).apply { mkdirs() }
+        }
+        return if(mediaDir != null && mediaDir.exists()) mediaDir
+        else requireActivity().filesDir
+    }
+
 
     override fun onDestroy() {
         cameraExecutor.shutdown()

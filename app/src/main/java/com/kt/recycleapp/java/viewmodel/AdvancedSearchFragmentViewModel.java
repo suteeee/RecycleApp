@@ -5,5 +5,6 @@ import androidx.lifecycle.ViewModel;
 import com.kt.recycleapp.java.fragment.AdvancedSearchFragment;
 
 public class AdvancedSearchFragmentViewModel extends ViewModel {
+    String itemName = "";
 
 }
