@@ -1,27 +1,23 @@
 package com.kt.recycleapp.java.fragment;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.preference.PreferenceManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.kt.recycleapp.kt.activity.OnBackPressListener;
+import com.kt.recycleapp.manager.MyPreferenceManager;
+import com.kt.recycleapp.manager.Prefs;
 
 import java.recycleapp.R;
 
 
 public class PopupFragment extends DialogFragment implements  View.OnClickListener{
     public static final String TAG_EVENT_DIALOG = "dialog_event";
-
 
     public PopupFragment(){
 
@@ -38,9 +34,10 @@ public class PopupFragment extends DialogFragment implements  View.OnClickListen
         View rootView = inflater.inflate(R.layout.fragment_popup, container, false);
         Button buttonFirst = rootView.findViewById(R.id.onedaynotsee_bt1);
         Button buttonSecond = rootView.findViewById(R.id.neversee_bt1);
+        Log.d(rootView.getContext().toString(),"123456");
 
-
-
+        MyPreferenceManager prefs = new MyPreferenceManager(getContext()); //만들었던 preferenceManager를 쓸수있게 생성
+        //Prefs prefs = new Prefs(getContext());
 
         buttonFirst.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,6 +50,9 @@ public class PopupFragment extends DialogFragment implements  View.OnClickListen
             @Override
             public void onClick(View view) {
                 //코드 작성(따로 메소드 빼야할 듯)
+                prefs.setIsNeverShow(true); //설정값 영구지속
+
+
             }
         });
 
