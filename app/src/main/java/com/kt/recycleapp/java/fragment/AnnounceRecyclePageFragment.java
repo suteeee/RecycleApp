@@ -27,6 +27,7 @@ public class AnnounceRecyclePageFragment extends Fragment implements OnBackPress
         //rootView는 액티비티를 나타냄 (container는 우리끼리 mainactivity레이아웃을 의미하는 것으로 약속)
         //아래 코드는 액티비티 자체를 가져오는 것이다
 
+        //36~45번줄 뷰바인딩 및 전달받은 물품 이름 셋팅 하는 코드
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_announce_recycle_page, container, false);
         viewModel = new ViewModelProvider(this).get(AnnounceRecyclePageViewModel.class);
 
@@ -35,7 +36,7 @@ public class AnnounceRecyclePageFragment extends Fragment implements OnBackPress
         if(bundle != null){
             viewModel.itemName = bundle.getString("item");
             Log.d(viewModel.itemName,"bundle");
-            binding.whatisTv1.setText(viewModel.itemName);
+            binding.whatisTv2.setText(viewModel.itemName);
         }
 
 

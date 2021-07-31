@@ -9,10 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import com.kt.recycleapp.java.fragment.*
-import com.kt.recycleapp.kt.fragment.FavoriteItemFragment
-import com.kt.recycleapp.kt.fragment.FindFragment
-import com.kt.recycleapp.kt.fragment.MainFragment
-import com.kt.recycleapp.kt.fragment.RecycleDayInfoFragment
+import com.kt.recycleapp.kt.fragment.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.navi_header.view.*
 import java.recycleapp.R
@@ -24,6 +21,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
 
         //앱 테마를 noactionbar 로 설정했고 툴바를 사용할것이므로 actionbar를 우리가 만든 toolbar로 설정하는 코드
         setSupportActionBar(mainToolBar_tb1)

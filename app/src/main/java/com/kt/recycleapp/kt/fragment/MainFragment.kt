@@ -3,7 +3,6 @@ package com.kt.recycleapp.kt.fragment
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
-import android.media.Image
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -33,6 +32,9 @@ import java.recycleapp.R
 import java.text.SimpleDateFormat
 import androidx.camera.core.CameraSelector
 import androidx.lifecycle.MutableLiveData
+import androidx.room.Room
+import com.kt.recycleapp.model.RoomDatabase
+import com.kt.recycleapp.model.RoomHelper
 
 typealias BarcodeListener = (barcode: String) -> Unit
 
@@ -53,6 +55,7 @@ class MainFragment : Fragment() {
 
     private lateinit var mScaleGestureDetector : ScaleGestureDetector
     private var mScaleFactor = 1.0f
+    var helper :RoomHelper? = null
 
     var captureIsFinish = MutableLiveData<String>()
 
@@ -73,6 +76,8 @@ class MainFragment : Fragment() {
         }
 
         val rootView = binding.root
+
+        helper = Room.databaseBuilder(requireContext(),RoomHelper::class.java,"Database").allowMainThreadQueries().build()
 
 
         binding.captureBtn.setOnClickListener {
@@ -105,6 +110,13 @@ class MainFragment : Fragment() {
         return rootView
     }
 
+    fun writeDB(barcode: String, fineName: String) {
+        val date = fineName.split("_")[1]
+        val data = RoomDatabase(barcode,date,fineName)
+        helper?.databaseDao()?.insert(data)
+        Log.d("data","write")
+    }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
@@ -127,9 +139,10 @@ class MainFragment : Fragment() {
         }
     }
 
-    fun takePhoto() {
-        val imageCapture = imageCapture?:return
-        val photoFile = File(outputDirectory,newPngFileName())
+    fun takePhoto() :String{
+        val imageCapture = imageCapture?:return ""
+        val name = newPngFileName()
+        val photoFile = File(outputDirectory,name)
         val outputOption = ImageCapture.OutputFileOptions.Builder(photoFile).build()
 
         imageCapture.takePicture(outputOption,ContextCompat.getMainExecutor(requireContext()),object:ImageCapture.OnImageSavedCallback{
@@ -145,6 +158,8 @@ class MainFragment : Fragment() {
                 Toast.makeText(context,"캡쳐 에러 발생",Toast.LENGTH_SHORT).show()
             }
         })
+
+        return name
     }
 
     private fun newPngFileName():String{
@@ -170,11 +185,13 @@ class MainFragment : Fragment() {
                 .also {
                     it.setAnalyzer(cameraExecutor, MyImageAnalyzer { barcode ->
                         if (processingBarcode.compareAndSet(false, true)) {
-                            takePhoto()
+                            val fineName = takePhoto()
                             Toast.makeText(activity?.baseContext,barcode,Toast.LENGTH_SHORT).show()
+
 
                             captureIsFinish.observe(viewLifecycleOwner,{
                                 if(it=="yes"){
+                                    writeDB(barcode,fineName)
                                     captureIsFinish.value="no"
                                     activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.small_layout1,AnnounceRecyclePageFragment())?.commit()
                                 }

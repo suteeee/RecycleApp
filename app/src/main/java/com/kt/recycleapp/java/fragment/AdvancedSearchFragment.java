@@ -38,6 +38,8 @@ public class AdvancedSearchFragment extends Fragment implements OnBackPressListe
         webView.loadUrl(url);
         webView.setWebViewClient(new WebViewClient()); // 클릭시 새창 안뜨게
 
+
+
         //아래코드는 무조건 webView아래에 있어야함
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true); //자바 스크립트 허용
