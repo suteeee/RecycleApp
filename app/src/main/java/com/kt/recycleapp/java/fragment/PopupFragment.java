@@ -11,9 +11,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.kt.recycleapp.manager.MyPreferenceManager;
-import com.kt.recycleapp.manager.Prefs;
 
 import java.recycleapp.R;
+import java.util.Objects;
 
 
 public class PopupFragment extends DialogFragment implements  View.OnClickListener{
@@ -36,7 +36,7 @@ public class PopupFragment extends DialogFragment implements  View.OnClickListen
         Button buttonSecond = rootView.findViewById(R.id.neversee_bt1);
         Log.d(rootView.getContext().toString(),"123456");
 
-        MyPreferenceManager prefs = new MyPreferenceManager(getContext()); //만들었던 preferenceManager를 쓸수있게 생성
+        MyPreferenceManager prefs = new MyPreferenceManager(requireContext()); //만들었던 preferenceManager를 쓸수있게 생성
         //Prefs prefs = new Prefs(getContext());
 
         buttonFirst.setOnClickListener(new View.OnClickListener() {
@@ -51,6 +51,8 @@ public class PopupFragment extends DialogFragment implements  View.OnClickListen
             public void onClick(View view) {
                 //코드 작성(따로 메소드 빼야할 듯)
                 prefs.setIsNeverShow(true); //설정값 영구지속
+
+                //이게 true일 경우 앱 실행시에 팝업창 안뜨게
 
 
             }

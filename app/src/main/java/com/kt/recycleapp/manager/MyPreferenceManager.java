@@ -10,18 +10,15 @@ import android.util.Log;
  */
 
 public class MyPreferenceManager {
-    private Context context;
+    private final SharedPreferences prefs;
 
     public MyPreferenceManager(Context context) {
-        this.context = context;
+        prefs = context.getSharedPreferences(PREFERENCES_NAME,0);
         Log.d(context.toString(),"123456789");
     }
 
     public static final String PREFERENCES_NAME = "prefs";
     private static final String isNeverShowEdtKey = "neverShow";
-
-
-    private final SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_NAME,0);
 
 
     public Boolean getIsNeverShow() {
