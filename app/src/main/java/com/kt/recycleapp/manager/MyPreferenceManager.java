@@ -12,6 +12,8 @@ import android.util.Log;
 public class MyPreferenceManager {
     private final SharedPreferences prefs;
 
+
+    //context (앱의 정보 갖고있는 애)에서 prefs를 갖고옴
     public MyPreferenceManager(Context context) {
         prefs = context.getSharedPreferences(PREFERENCES_NAME,0);
         Log.d(context.toString(),"123456789");
