@@ -1,6 +1,5 @@
 package com.kt.recycleapp.java.fragment;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 

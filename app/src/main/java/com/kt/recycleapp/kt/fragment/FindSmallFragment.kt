@@ -8,7 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
+import com.kt.recycleapp.java.fragment.AnnounceRecyclePageFragment
 import com.kt.recycleapp.kt.activity.MainActivity
 import com.kt.recycleapp.kt.activity.OnBackPressListener
 import com.kt.recycleapp.kt.adapter.FindSmallAdapter
@@ -17,6 +19,10 @@ import java.recycleapp.R
 import java.recycleapp.databinding.FragmentFindSmallBinding
 
 class FindSmallFragment : Fragment(), OnBackPressListener {
+    companion object{
+        var smallClick = MutableLiveData<String>()
+
+    }
     lateinit var binding:FragmentFindSmallBinding
     lateinit var viewModel: FindFragmentViewModel
     lateinit var mAdapter: FindSmallAdapter
@@ -50,7 +56,25 @@ class FindSmallFragment : Fragment(), OnBackPressListener {
             }
         })
 
+        smallClick.observe(viewLifecycleOwner,{
+            if(it == "start"){
+                viewClick()
+            }
+        })
+
         return binding.root
+    }
+
+    fun viewClick() {
+        val frg = AnnounceRecyclePageFragment()
+        val bundle = Bundle()
+        bundle.putString("item",FindFragmentViewModel.selectItem)
+        Log.d(FindFragmentViewModel.selectItem,"click")
+
+        frg.arguments = bundle
+
+        activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.small_layout1,frg)?.commit()
+        smallClick.value = "stop"
     }
 
     override fun onBack() {

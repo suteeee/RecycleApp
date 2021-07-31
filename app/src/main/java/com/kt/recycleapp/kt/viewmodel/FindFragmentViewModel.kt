@@ -12,6 +12,7 @@ import java.recycleapp.R
 class FindFragmentViewModel: ViewModel() {
     companion object{
         var selectDoc = ""
+        var selectItem = ""
     }
     val model = DatabaseReadModel()
     val itemList = ObservableArrayList<FindBigData>()
