@@ -44,7 +44,6 @@ public class PopupFragment extends DialogFragment implements  View.OnClickListen
 
 
         MyPreferenceManager prefs = new MyPreferenceManager(requireContext()); //만들었던 preferenceManager를 쓸수있게 생성
-        //Prefs prefs = new Prefs(getContext());
 
         //Log.d(String(dateFormat.format(System.currentTimeMillis())), "test1");
        // Log.d((prefs.getStoredTime()), "test2");

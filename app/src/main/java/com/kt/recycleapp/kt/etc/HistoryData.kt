@@ -1,3 +1,5 @@
 package com.kt.recycleapp.kt.etc
 
-data class HistoryData(val date:String, val fineName:String, val barcode:String)
+import android.graphics.Bitmap
+
+data class HistoryData(val date:String?, val bm:Bitmap?, val barcode:String?)

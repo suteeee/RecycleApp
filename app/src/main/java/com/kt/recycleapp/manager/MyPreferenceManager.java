@@ -7,13 +7,15 @@ import android.util.Log;
 import java.util.Date;
 
 
-/**
+/*
  * 데이터 저장 및 로드 클래스
  */
 
 public class MyPreferenceManager {
     private final SharedPreferences prefs;
 
+
+    //context (앱의 정보 갖고있는 애)에서 prefs를 갖고옴
     public MyPreferenceManager(Context context) {
         prefs = context.getSharedPreferences(PREFERENCES_NAME,0);
     }
