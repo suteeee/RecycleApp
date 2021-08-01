@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 
-/**
+/*
  * 데이터 저장 및 로드 클래스
  */
 

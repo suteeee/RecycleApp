@@ -10,4 +10,6 @@
     <string name="dailyTipTitle">오늘의 팁</string>
     <string name="cameraSettingTitle">카메라 설정</string>
     <string name="appSettingTitle">환경 설정</string>
+    <string name="askDataAdd">등록되어있지 않은 물품입니다. \n
+        데이터를 추가하여 더 많은 물건의 정보를 얻어보세요!</string>
 </resources>

@@ -37,7 +37,6 @@ public class PopupFragment extends DialogFragment implements  View.OnClickListen
         Log.d(rootView.getContext().toString(),"123456");
 
         MyPreferenceManager prefs = new MyPreferenceManager(requireContext()); //만들었던 preferenceManager를 쓸수있게 생성
-        //Prefs prefs = new Prefs(getContext());
 
         buttonFirst.setOnClickListener(new View.OnClickListener() {
             @Override

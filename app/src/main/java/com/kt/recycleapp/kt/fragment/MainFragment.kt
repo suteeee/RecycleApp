@@ -33,6 +33,7 @@ import java.text.SimpleDateFormat
 import androidx.camera.core.CameraSelector
 import androidx.lifecycle.MutableLiveData
 import androidx.room.Room
+import com.kt.recycleapp.kt.viewmodel.FindFragmentViewModel
 import com.kt.recycleapp.model.RoomDatabase
 import com.kt.recycleapp.model.RoomHelper
 
@@ -51,8 +52,8 @@ class MainFragment : Fragment() {
     private var cameraInfo :CameraInfo? = null
 
     private var imageCapture :ImageCapture?= null
-    private lateinit var outputDirectory:File
 
+    private lateinit var outputDirectory:File
     private lateinit var mScaleGestureDetector : ScaleGestureDetector
     private var mScaleFactor = 1.0f
     var helper :RoomHelper? = null
@@ -188,12 +189,16 @@ class MainFragment : Fragment() {
                             val fineName = takePhoto()
                             Toast.makeText(activity?.baseContext,barcode,Toast.LENGTH_SHORT).show()
 
-
                             captureIsFinish.observe(viewLifecycleOwner,{
                                 if(it=="yes"){
                                     writeDB(barcode,fineName)
                                     captureIsFinish.value="no"
-                                    activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.small_layout1,AnnounceRecyclePageFragment())?.commit()
+                                    val frg = AnnounceRecyclePageFragment()
+                                    val bundle = Bundle()
+                                    bundle.putString("barcode", barcode)
+                                    frg.arguments = bundle
+
+                                    activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.small_layout1,frg)?.commit()
                                 }
                             })
                         }

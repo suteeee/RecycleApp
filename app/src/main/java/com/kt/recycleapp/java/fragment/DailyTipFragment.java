@@ -104,6 +104,4 @@ public class DailyTipFragment extends Fragment implements OnBackPressListener {
         super.onAttach(context);
         ((MainActivity)context).setOnBackPressListener(this);
     }
-
-
 }

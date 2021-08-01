@@ -6,6 +6,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class DatabaseReadModel {
     val db = FirebaseFirestore.getInstance()
+    companion object {
+        var name:Map<String,String> = HashMap()
+    }
 
 
     fun findBig(findBigProgress: MutableLiveData<String>):ArrayList<HashMap<String,String>>{
@@ -56,5 +59,19 @@ class DatabaseReadModel {
             findSmallProgress.value = "finish"
         }
         return arr
+    }
+
+    fun getProduct(getProductName: MutableLiveData<String>){
+        getProductName.value = "start"
+
+        var collection = db.collection("products")
+        collection.get().addOnCompleteListener {
+            Log.d("start","junnn")
+            for(doc in it.result) {
+                name = doc.data as Map<String, String>
+            }
+            Log.d(name.toString(),"junnnn1")
+            getProductName.value="finish"
+        }
     }
 }

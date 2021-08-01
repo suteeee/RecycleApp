@@ -7,19 +7,43 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.room.Room
+import com.kt.recycleapp.kt.adapter.HistoryAdapter
 import com.kt.recycleapp.kt.viewmodel.HistoryViewModel
+import com.kt.recycleapp.model.DatabaseReadModel
+import com.kt.recycleapp.model.RoomHelper
 import java.recycleapp.R
 import java.recycleapp.databinding.HistoryFragmentBinding
 
 class HistoryFragment : Fragment() {
 
     lateinit var binding:HistoryFragmentBinding
+    lateinit var mAdapter:HistoryAdapter
     private lateinit var viewModel: HistoryViewModel
+    var helper:RoomHelper? = null
+    var model = DatabaseReadModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater,R.layout.history_fragment, container, false)
+        binding.lifecycleOwner = viewLifecycleOwner
+
+        helper = Room.databaseBuilder(requireContext(), RoomHelper::class.java,"Database").allowMainThreadQueries().build()
 
         viewModel = ViewModelProvider(this).get(HistoryViewModel::class.java)
+        binding.model = viewModel
+        viewModel.getFireData()
+
+        viewModel.getProductName.observe(viewLifecycleOwner,{
+            if(it == "finish"){
+                binding.historyPb.visibility = View.INVISIBLE
+                viewModel.getData(helper,activity)
+            }
+        })
+        mAdapter = HistoryAdapter()
+        binding.historyRv.adapter = mAdapter
+
+
+
         return binding.root
     }
 

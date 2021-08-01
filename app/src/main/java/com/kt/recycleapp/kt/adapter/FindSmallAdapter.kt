@@ -11,7 +11,6 @@ import java.recycleapp.databinding.FindSmallLayoutUnitBinding
 class FindSmallAdapter : RecyclerView.Adapter<FindSmallAdapter.SmallAdapterHolder>() {
     var items = ArrayList<FindSmallData>()
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SmallAdapterHolder {
         val binding = FindSmallLayoutUnitBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         val holder = SmallAdapterHolder(binding)
