@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import java.util.Date;
+
 
 /**
  * 데이터 저장 및 로드 클래스
@@ -14,11 +16,20 @@ public class MyPreferenceManager {
 
     public MyPreferenceManager(Context context) {
         prefs = context.getSharedPreferences(PREFERENCES_NAME,0);
-        Log.d(context.toString(),"123456789");
     }
 
     public static final String PREFERENCES_NAME = "prefs";
     private static final String isNeverShowEdtKey = "neverShow";
+    private static final String STORED_TIME = "123";
+
+    public void setStoredTime(String date){
+        prefs.edit().putString(STORED_TIME,date).apply();
+    }
+
+    public String getStoredTime(){
+        return prefs.getString(STORED_TIME, "20000101");
+    }
+
 
 
     public Boolean getIsNeverShow() {

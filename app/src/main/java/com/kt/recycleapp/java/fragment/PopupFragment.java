@@ -8,16 +8,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
 import android.widget.Button;
 
 import com.kt.recycleapp.manager.MyPreferenceManager;
 
 import java.recycleapp.R;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.TimeZone;
 
 
 public class PopupFragment extends DialogFragment implements  View.OnClickListener{
     public static final String TAG_EVENT_DIALOG = "dialog_event";
+
 
     public PopupFragment(){
 
@@ -30,35 +36,59 @@ public class PopupFragment extends DialogFragment implements  View.OnClickListen
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View rootView = inflater.inflate(R.layout.fragment_popup, container, false);
         Button buttonFirst = rootView.findViewById(R.id.onedaynotsee_bt1);
         Button buttonSecond = rootView.findViewById(R.id.neversee_bt1);
-        Log.d(rootView.getContext().toString(),"123456");
+        Button buttonThird = rootView.findViewById(R.id.close_bt1);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+
 
         MyPreferenceManager prefs = new MyPreferenceManager(requireContext()); //만들었던 preferenceManager를 쓸수있게 생성
         //Prefs prefs = new Prefs(getContext());
 
-        buttonFirst.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //코드 작성(따로 메소드 빼야할 듯)
+        //Log.d(String(dateFormat.format(System.currentTimeMillis())), "test1");
+       // Log.d((prefs.getStoredTime()), "test2");
+        String dateToStr=dateFormat.format(System.currentTimeMillis());
+
+        if(!dateToStr.equals(prefs.getStoredTime())){    //하루 내에 재클릭 확인여부로 다음 날짜일때
+
+            if(prefs.getIsNeverShow()==true){   //다시보지않기 선택햇을 경우
+                dismiss();
             }
-        });
 
-        buttonSecond.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //코드 작성(따로 메소드 빼야할 듯)
-                prefs.setIsNeverShow(true); //설정값 영구지속
+            buttonFirst.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    long now = System.currentTimeMillis();
+                    Date current = new Date(now);
+                    String clickTime = dateFormat.format(current);
+                    prefs.setStoredTime(clickTime);
+                    dismiss();  //화면닫기
+                }
+            });
 
-                //이게 true일 경우 앱 실행시에 팝업창 안뜨게
+            buttonSecond.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    prefs.setIsNeverShow(true); //설정값 영구지속
+                    dismiss();  //화면닫기
+                }
+            });
+
+            buttonThird.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dismiss();  //화면닫기
+                }
+            });
+        }
+        else{      //같은날 일 때 안뜨게함
+            dismiss();
+        }
 
 
-            }
-        });
 
-        //메인엑티비티에 박아야할 코드
+        //메인엑티비티에 박아야할 코드(코틀린으로 변환해놨음)
         //PopupFragment popup = PopupFragment.getInstance();
         //popup.show(getSupportFragmentManager()),PopupFragment.TAG_EVENT_DIALOG);
 
