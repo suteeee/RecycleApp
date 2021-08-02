@@ -51,9 +51,12 @@
 
     <TextView
         android:id="@+id/canrecycle_bt1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:textAlignment="center"
+        android:gravity="center"
         android:fontFamily="@font/gmarket_middle"
+        android:background="@drawable/common_textview_cycle_design"
         android:text="1번가능품목"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/canrecycle_bt2"
@@ -62,9 +65,12 @@
 
     <TextView
         android:id="@+id/canrecycle_bt2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:textAlignment="center"
+        android:gravity="center"
         android:fontFamily="@font/gmarket_middle"
+        android:background="@drawable/common_textview_cycle_design"
         android:text="2번가능품목"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
