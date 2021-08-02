@@ -5,8 +5,8 @@
 
     <data>
         <variable
-            name="history"
-            type="com.kt.recycleapp.kt.etc.HistoryData" />
+            name="data"
+            type="com.kt.recycleapp.kt.etc.FavoriteData" />
 
     </data>
 
@@ -27,7 +27,7 @@
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            imgBitmap="@{history.bm}"/>
+            imgBitmap="@{data.image}"/>
 
         <TextView
             android:id="@+id/favoriteDate_tv"
@@ -37,7 +37,7 @@
             android:focusable="true"
             android:fontFamily="@font/gmarket_middle"
             android:gravity="center"
-            android:text="@{history.date}"
+            android:text="@{data.date}"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -52,20 +52,19 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/gmarket_middle"
             android:gravity="center"
-            android:text="@{history.barcode}"
+            android:text="@{data.name}"
             android:textSize="28sp"
             app:layout_constraintBottom_toTopOf="@+id/favoriteDate_tv"
-            app:layout_constraintEnd_toStartOf="@+id/history_btn"
+            app:layout_constraintEnd_toStartOf="@+id/favorite_btn"
             app:layout_constraintStart_toEndOf="@+id/favorite_iv"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/history_btn"
+            android:id="@+id/favorite_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
             android:layout_marginBottom="20dp"
-            android:background="#00ff0000"
             app:layout_constraintBottom_toTopOf="@+id/favoriteDate_tv"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/favoriteName_tv"

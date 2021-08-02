@@ -112,7 +112,7 @@ class MainFragment : Fragment() {
 
     fun writeDB(barcode: String, fineName: String) {
         val date = fineName.split("_")[1]
-        val data = MyRoomDatabase(barcode,date,fineName)
+        val data = MyRoomDatabase(barcode,date,fineName,"false")
         helper?.databaseDao()?.insert(data)
         Log.d("data","write")
     }

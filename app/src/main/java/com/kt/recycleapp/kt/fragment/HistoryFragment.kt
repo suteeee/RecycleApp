@@ -2,6 +2,7 @@ package com.kt.recycleapp.kt.fragment
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.room.Room
 import com.kt.recycleapp.kt.adapter.HistoryAdapter
 import com.kt.recycleapp.kt.viewmodel.HistoryViewModel
+import com.kt.recycleapp.manager.MyPreferenceManager
 import com.kt.recycleapp.model.DatabaseReadModel
 import com.kt.recycleapp.model.RoomHelper
 import java.recycleapp.R
@@ -23,12 +25,16 @@ class HistoryFragment : Fragment() {
     var helper:RoomHelper? = null
     var model = DatabaseReadModel()
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater,R.layout.history_fragment, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
 
+        var prefs = MyPreferenceManager(requireContext())
+
         helper = Room.databaseBuilder(requireContext(), RoomHelper::class.java,"Database").allowMainThreadQueries().build()
 
+        Log.d(helper?.databaseDao()?.getNo().toString(),"것")
         viewModel = ViewModelProvider(this).get(HistoryViewModel::class.java)
         binding.model = viewModel
         viewModel.getFireData()
@@ -36,13 +42,13 @@ class HistoryFragment : Fragment() {
         viewModel.getProductName.observe(viewLifecycleOwner,{
             if(it == "finish"){
                 binding.historyPb.visibility = View.INVISIBLE
-                viewModel.getData(helper,activity)
+                viewModel.getData(helper,activity, prefs)
             }
         })
+
+
         mAdapter = HistoryAdapter()
         binding.historyRv.adapter = mAdapter
-
-
 
         return binding.root
     }

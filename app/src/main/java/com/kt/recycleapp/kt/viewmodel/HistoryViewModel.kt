@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.kt.recycleapp.kt.etc.HistoryData
+import com.kt.recycleapp.manager.MyPreferenceManager
 import com.kt.recycleapp.model.DatabaseReadModel
 import com.kt.recycleapp.model.MyRoomDatabase
 import com.kt.recycleapp.model.RoomHelper
@@ -27,7 +28,7 @@ class HistoryViewModel : ViewModel() {
         model.getProduct(getProductName)
     }
 
-    fun getData(helper: RoomHelper?, activity: FragmentActivity?) {
+    fun getData(helper: RoomHelper?, activity: FragmentActivity?, prefs: MyPreferenceManager) {
         myRoomDbList = helper?.databaseDao()?.getAll()
         myRoomDbList?.forEach {
             var date1:String? = ""
@@ -35,6 +36,14 @@ class HistoryViewModel : ViewModel() {
             var date3 :String?= ""
             var image = it.image
             var barcode = ""
+
+            var arr :ArrayList<String> = ArrayList()
+            if(prefs.favoriteList != null)
+                arr = prefs.favoriteList
+            arr.add(image!!)
+            prefs.favoriteList = arr
+
+            Log.d(prefs.favoriteList.toString(),"거거")
 
             if(it.dateTime != "Recycle") {
 

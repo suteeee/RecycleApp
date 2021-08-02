@@ -1,26 +1,38 @@
 package com.kt.recycleapp.kt.adapter
 
+import android.content.SharedPreferences
+import android.graphics.Color
+import android.graphics.PorterDuff
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.kt.recycleapp.kt.etc.FindSmallData
+import androidx.room.Room
 import com.kt.recycleapp.kt.etc.HistoryData
-import com.kt.recycleapp.kt.fragment.FindSmallFragment
-import com.kt.recycleapp.kt.viewmodel.FindFragmentViewModel
-import java.recycleapp.databinding.FindSmallLayoutUnitBinding
+import com.kt.recycleapp.manager.MyPreferenceManager
+import com.kt.recycleapp.model.MyRoomDatabase
+import com.kt.recycleapp.model.RoomHelper
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.recycleapp.databinding.HistoryLayoutUnitBinding
 
 class HistoryAdapter: RecyclerView.Adapter<HistoryAdapter.MyHolder>() {
     var items = ArrayList<HistoryData>()
+    lateinit var prefs :MyPreferenceManager
+    lateinit var s : SharedPreferences
+    var helper:RoomHelper? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyHolder {
         val binding = HistoryLayoutUnitBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        prefs = MyPreferenceManager(parent.context)
+        helper = Room.databaseBuilder(parent.context,RoomHelper::class.java,"Database").allowMainThreadQueries().build()
         val holder = MyHolder(binding)
         return holder
     }
 
     override fun onBindViewHolder(holder: MyHolder, position: Int) {
-        holder.bind(items[position])
+        holder.bind(items[position],position)
     }
 
     override fun getItemCount(): Int {
@@ -28,9 +40,19 @@ class HistoryAdapter: RecyclerView.Adapter<HistoryAdapter.MyHolder>() {
     }
 
     inner class MyHolder(private val binding: HistoryLayoutUnitBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(data:HistoryData) {
+        fun bind(data: HistoryData, position: Int) {
             binding.history = data
             binding.historyUnitLayout.setOnClickListener{
+                Log.d(position.toString(),"것")
+            }
+
+            binding.historyBtn.setOnClickListener {
+                (it as ImageView).setColorFilter(Color.parseColor("#ff0000"), PorterDuff.Mode.SRC_ATOP)
+                GlobalScope.launch {
+                    helper?.databaseDao()?.updateFavorite(position+1)
+                }
+
+
 
             }
         }

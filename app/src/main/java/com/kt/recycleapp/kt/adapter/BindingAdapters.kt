@@ -7,6 +7,7 @@ import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableArrayList
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.kt.recycleapp.kt.etc.FavoriteData
 import com.kt.recycleapp.kt.etc.FindBigData
 import com.kt.recycleapp.kt.etc.FindSmallData
 import com.kt.recycleapp.kt.etc.HistoryData
@@ -57,6 +58,18 @@ object BindingAdapters {
         recyclerView.layoutManager = lm
         recyclerView.adapter = adt
         (recyclerView.adapter as HistoryAdapter).items = item
+        recyclerView.adapter?.notifyDataSetChanged()
+    }
+
+    @BindingAdapter("favoriteItem")
+    @JvmStatic
+    fun favoriteItem(recyclerView: RecyclerView, item:ObservableArrayList<FavoriteData>) {
+        val adt = FavoriteAdapter()
+        val lm = LinearLayoutManager(recyclerView.context)
+
+        recyclerView.layoutManager = lm
+        recyclerView.adapter = adt
+        (recyclerView.adapter as FavoriteAdapter).items = item
         recyclerView.adapter?.notifyDataSetChanged()
     }
 

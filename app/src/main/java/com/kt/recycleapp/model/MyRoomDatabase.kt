@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 class MyRoomDatabase {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo
-    var no : Long? = null
+    var no : Int = 0
 
     @ColumnInfo
     var barcode : String? = ""
@@ -19,12 +19,13 @@ class MyRoomDatabase {
     @ColumnInfo
     var image: String? = ""
 
-    constructor(barcode: String?, dateTime: String?,image:String?){
+    @ColumnInfo
+    var favorite: String? = ""
+
+    constructor(barcode: String?, dateTime: String?,image:String?,favorite:String?){
         this.barcode = barcode
         this.dateTime = dateTime
         this.image = image
+        this.favorite = favorite
     }
-
-
-
 }
