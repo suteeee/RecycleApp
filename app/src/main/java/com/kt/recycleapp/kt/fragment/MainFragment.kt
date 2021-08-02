@@ -33,8 +33,7 @@ import java.text.SimpleDateFormat
 import androidx.camera.core.CameraSelector
 import androidx.lifecycle.MutableLiveData
 import androidx.room.Room
-import com.kt.recycleapp.kt.viewmodel.FindFragmentViewModel
-import com.kt.recycleapp.model.RoomDatabase
+import com.kt.recycleapp.model.MyRoomDatabase
 import com.kt.recycleapp.model.RoomHelper
 
 typealias BarcodeListener = (barcode: String) -> Unit
@@ -113,7 +112,7 @@ class MainFragment : Fragment() {
 
     fun writeDB(barcode: String, fineName: String) {
         val date = fineName.split("_")[1]
-        val data = RoomDatabase(barcode,date,fineName)
+        val data = MyRoomDatabase(barcode,date,fineName)
         helper?.databaseDao()?.insert(data)
         Log.d("data","write")
     }

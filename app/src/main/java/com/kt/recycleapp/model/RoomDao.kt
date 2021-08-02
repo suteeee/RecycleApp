@@ -9,7 +9,7 @@ import androidx.room.Query
 @Dao
 interface RoomDAO {
     @Query("select * from `Database`")
-    fun getAll():List<RoomDatabase>
+    fun getAll():List<MyRoomDatabase>
 
    /* @Query("select barcode from `Database`")
     fun getBarcode():String
@@ -21,11 +21,11 @@ interface RoomDAO {
     fun getImage():String*/
 
     @Insert(onConflict = REPLACE)
-    fun insert(db:RoomDatabase)
+    fun insert(db:MyRoomDatabase)
 
     @Query("delete from `Database` where image = 'Recycle' ")
     fun delelte0()
 
     @Delete
-    fun delete(db:RoomDatabase)
+    fun delete(db:MyRoomDatabase)
 }

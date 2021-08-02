@@ -27,7 +27,7 @@
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            bind:imgBitmap="@{history.bm}"/>
+            imgBitmap="@{history.bm}"/>
 
         <TextView
             android:id="@+id/historyDate_tv"

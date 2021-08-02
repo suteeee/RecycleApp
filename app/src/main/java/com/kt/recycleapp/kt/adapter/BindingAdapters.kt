@@ -30,13 +30,13 @@ object BindingAdapters {
         img.setImageResource(id)
     }
 
-    @BindingAdapter("bind:imgBitmap")
+    @BindingAdapter("imgBitmap")
     @JvmStatic
     fun imgSet(img: ImageView,bm: Bitmap){
         img.setImageBitmap(bm)
     }
 
-    @BindingAdapter("bind:smallItem")
+    @BindingAdapter("smallItem")
     @JvmStatic
     fun bindSmallItem(recyclerView: RecyclerView, item:ObservableArrayList<FindSmallData>){
         val adt = FindSmallAdapter()
@@ -48,7 +48,7 @@ object BindingAdapters {
         recyclerView.adapter?.notifyDataSetChanged()
     }
 
-    @BindingAdapter("bind:historyItem")
+    @BindingAdapter("historyItem")
     @JvmStatic
     fun historyItem(recyclerView: RecyclerView, item:ObservableArrayList<HistoryData>) {
         val adt = HistoryAdapter()

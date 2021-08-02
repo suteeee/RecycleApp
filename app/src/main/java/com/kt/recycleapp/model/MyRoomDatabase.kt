@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "Database")
-class RoomDatabase {
+class MyRoomDatabase {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo
     var no : Long? = null

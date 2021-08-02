@@ -9,7 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.kt.recycleapp.kt.etc.HistoryData
 import com.kt.recycleapp.model.DatabaseReadModel
-import com.kt.recycleapp.model.RoomDatabase
+import com.kt.recycleapp.model.MyRoomDatabase
 import com.kt.recycleapp.model.RoomHelper
 
 class HistoryViewModel : ViewModel() {
@@ -18,7 +18,7 @@ class HistoryViewModel : ViewModel() {
     var decodeState = MutableLiveData<String>()
 
     val itemList = ObservableArrayList<HistoryData>()
-    var roomDbList :List<RoomDatabase>? = null
+    var myRoomDbList :List<MyRoomDatabase>? = null
     var name:Map<String,String> = HashMap()
     val model = DatabaseReadModel()
     var bm :Bitmap? = null
@@ -28,8 +28,8 @@ class HistoryViewModel : ViewModel() {
     }
 
     fun getData(helper: RoomHelper?, activity: FragmentActivity?) {
-        roomDbList = helper?.databaseDao()?.getAll()
-        roomDbList?.forEach {
+        myRoomDbList = helper?.databaseDao()?.getAll()
+        myRoomDbList?.forEach {
             var date1:String? = ""
             var date2 :String?= ""
             var date3 :String?= ""
