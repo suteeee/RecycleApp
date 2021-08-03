@@ -23,8 +23,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         //팝업창 추가
-        val popup = PopupFragment.getInstance()
-        popup.show(supportFragmentManager,PopupFragment.TAG_EVENT_DIALOG)
+        val popup = PopupFragmentStartpage.getInstance()
+        popup.show(supportFragmentManager,
+            PopupFragmentStartpage.TAG_EVENT_DIALOG)
 
         //앱 테마를 noactionbar 로 설정했고 툴바를 사용할것이므로 actionbar를 우리가 만든 toolbar로 설정하는 코드
         setSupportActionBar(mainToolBar_tb1)

@@ -4,11 +4,9 @@ import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebSettings;
 import android.widget.Button;
 
 import com.kt.recycleapp.manager.MyPreferenceManager;
@@ -16,27 +14,24 @@ import com.kt.recycleapp.manager.MyPreferenceManager;
 import java.recycleapp.R;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.TimeZone;
 
 
-public class PopupFragment extends DialogFragment implements  View.OnClickListener{
+public class PopupFragmentStartpage extends DialogFragment implements  View.OnClickListener{
     public static final String TAG_EVENT_DIALOG = "dialog_event";
 
 
-    public PopupFragment(){
+    public PopupFragmentStartpage(){
 
     }
 
-    public static PopupFragment getInstance(){
-        PopupFragment popup = new PopupFragment();
+    public static PopupFragmentStartpage getInstance(){
+        PopupFragmentStartpage popup = new PopupFragmentStartpage();
         return popup;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_popup, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_popup_startpage, container, false);
         Button buttonFirst = rootView.findViewById(R.id.onedaynotsee_bt1);
         Button buttonSecond = rootView.findViewById(R.id.neversee_bt1);
         Button buttonThird = rootView.findViewById(R.id.close_bt1);
