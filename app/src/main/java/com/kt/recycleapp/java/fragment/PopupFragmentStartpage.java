@@ -17,8 +17,7 @@ import java.util.Date;
 
 
 public class PopupFragmentStartpage extends DialogFragment implements  View.OnClickListener{
-    public static final String TAG_EVENT_DIALOG = "dialog_event";
-
+    public static final String TAG_EVENT_DIALOG = "testtest";
 
     public PopupFragmentStartpage(){
 
@@ -31,6 +30,7 @@ public class PopupFragmentStartpage extends DialogFragment implements  View.OnCl
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         View rootView = inflater.inflate(R.layout.fragment_popup_startpage, container, false);
         Button buttonFirst = rootView.findViewById(R.id.onedaynotsee_bt1);
         Button buttonSecond = rootView.findViewById(R.id.neversee_bt1);

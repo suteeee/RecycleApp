@@ -38,6 +38,7 @@ import java.util.Map;
 
 
 public class PopupFragmentAddpage extends DialogFragment implements  View.OnClickListener, OnBackPressListener {
+    public static final String TAG_EVENT_DIALOG = "testtest";
     private EditText writeBarcode;
     private EditText writeProductName;
     private Button saveButton;
@@ -85,7 +86,7 @@ public class PopupFragmentAddpage extends DialogFragment implements  View.OnClic
         saveButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                db.collection("recycleApp").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
+                db.collection("products").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
                     @Override
                     public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
                         //key에 바코드 저장하고 value에 물품명 저장하자
