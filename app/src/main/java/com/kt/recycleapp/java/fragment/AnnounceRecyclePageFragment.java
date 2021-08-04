@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -22,6 +23,7 @@ import java.recycleapp.databinding.FragmentAnnounceRecyclePageBinding;
 public class AnnounceRecyclePageFragment extends Fragment implements OnBackPressListener {
     FragmentAnnounceRecyclePageBinding binding;
     AnnounceRecyclePageViewModel viewModel;
+    Bundle bundle;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //rootView는 액티비티를 나타냄 (container는 우리끼리 mainactivity레이아웃을 의미하는 것으로 약속)
@@ -31,7 +33,7 @@ public class AnnounceRecyclePageFragment extends Fragment implements OnBackPress
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_announce_recycle_page, container, false);
         viewModel = new ViewModelProvider(this).get(AnnounceRecyclePageViewModel.class);
 
-        Bundle bundle = getArguments();
+        bundle = getArguments();
 
         if(bundle != null){
             viewModel.itemName = bundle.getString("item");
@@ -47,7 +49,22 @@ public class AnnounceRecyclePageFragment extends Fragment implements OnBackPress
     public void onBack() {
         MainActivity act = (MainActivity)getActivity();
         ((MainActivity) act).setOnBackPressListener(null);
-        act.getSupportFragmentManager().beginTransaction().replace(R.id.small_layout1,new MainFragment()).commit();
+        Log.d("back","것");
+
+        DialogFragment frg = new PopupFragmentAddpage();
+        String barcode = bundle.getString("barcode");
+
+        Log.d(barcode,"것");
+
+        if(barcode == null){
+            barcode = "준";
+        }
+
+        bundle.putString("barcode", barcode);
+        frg.setArguments(bundle);
+
+       frg.show(act.getSupportFragmentManager(),
+               PopupFragmentStartpage.TAG_EVENT_DIALOG);
     }
 
     public void onAttach(Context context) {

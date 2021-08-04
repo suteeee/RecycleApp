@@ -40,14 +40,21 @@ public class PopupFragmentAddpage extends DialogFragment implements  View.OnClic
 
 
     public PopupFragmentAddpage(){
+        Bundle bundle = getArguments();
 
+        if(bundle != null){
+            sendBarcode = bundle.getString("barcode");
+            Log.d(sendBarcode,"준");
+        }
+        else{
+            Log.d("null","준");
+        }
     }
 
     public static PopupFragmentAddpage getInstance(){
         PopupFragmentAddpage popup = new PopupFragmentAddpage();
         return popup;
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_popup_addpage, container, false);
@@ -59,12 +66,6 @@ public class PopupFragmentAddpage extends DialogFragment implements  View.OnClic
         writeProductName = (EditText) rootView.findViewById(R.id.inputProductName_et1);
         saveButton = (Button) rootView.findViewById(R.id.askYes_bt1);
 
-
-        Bundle bundle = getArguments();
-
-        if(bundle != null){
-            sendBarcode = bundle.getString("barcode");
-        }
 
         saveButton.setOnClickListener(new View.OnClickListener(){
             @Override
