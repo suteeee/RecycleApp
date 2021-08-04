@@ -193,9 +193,10 @@ class MainFragment : Fragment() {
                                 if(it=="yes"){
                                     writeDB(barcode,fineName)
                                     captureIsFinish.value="no"
-                                    val frg = PopupFragmentAddpage()
                                     val bundle = Bundle()
-                                    bundle.putString("barcode", barcode)
+                                    bundle.putString("barcode",barcode)
+
+                                    val frg = AnnounceRecyclePageFragment()
                                     frg.arguments = bundle
 
                                     activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.small_layout1,frg)?.commit()
