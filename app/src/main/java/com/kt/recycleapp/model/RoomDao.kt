@@ -19,4 +19,10 @@ interface RoomDAO {
 
     @Query("SELECT `no` FROM `database`")
     fun getNo():List<Long?>
+
+    @Query("SELECT `barcode` FROM `database` WHERE `no` == :position")
+    fun getBarcode(position: Int):String
+
+    @Query("select * from `database` WHERE favorite = 'true'")
+    fun getFavoriteAll() : List<MyRoomDatabase>
 }

@@ -1,6 +1,7 @@
 package com.kt.recycleapp.kt.adapter
 
 import android.graphics.Bitmap
+import android.util.Log
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter

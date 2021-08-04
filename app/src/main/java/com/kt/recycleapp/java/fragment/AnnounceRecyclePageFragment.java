@@ -27,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.recycleapp.R;
 import java.recycleapp.databinding.FragmentAnnounceRecyclePageBinding;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -36,6 +37,7 @@ import java.util.Set;
     FragmentAnnounceRecyclePageBinding binding;
     AnnounceRecyclePageViewModel viewModel;
     Bundle bundle;
+    String barcode;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -49,9 +51,14 @@ import java.util.Set;
         bundle = getArguments();
 
         if(bundle != null){
-            viewModel.itemName = bundle.getString("item");
-            Log.d(viewModel.itemName,"bundle");
+            String name = bundle.getString("item");
+            barcode = bundle.getString("barcode");
+            if(name == null){ viewModel.itemName = barcode; }
+            else {viewModel.itemName = name; }
+
             binding.whatisTv2.setText(viewModel.itemName);
+
+            //Log.d("것제발",barcode);
         }
 
 
@@ -65,7 +72,6 @@ import java.util.Set;
 
 
         DialogFragment frg = new PopupFragmentAddpage();
-        String barcode = bundle.getString("barcode");
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("products").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){

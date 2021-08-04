@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.kt.recycleapp.kt.etc.FavoriteData
+import com.kt.recycleapp.kt.viewmodel.FavoriteItemFragmentViewModel
 import java.recycleapp.databinding.FavoriteLayoutUnitBinding
 
 class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHoler>() {
@@ -18,16 +19,20 @@ class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHoler>(
     }
 
     override fun onBindViewHolder(holder: FavoriteViewHoler, position: Int) {
-        holder.bind(items[position])
+        holder.bind(items[position],position)
     }
 
     override fun getItemCount(): Int {
         return items.size
     }
     inner class FavoriteViewHoler(private val binding: FavoriteLayoutUnitBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: FavoriteData) {
+        fun bind(data: FavoriteData, position: Int) {
             binding.data = data
             binding.favoriteBtn.setColorFilter(Color.parseColor("#ff0000"), PorterDuff.Mode.SRC_ATOP)
+
+            binding.favoriteunitLayout.setOnClickListener {
+                FavoriteItemFragmentViewModel.selected.value = position
+            }
         }
     }
 }

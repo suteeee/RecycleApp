@@ -1,5 +1,6 @@
 package com.kt.recycleapp.kt.fragment
 
+import android.content.Context
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
@@ -8,7 +9,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.ObservableArrayList
 import androidx.room.Room
+import com.kt.recycleapp.java.fragment.AnnounceRecyclePageFragment
+import com.kt.recycleapp.kt.activity.MainActivity
+import com.kt.recycleapp.kt.activity.OnBackPressListener
 import com.kt.recycleapp.kt.adapter.HistoryAdapter
 import com.kt.recycleapp.kt.viewmodel.HistoryViewModel
 import com.kt.recycleapp.manager.MyPreferenceManager
@@ -17,7 +22,7 @@ import com.kt.recycleapp.model.RoomHelper
 import java.recycleapp.R
 import java.recycleapp.databinding.HistoryFragmentBinding
 
-class HistoryFragment : Fragment() {
+class HistoryFragment : Fragment(),OnBackPressListener {
 
     lateinit var binding:HistoryFragmentBinding
     lateinit var mAdapter:HistoryAdapter
@@ -45,12 +50,39 @@ class HistoryFragment : Fragment() {
                 viewModel.getData(helper,activity, prefs)
             }
         })
+        HistoryViewModel.selected.observe(viewLifecycleOwner,{
+
+            val list = helper?.databaseDao()?.getAll()
+            val barcodes = ArrayList<String>()
+            list?.forEach {res -> barcodes.add(res.barcode!!) }
+            Log.d("것",barcodes.toString())
+
+            val frg = AnnounceRecyclePageFragment()
+            val bundle = Bundle()
+            bundle.putString("barcode",barcodes[it])
+
+            frg.arguments = bundle
+            activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.small_layout1,frg)?.commit()
+
+        })
 
 
         mAdapter = HistoryAdapter()
         binding.historyRv.adapter = mAdapter
 
         return binding.root
+    }
+
+    override fun onBack() {
+        val act = activity as MainActivity
+        act.setOnBackPressListener(null)
+        act.supportFragmentManager.beginTransaction().replace(R.id.small_layout1,MainFragment()).commit()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        val act = activity as MainActivity
+        act.setOnBackPressListener(this)
     }
 
 

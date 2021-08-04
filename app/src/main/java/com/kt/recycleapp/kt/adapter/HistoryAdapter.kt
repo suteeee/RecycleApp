@@ -10,6 +10,7 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.kt.recycleapp.kt.etc.HistoryData
+import com.kt.recycleapp.kt.viewmodel.HistoryViewModel
 import com.kt.recycleapp.manager.MyPreferenceManager
 import com.kt.recycleapp.model.MyRoomDatabase
 import com.kt.recycleapp.model.RoomHelper
@@ -20,13 +21,12 @@ import java.recycleapp.databinding.HistoryLayoutUnitBinding
 class HistoryAdapter: RecyclerView.Adapter<HistoryAdapter.MyHolder>() {
     var items = ArrayList<HistoryData>()
     lateinit var prefs :MyPreferenceManager
-    lateinit var s : SharedPreferences
     var helper:RoomHelper? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyHolder {
         val binding = HistoryLayoutUnitBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         prefs = MyPreferenceManager(parent.context)
-        helper = Room.databaseBuilder(parent.context,RoomHelper::class.java,"Database").allowMainThreadQueries().build()
+        helper = Room.databaseBuilder(parent.context,RoomHelper::class.java,"Database").build()
         val holder = MyHolder(binding)
         return holder
     }
@@ -44,6 +44,7 @@ class HistoryAdapter: RecyclerView.Adapter<HistoryAdapter.MyHolder>() {
             binding.history = data
             binding.historyUnitLayout.setOnClickListener{
                 Log.d(position.toString(),"것")
+                HistoryViewModel.selected.value = position
             }
 
             binding.historyBtn.setOnClickListener {

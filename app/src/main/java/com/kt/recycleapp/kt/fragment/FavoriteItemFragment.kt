@@ -2,6 +2,7 @@ package com.kt.recycleapp.kt.fragment
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
+import com.kt.recycleapp.java.fragment.AnnounceRecyclePageFragment
 import com.kt.recycleapp.kt.activity.MainActivity
 import com.kt.recycleapp.kt.activity.OnBackPressListener
 import com.kt.recycleapp.kt.adapter.FavoriteAdapter
@@ -24,19 +26,36 @@ class FavoriteItemFragment : Fragment(),OnBackPressListener {
     lateinit var viewModel : FavoriteItemFragmentViewModel
     lateinit var mAdapter : FavoriteAdapter
     lateinit var prefs:MyPreferenceManager
+    var helper:RoomHelper? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_favorite_item, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
-        val helper = Room.databaseBuilder(requireContext(), RoomHelper::class.java,"Database").allowMainThreadQueries().build()
+        helper = Room.databaseBuilder(requireContext(), RoomHelper::class.java,"Database").allowMainThreadQueries().build()
 
         viewModel = ViewModelProvider(this).get(FavoriteItemFragmentViewModel::class.java)
         binding.favorite = viewModel
         prefs = MyPreferenceManager(requireContext())
-        viewModel.setData(activity,helper)
+        viewModel.setData(activity, helper!!)
 
         mAdapter = FavoriteAdapter()
         binding.favoriteRv.adapter = mAdapter
+
+        FavoriteItemFragmentViewModel.selected.observe(viewLifecycleOwner,{
+            val list = helper?.databaseDao()?.getFavoriteAll()
+            val barcodes = ArrayList<String>()
+
+            list?.forEach {res->
+                barcodes.add(res.barcode!!)
+                Log.d("favoriteItem ${res.no} $it",res.barcode!!)
+            }
+            val frg = AnnounceRecyclePageFragment()
+            val bundle = Bundle()
+            bundle.putString("barcode",barcodes[it])
+            frg.arguments = bundle
+
+            activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.small_layout1,frg)?.commit()
+        })
 
         return binding.root
     }

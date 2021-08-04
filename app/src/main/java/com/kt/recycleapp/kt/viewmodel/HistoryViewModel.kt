@@ -14,6 +14,9 @@ import com.kt.recycleapp.model.MyRoomDatabase
 import com.kt.recycleapp.model.RoomHelper
 
 class HistoryViewModel : ViewModel() {
+    companion object{
+        var selected = MutableLiveData<Int>()
+    }
 
     var getProductName = MutableLiveData<String>()
     var decodeState = MutableLiveData<String>()
