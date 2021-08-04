@@ -28,7 +28,7 @@
                 android:id="@+id/mainToolBar_tb1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#D4F5BA"
+                android:background="@color/main_color"
                 android:gravity="center"
                 android:minHeight="?attr/actionBarSize"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
@@ -45,7 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/app_name"
-                android:textColor="@color/sub_color"
+                android:textColor="@color/main_text_color"
                 android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="@+id/mainToolBar_tb1"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -76,7 +76,7 @@
         android:background="@color/main_color"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/navi_header"
-        app:itemTextColor="@color/sub_color"
+        app:itemTextColor="@color/main_text_color"
         app:menu="@menu/navi_menu" >
 
     </com.google.android.material.navigation.NavigationView>

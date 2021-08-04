@@ -9,6 +9,8 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@color/main_backg_color"
+        android:textColor="@color/main_text_color"
         android:text="\n\n\n사용설명서\n\n
         1. 제품의 바코드를 사각틀에 맞추어 주세요.\n
         2. 인식이 완료되면 안내되는 방식에 맞추어 분리수거를 진행하세요.\n
@@ -23,6 +25,7 @@
         android:id="@+id/close_bt2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/common_buttom_design"
         android:text="닫기"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

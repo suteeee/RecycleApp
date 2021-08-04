@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:id="@+id/advanced_search_layout"
     android:clickable="true"
-    android:background="#ffffff"
+    android:background="@color/main_backg_color"
     tools:context="com.kt.recycleapp.java.fragment.AdvancedSearchFragment"
     android:focusable="true">
 

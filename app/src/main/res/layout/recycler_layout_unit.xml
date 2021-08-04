@@ -14,7 +14,7 @@
         android:layout_width="400dp"
         android:layout_height="120dp"
         android:id="@+id/recycler_layout_unit"
-        android:background="@color/white"
+        android:background="@color/main_backg_color"
         android:clickable="true">
 
         <ImageView
@@ -32,6 +32,7 @@
             android:layout_width="250dp"
             android:layout_height="100dp"
             android:fontFamily="@font/gmarket_middle"
+            android:textColor="@color/main_text_color"
             android:text="내용적는곳 내용적는곳 내용적는곳 내용적는곳 내용적는곳 내용적는곳내용적는곳내용적는곳내용적는곳내용적는곳내용적는곳"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:id="@+id/announce_recycle_layout"
         android:clickable="true"
-        android:background="#ffffff"
+        android:background="@color/main_backg_color"
         tools:context="com.kt.recycleapp.java.fragment.AnnounceRecyclePageFragment"
         android:focusable="true">
 
@@ -33,6 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
+            android:textColor="@color/main_text_color"
             android:fontFamily="@font/gmarket_middle"
             android:text="제품명"
             android:textSize="20sp"
@@ -47,6 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
+            android:textColor="@color/main_text_color"
             android:fontFamily="@font/gmarket_middle"
             android:text="엄준식"
             android:textSize="20sp"
@@ -61,6 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/gmarket_middle"
+            android:textColor="@color/main_text_color"
             android:text="분리수거 방법"
             android:textSize="28sp"
             app:layout_constraintBottom_toBottomOf="parent"

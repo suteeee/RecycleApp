@@ -4,12 +4,14 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import com.kt.recycleapp.kt.activity.MainActivity;
@@ -37,6 +39,23 @@ public class AppSettingFragment extends Fragment implements OnBackPressListener 
                 popup.show(getActivity().getSupportFragmentManager(),PopupFragmentAnnouncepage.TAG_EVENT_DIALOG);
             }
         });
+
+        darkmodSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // 스위치 버튼이 체크되었는지 검사
+                if (isChecked){ //버튼이 체크 됬다면
+
+
+                }
+                else{
+
+
+                }
+            }
+        });
+
+
 
 
         return rootView;

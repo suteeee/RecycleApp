@@ -5,7 +5,7 @@
     android:layout_width="350dp"
     android:layout_height="400dp"
     android:layout_gravity="center"
-    android:background="@color/main_color"
+    android:background="@color/main_backg_color"
     tools:context="com.kt.recycleapp.java.fragment.PopupFragmentAddpage">
 
     <Button
@@ -43,6 +43,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:fontFamily="@font/gmarket_middle"
+        android:textColor="@color/main_text_color"
         android:text="@string/askDataAdd"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -78,6 +79,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/gmarket_middle"
+        android:textColor="@color/main_text_color"
         android:text="바코드"
         app:layout_constraintBottom_toTopOf="@+id/askProductName_tv1"
         app:layout_constraintEnd_toStartOf="@+id/inputBarcode_et1"
@@ -89,6 +91,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/gmarket_middle"
+        android:textColor="@color/main_text_color"
         android:text="물품명"
         app:layout_constraintBottom_toTopOf="@+id/askNo_bt1"
         app:layout_constraintEnd_toStartOf="@+id/inputProductName_et1"
