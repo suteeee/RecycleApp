@@ -8,31 +8,31 @@
     tools:context="com.kt.recycleapp.kt.fragment.AskDataAddFragment">
 
     <Button
-        android:id="@+id/askYes_btn"
+        android:id="@+id/askYes_bt1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/common_buttom_design"
         android:text="추가"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/askNo_btn"
+        app:layout_constraintStart_toEndOf="@+id/askNo_bt1"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.95" />
 
     <Button
-        android:id="@+id/askNo_btn"
+        android:id="@+id/askNo_bt1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/common_buttom_design"
         android:text="취소"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/askYes_btn"
+        app:layout_constraintEnd_toStartOf="@+id/askYes_bt1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.95" />
 
     <TextView
-        android:id="@+id/addInfo_tv"
+        android:id="@+id/addInfo_tv1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -44,49 +44,49 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/inputBarcode_et"
+        android:id="@+id/inputBarcode_et1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:editable="true"
         android:ems="8"
         android:gravity="center"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/inputProductName_et"
+        app:layout_constraintBottom_toTopOf="@+id/inputProductName_et1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/askBarcode_tv"
-        app:layout_constraintTop_toBottomOf="@+id/addInfo_tv" />
+        app:layout_constraintStart_toEndOf="@+id/askBarcode_tv1"
+        app:layout_constraintTop_toBottomOf="@+id/addInfo_tv1" />
 
     <EditText
-        android:id="@+id/inputProductName_et"
+        android:id="@+id/inputProductName_et1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="8"
         android:gravity="center"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/askNo_btn"
+        app:layout_constraintBottom_toTopOf="@+id/askNo_bt1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/askProductName_tv"
-        app:layout_constraintTop_toBottomOf="@+id/inputBarcode_et" />
+        app:layout_constraintStart_toEndOf="@+id/askProductName_tv1"
+        app:layout_constraintTop_toBottomOf="@+id/inputBarcode_et1" />
 
     <TextView
-        android:id="@+id/askBarcode_tv"
+        android:id="@+id/askBarcode_tv1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="바코드"
-        app:layout_constraintBottom_toTopOf="@+id/askProductName_tv"
-        app:layout_constraintEnd_toStartOf="@+id/inputBarcode_et"
+        app:layout_constraintBottom_toTopOf="@+id/askProductName_tv1"
+        app:layout_constraintEnd_toStartOf="@+id/inputBarcode_et1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addInfo_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/addInfo_tv1" />
 
     <TextView
-        android:id="@+id/askProductName_tv"
+        android:id="@+id/askProductName_tv1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="물품명"
-        app:layout_constraintBottom_toTopOf="@+id/askNo_btn"
-        app:layout_constraintEnd_toStartOf="@+id/inputProductName_et"
+        app:layout_constraintBottom_toTopOf="@+id/askNo_bt1"
+        app:layout_constraintEnd_toStartOf="@+id/inputProductName_et1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/askBarcode_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/askBarcode_tv1" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
