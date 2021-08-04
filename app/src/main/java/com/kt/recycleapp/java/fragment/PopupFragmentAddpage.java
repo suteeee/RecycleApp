@@ -32,11 +32,11 @@ import java.util.Map;
 //내 기억으로 이건 코틀린 영역에서 이 창이 뜨게해야하므로 주광님 화이팅!
 
 
-
 public class PopupFragmentAddpage extends DialogFragment implements  View.OnClickListener{
     private EditText writeBarcode;
     private EditText writeProductName;
     private Button saveButton;
+    private String sendBarcode;
 
 
     public PopupFragmentAddpage(){
@@ -58,6 +58,13 @@ public class PopupFragmentAddpage extends DialogFragment implements  View.OnClic
         writeBarcode = (EditText) rootView.findViewById(R.id.inputBarcode_et1);
         writeProductName = (EditText) rootView.findViewById(R.id.inputProductName_et1);
         saveButton = (Button) rootView.findViewById(R.id.askYes_bt1);
+
+
+        Bundle bundle = getArguments();
+
+        if(bundle != null){
+            sendBarcode = bundle.getString("barcode");
+        }
 
         saveButton.setOnClickListener(new View.OnClickListener(){
             @Override

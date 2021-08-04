@@ -33,6 +33,7 @@ import java.text.SimpleDateFormat
 import androidx.camera.core.CameraSelector
 import androidx.lifecycle.MutableLiveData
 import androidx.room.Room
+import com.kt.recycleapp.java.fragment.PopupFragmentAddpage
 import com.kt.recycleapp.model.MyRoomDatabase
 import com.kt.recycleapp.model.RoomHelper
 
@@ -192,7 +193,7 @@ class MainFragment : Fragment() {
                                 if(it=="yes"){
                                     writeDB(barcode,fineName)
                                     captureIsFinish.value="no"
-                                    val frg = AnnounceRecyclePageFragment()
+                                    val frg = PopupFragmentAddpage()
                                     val bundle = Bundle()
                                     bundle.putString("barcode", barcode)
                                     frg.arguments = bundle
