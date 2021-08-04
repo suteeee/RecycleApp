@@ -1,5 +1,6 @@
 package com.kt.recycleapp.java.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -18,6 +20,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.kt.recycleapp.kt.activity.MainActivity;
+import com.kt.recycleapp.kt.activity.OnBackPressListener;
+import com.kt.recycleapp.kt.fragment.MainFragment;
 import com.kt.recycleapp.manager.MyPreferenceManager;
 
 import org.jetbrains.annotations.NotNull;
@@ -28,11 +33,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-//물건이 등록되지 않은 물품일 떄 실행 된다.
-//내 기억으로 이건 코틀린 영역에서 이 창이 뜨게해야하므로 주광님 화이팅!
 
 
-public class PopupFragmentAddpage extends DialogFragment implements  View.OnClickListener{
+public class PopupFragmentAddpage extends DialogFragment implements  View.OnClickListener, OnBackPressListener {
     private EditText writeBarcode;
     private EditText writeProductName;
     private Button saveButton;
@@ -43,10 +46,13 @@ public class PopupFragmentAddpage extends DialogFragment implements  View.OnClic
 
     }
 
+
+
     public static PopupFragmentAddpage getInstance(){
         PopupFragmentAddpage popup = new PopupFragmentAddpage();
         return popup;
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -66,6 +72,8 @@ public class PopupFragmentAddpage extends DialogFragment implements  View.OnClic
             sendBarcode = bundle.getString("barcode");
         }
 
+
+
         saveButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -74,25 +82,32 @@ public class PopupFragmentAddpage extends DialogFragment implements  View.OnClic
                     public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
                         //key에 바코드 저장하고 value에 물품명 저장하자
 
-                        Map<String, Object> products = new HashMap<>();
-                        products.put("name", "Los Angeles");
-                        products.put("state", "CA");
-                        products.put("country", "USA");
+                        if(task.isSuccessful()){
+                            Map<String, Object> products = new HashMap<>();
+                            products.put(sendBarcode, writeProductName.toString());
+                            Toast.makeText(rootView.getContext(), "상품이 등록되었습니다!", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            Toast.makeText(rootView.getContext(), "등록실패, 다시입력하세요", Toast.LENGTH_SHORT).show();
+                        }
 
+
+                        /*
                         db.collection("cities").document("LA")
                                 .set(products)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
-
+                                        Toast.makeText(rootView.getContext(), "상품이 등록되었습니다!", Toast.LENGTH_SHORT).show();
                                     }
                                 })
                                 .addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-
+                                        Toast.makeText(rootView.getContext(), "등록실패", Toast.LENGTH_SHORT).show();
                                     }
                                 });
+                        */
 
                     }
                 });
@@ -108,6 +123,18 @@ public class PopupFragmentAddpage extends DialogFragment implements  View.OnClic
 
         return rootView;
     }
+
+    public void onBack() {
+        MainActivity act = (MainActivity)getActivity();
+        ((MainActivity) act).setOnBackPressListener(null);
+        act.getSupportFragmentManager().beginTransaction().replace(R.id.small_layout1,new MainFragment()).commit();
+    }
+
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        ((MainActivity)context).setOnBackPressListener(this);
+    }
+
 
     @Override
     public void onClick(View view) {
