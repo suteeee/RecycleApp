@@ -72,6 +72,7 @@ public class PopupFragmentAddpage extends DialogFragment implements  View.OnClic
         writeProductName = (EditText) rootView.findViewById(R.id.inputProductName_et1);
         saveButton = (Button) rootView.findViewById(R.id.askYes_bt1);
 
+        //체크
 
         Bundle bundle = getArguments();
 
