@@ -3,6 +3,7 @@ package com.kt.recycleapp.kt.fragment
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -17,7 +18,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.kt.recycleapp.java.fragment.AnnounceRecyclePageFragment
 import com.kt.recycleapp.kt.camera.MyImageAnalyzer
-import com.kt.recycleapp.kt.viewmodel.CameraSettingFragmenViewModel
+import com.kt.recycleapp.kt.viewmodel.CameraSettingViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.fragment_main.*
@@ -33,7 +34,7 @@ import java.text.SimpleDateFormat
 import androidx.camera.core.CameraSelector
 import androidx.lifecycle.MutableLiveData
 import androidx.room.Room
-import com.kt.recycleapp.java.fragment.PopupFragmentAddpage
+import com.kt.recycleapp.model.DatabaseReadModel
 import com.kt.recycleapp.model.MyRoomDatabase
 import com.kt.recycleapp.model.RoomHelper
 
@@ -45,7 +46,7 @@ class MainFragment : Fragment() {
     private lateinit var cameraExecutor: ExecutorService
     var processingBarcode = AtomicBoolean(false)
     lateinit var binding: FragmentMainBinding
-    lateinit var viewModel:CameraSettingFragmenViewModel
+    lateinit var viewModel:CameraSettingViewModel
 
     private var camera: Camera? = null
     private var cameraController: CameraControl? = null
@@ -69,7 +70,7 @@ class MainFragment : Fragment() {
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_main, container, false)
-        viewModel = ViewModelProvider(this).get(CameraSettingFragmenViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(CameraSettingViewModel::class.java)
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             binding.viewmodel = viewModel
@@ -134,7 +135,6 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         if (allPermissionsGranted()) {
             startCamera()
-            //binding.targetIv.invalidate()
         } else {
             requestPermissions(REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
         }
@@ -150,6 +150,10 @@ class MainFragment : Fragment() {
             override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                 captureIsFinish.value="no"
                 val saveUri = Uri.fromFile(photoFile)
+                Log.d(outputDirectory.toString(),name.toString())
+                val path ="$outputDirectory/$name"
+                val bm = BitmapFactory.decodeFile(path)
+                DatabaseReadModel.decodeImageList.add(bm)
                 Toast.makeText(context,"카메라 캡쳐 & 저장 $saveUri",Toast.LENGTH_SHORT).show()
                 captureIsFinish.value="yes"
             }

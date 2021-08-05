@@ -1,6 +1,7 @@
 package com.kt.recycleapp.kt.adapter
 
 import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.util.Log
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -8,6 +9,7 @@ import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableArrayList
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.RequestBuilder
 import com.kt.recycleapp.kt.etc.FavoriteData
 import com.kt.recycleapp.kt.etc.FindBigData
 import com.kt.recycleapp.kt.etc.FindSmallData
@@ -34,8 +36,8 @@ object BindingAdapters {
 
     @BindingAdapter("imgBitmap")
     @JvmStatic
-    fun imgSet(img: ImageView,bm: Bitmap){
-        img.setImageBitmap(bm)
+    fun imgSet(img: ImageView,bm: RequestBuilder<Drawable>){
+        bm.into(img)
     }
 
     @BindingAdapter("smallItem")

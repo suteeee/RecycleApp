@@ -7,6 +7,9 @@
         <variable
             name="history"
             type="com.kt.recycleapp.kt.etc.HistoryData" />
+        <variable
+            name="viewmodel"
+            type="com.kt.recycleapp.kt.viewmodel.HistoryViewModel" />
 
     </data>
 
@@ -26,8 +29,7 @@
             app:layout_constraintEnd_toStartOf="@+id/favoriteDate_tv"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            imgBitmap="@{history.bm}"/>
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
             android:id="@+id/favoriteDate_tv"

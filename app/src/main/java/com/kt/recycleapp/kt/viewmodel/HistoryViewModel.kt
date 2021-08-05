@@ -2,11 +2,14 @@ package com.kt.recycleapp.kt.viewmodel
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.drawable.Drawable
 import android.util.Log
 import androidx.databinding.ObservableArrayList
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestBuilder
 import com.kt.recycleapp.kt.etc.HistoryData
 import com.kt.recycleapp.manager.MyPreferenceManager
 import com.kt.recycleapp.model.DatabaseReadModel
@@ -16,6 +19,7 @@ import com.kt.recycleapp.model.RoomHelper
 class HistoryViewModel : ViewModel() {
     companion object{
         var selected = MutableLiveData<Int>()
+        var image : RequestBuilder<Drawable>? = null
     }
 
     var getProductName = MutableLiveData<String>()
@@ -25,13 +29,12 @@ class HistoryViewModel : ViewModel() {
     var myRoomDbList :List<MyRoomDatabase>? = null
     var name:Map<String,String> = HashMap()
     val model = DatabaseReadModel()
-    var bm :Bitmap? = null
 
     fun getFireData(){
         model.getProduct(getProductName)
     }
 
-    fun getData(helper: RoomHelper?, activity: FragmentActivity?, prefs: MyPreferenceManager) {
+    fun getData(helper: RoomHelper?, prefs: MyPreferenceManager) {
         myRoomDbList = helper?.databaseDao()?.getAll()
         myRoomDbList?.forEach {
             var date1:String? = ""
@@ -65,19 +68,7 @@ class HistoryViewModel : ViewModel() {
             else{
                 barcode = "제품명 : ${DatabaseReadModel.name[it.barcode]}"
             }
-
-            val decodeThread = DecodeThread(activity,it.image,date,barcode)
-            decodeThread.start()
-
-        }
-    }
-
-    inner class DecodeThread(val activity: FragmentActivity?, val image: String?, val date: String, val barcode: String) :Thread() {
-        override fun run() {
-            val path ="${activity?.externalMediaDirs?.get(0)}/수거했어 오늘도!/${image}"
-            Log.d(path,"junnn")
-            bm = BitmapFactory.decodeFile(path)
-            itemList.add(HistoryData(date,bm,barcode))
+            itemList.add(HistoryData(date,image,barcode))
         }
     }
 }

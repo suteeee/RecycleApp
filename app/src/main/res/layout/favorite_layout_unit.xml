@@ -26,8 +26,7 @@
             app:layout_constraintEnd_toStartOf="@+id/favoriteDate_tv"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            imgBitmap="@{data.image}"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/favoriteDate_tv"

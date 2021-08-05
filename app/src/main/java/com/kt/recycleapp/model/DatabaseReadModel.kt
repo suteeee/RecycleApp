@@ -1,15 +1,29 @@
 package com.kt.recycleapp.model
 
+import android.app.Activity
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.util.Log
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class DatabaseReadModel {
     val db = FirebaseFirestore.getInstance()
     companion object {
         var name:Map<String,String> = HashMap()
+        var decodeImageList = ArrayList<Bitmap>()
     }
 
+    fun decode(activity: Activity?,image : String) {
+        GlobalScope.launch {
+            val path ="${activity?.externalMediaDirs?.get(0)}/수거했어 오늘도!/${image}"
+            val bm = BitmapFactory.decodeFile(path)
+            decodeImageList.add(bm)
+         }
+    }
 
     fun findBig(findBigProgress: MutableLiveData<String>):ArrayList<HashMap<String,String>>{
         findBigProgress.value = "start"

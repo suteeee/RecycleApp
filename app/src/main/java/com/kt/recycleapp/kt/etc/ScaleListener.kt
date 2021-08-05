@@ -2,10 +2,9 @@ package com.kt.recycleapp.kt.etc
 
 import android.util.Log
 import android.view.ScaleGestureDetector
-import androidx.camera.core.CameraControl
-import com.kt.recycleapp.kt.viewmodel.CameraSettingFragmenViewModel
+import com.kt.recycleapp.kt.viewmodel.CameraSettingViewModel
 
-class ScaleListener(v: CameraSettingFragmenViewModel, mScaleFactor: Float): ScaleGestureDetector.SimpleOnScaleGestureListener(){
+class ScaleListener(v: CameraSettingViewModel, mScaleFactor: Float): ScaleGestureDetector.SimpleOnScaleGestureListener(){
     var f = mScaleFactor
     var zoomcnt = 0
     val viewModel = v

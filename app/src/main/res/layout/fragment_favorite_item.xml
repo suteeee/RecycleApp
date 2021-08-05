@@ -5,7 +5,7 @@
     <data>
         <variable
             name="favorite"
-            type="com.kt.recycleapp.kt.viewmodel.FavoriteItemFragmentViewModel" />
+            type="com.kt.recycleapp.kt.viewmodel.FavoriteViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

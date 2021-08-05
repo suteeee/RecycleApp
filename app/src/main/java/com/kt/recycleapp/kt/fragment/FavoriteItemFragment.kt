@@ -14,7 +14,7 @@ import com.kt.recycleapp.java.fragment.AnnounceRecyclePageFragment
 import com.kt.recycleapp.kt.activity.MainActivity
 import com.kt.recycleapp.kt.activity.OnBackPressListener
 import com.kt.recycleapp.kt.adapter.FavoriteAdapter
-import com.kt.recycleapp.kt.viewmodel.FavoriteItemFragmentViewModel
+import com.kt.recycleapp.kt.viewmodel.FavoriteViewModel
 import com.kt.recycleapp.manager.MyPreferenceManager
 import com.kt.recycleapp.model.RoomHelper
 import java.recycleapp.R
@@ -23,7 +23,7 @@ import java.recycleapp.databinding.FragmentFavoriteItemBinding
 class FavoriteItemFragment : Fragment(),OnBackPressListener {
 
     lateinit var binding:FragmentFavoriteItemBinding
-    lateinit var viewModel : FavoriteItemFragmentViewModel
+    lateinit var viewModel : FavoriteViewModel
     lateinit var mAdapter : FavoriteAdapter
     lateinit var prefs:MyPreferenceManager
     var helper:RoomHelper? = null
@@ -33,15 +33,15 @@ class FavoriteItemFragment : Fragment(),OnBackPressListener {
         binding.lifecycleOwner = viewLifecycleOwner
         helper = Room.databaseBuilder(requireContext(), RoomHelper::class.java,"Database").allowMainThreadQueries().build()
 
-        viewModel = ViewModelProvider(this).get(FavoriteItemFragmentViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(FavoriteViewModel::class.java)
         binding.favorite = viewModel
         prefs = MyPreferenceManager(requireContext())
-        viewModel.setData(activity, helper!!)
+        viewModel.setData(helper!!)
 
         mAdapter = FavoriteAdapter()
         binding.favoriteRv.adapter = mAdapter
 
-        FavoriteItemFragmentViewModel.selected.observe(viewLifecycleOwner,{
+        FavoriteViewModel.selected.observe(viewLifecycleOwner,{
             val list = helper?.databaseDao()?.getFavoriteAll()
             val barcodes = ArrayList<String>()
 
