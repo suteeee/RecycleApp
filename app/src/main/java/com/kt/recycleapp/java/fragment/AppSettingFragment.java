@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.kt.recycleapp.kt.activity.MainActivity;
 import com.kt.recycleapp.kt.activity.OnBackPressListener;
@@ -40,17 +41,21 @@ public class AppSettingFragment extends Fragment implements OnBackPressListener 
             }
         });
 
+        //앱 재실행시 초기화되는데 이건 흠..
         darkmodSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 // 스위치 버튼이 체크되었는지 검사
                 if (isChecked){ //버튼이 체크 됬다면
-
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    darkmodSwitch.setChecked(true);
+                    Toast.makeText(rootView.getContext(), "다크모드 활성화", Toast.LENGTH_SHORT).show();
 
                 }
                 else{
-
-
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    darkmodSwitch.setChecked(false);
+                    Toast.makeText(rootView.getContext(), "주간모드 활성화", Toast.LENGTH_SHORT).show();
                 }
             }
         });
