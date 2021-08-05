@@ -14,8 +14,8 @@ interface RoomDAO {
     @Delete
     fun delete(db:MyRoomDatabase)
 
-    @Query("UPDATE `database` SET favorite = 'true' WHERE `no` == :position")
-    fun updateFavorite(position:Int)
+    @Query("UPDATE `database` SET favorite = :state WHERE `no` == :position")
+    fun updateFavorite(position:Int,state:String)
 
     @Query("SELECT `no` FROM `database`")
     fun getNo():List<Long?>

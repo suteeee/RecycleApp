@@ -18,12 +18,11 @@
 
 
         <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="220dp"
-            android:layout_height="218dp"
-            app:layout_constraintBottom_toTopOf="@+id/howtorecycle_tv1"
+            android:id="@+id/announce_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/whatis_tv1"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@tools:sample/avatars" />
@@ -32,45 +31,41 @@
             android:id="@+id/whatis_tv1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:textColor="@color/main_text_color"
             android:fontFamily="@font/gmarket_middle"
             android:text="제품명"
+            android:textColor="@color/main_text_color"
             android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/howtorecycle_tv1"
             app:layout_constraintEnd_toStartOf="@+id/whatis_tv2"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@+id/announce_iv" />
 
         <TextView
             android:id="@+id/whatis_tv2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:textColor="@color/main_text_color"
             android:fontFamily="@font/gmarket_middle"
             android:text="엄준식"
+            android:textColor="@color/main_text_color"
             android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/howtorecycle_tv1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/whatis_tv1"
-            app:layout_constraintTop_toBottomOf="@+id/imageView"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@+id/announce_iv" />
 
         <TextView
             android:id="@+id/howtorecycle_tv1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/gmarket_middle"
-            android:textColor="@color/main_text_color"
             android:text="분리수거 방법"
+            android:textColor="@color/main_text_color"
             android:textSize="28sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+            app:layout_constraintTop_toBottomOf="@+id/whatis_tv1" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
