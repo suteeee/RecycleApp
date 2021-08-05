@@ -41,7 +41,7 @@ public class AppSettingFragment extends Fragment implements OnBackPressListener 
             }
         });
 
-        //다크모드하면 앱이 자꾸 재실행 됨 이를 해결해야함
+        //앱 재실행시 초기화되는데 이건 흠..
         darkmodSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
