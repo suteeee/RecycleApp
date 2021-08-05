@@ -138,6 +138,7 @@ class MainFragment : Fragment() {
         } else {
             requestPermissions(REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
         }
+
     }
 
     fun takePhoto() :String{
