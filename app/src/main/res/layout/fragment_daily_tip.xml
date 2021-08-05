@@ -14,14 +14,14 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:fontFamily="@font/gmarket_middle"
+        android:gravity="center"
+        android:text="버튼을 눌러보세요!\n 분리수거 꿀팁을 볼 수 있습니다."
         android:textColor="@color/main_text_color"
         android:textSize="20sp"
-        android:text="버튼을 눌러보세요!\n 분리수거 꿀팁을 볼 수 있습니다."
-        android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/nexttip_bt1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/tippicture_iv1" />
 
     <ImageView
         android:id="@+id/tippicture_iv1"
@@ -32,7 +32,6 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.672"
         tools:src="@tools:sample/avatars" />
 
     <Button
@@ -46,7 +45,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.587" />
+        app:layout_constraintTop_toBottomOf="@+id/todaytip_tv1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

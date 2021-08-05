@@ -28,6 +28,8 @@ import com.kt.recycleapp.kt.activity.MainActivity;
 import java.io.IOException;
 import java.recycleapp.R;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -117,8 +119,6 @@ public class RecycleDayInfoFragment extends Fragment {
     */
 
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_recycle_day_info, container, false);
@@ -132,8 +132,10 @@ public class RecycleDayInfoFragment extends Fragment {
         double longitude = gpsTracker.getLongitude(); //경도
         String address = getCurrentAddress(latitude, longitude, rootView.getContext());
 
+        String str = address;
+        List<String> addressList = Arrays.asList(str.split(" "));
 
-        textViewWhere.setText("현재위치 : "+ address);
+        textViewWhere.setText("현재위치 : "+ addressList.get(1) + " " +  addressList.get(2));
         textViewToday.setText("오늘은 " + weekDay + "입니다");
         textViewNextday.setText("내일은 " + nextDay + "입니다");
 

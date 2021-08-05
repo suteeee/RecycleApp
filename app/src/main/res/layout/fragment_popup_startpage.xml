@@ -1,8 +1,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="450dp"
+    android:layout_height="700dp"
+    android:layout_gravity="center"
+    android:background="@color/main_backg_color"
     tools:context="com.kt.recycleapp.java.fragment.PopupFragmentStartpage">
 
     <!-- TODO: Update blank fragment layout -->
@@ -12,7 +14,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/common_buttom_design"
-        android:text="1일동안 보지 않기"
+        android:fontFamily="@font/gmarket_middle"
+        android:textSize="10sp"
+        android:text="하루동안 보지않기"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/neversee_bt1"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,7 +27,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/common_buttom_design"
-        android:text="다시 보지 않기"
+        android:fontFamily="@font/gmarket_middle"
+        android:textSize="10sp"
+        android:text="다시 보지않기"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/close_bt1"
         app:layout_constraintStart_toEndOf="@+id/onedaynotsee_bt1"
@@ -34,6 +40,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/common_buttom_design"
+        android:fontFamily="@font/gmarket_middle"
+        android:textSize="10sp"
         android:text="닫기"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -47,10 +55,8 @@
         android:layout_height="wrap_content"
         android:background="@color/main_backg_color"
         android:textColor="@color/main_text_color"
-        android:text="\n\n\n사용설명서\n\n
-        1. 제품의 바코드를 사각틀에 맞추어 주세요.\n
-        2. 인식이 완료되면 안내되는 방식에 맞추어 분리수거를 진행하세요.\n
-        3. 카메라 설정을 통해 환경에 맞게 설정을 변경할 수 있어요.\n\n\n"
+        android:fontFamily="@font/gmarket_middle"
+        android:text="@string/announceMent"
         app:layout_constraintBottom_toTopOf="@+id/onedaynotsee_bt1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"

@@ -42,6 +42,7 @@ public class PopupFragmentAddpage extends DialogFragment implements  View.OnClic
     private EditText writeBarcode;
     private EditText writeProductName;
     private Button saveButton;
+    private Button cancleButton;
     private String sendBarcode;
 
 
@@ -72,8 +73,7 @@ public class PopupFragmentAddpage extends DialogFragment implements  View.OnClic
         writeBarcode = (EditText) rootView.findViewById(R.id.inputBarcode_et1);
         writeProductName = (EditText) rootView.findViewById(R.id.inputProductName_et1);
         saveButton = (Button) rootView.findViewById(R.id.askYes_bt1);
-
-        //체크
+        cancleButton = (Button) rootView.findViewById(R.id.askNo_bt1);
 
         Bundle bundle = getArguments();
 
@@ -120,6 +120,13 @@ public class PopupFragmentAddpage extends DialogFragment implements  View.OnClic
 
                     }
                 });
+            }
+        });
+
+        cancleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
             }
         });
 

@@ -12,4 +12,11 @@
     <string name="appSettingTitle">환경 설정</string>
     <string name="askDataAdd">등록되어있지 않은 물품입니다. \n
         데이터를 추가하여 더 많은 물건을 등록하세요!</string>
+    <string name="announceMent">\n사용설명서\n\n\n\n\n
+        1. 어플을 킨 후 제품의 바코드를 인식시키세요\n\n
+        2. 줌기능과 노란색 틀을 활용하여 인식율을 높이세요\n\n
+        3. 인식이 완료된 후 안내되는 방법으로 분리수거!\n\n
+        4. 등록되지 않은 물품은 직접 등록 가능해요\n\n
+        5. 히스토리에서 분리수거 내역을 확인해보세요\n\n
+        6. 최대 10개까지 자주 버리는 물건을 즐겨찾기에 등록!\n\n\n</string>
 </resources>

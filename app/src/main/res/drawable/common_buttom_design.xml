@@ -4,7 +4,7 @@
     <solid android:color="#D358F7" /> //배경색
 
     <stroke
-        android:width="4dp"
+        android:width="3dp"
         android:color="#424242" /> //선색
     <corners
         android:topLeftRadius="20dp"
