@@ -32,6 +32,11 @@ public class AppSettingFragment extends Fragment implements OnBackPressListener 
         seeAnnounceButton = (Button) rootView.findViewById(R.id.announce_bt1);
         darkmodSwitch = (Switch) rootView.findViewById(R.id.darkmod_sch1);
 
+        //prefs.onDarkMode가   true라면  darkmodSwitch.setChecked(true);
+        //prefs.onDarkMode가  false라면 darkmodSwitch.setChecked(false);
+
+
+
         seeAnnounceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -48,13 +53,13 @@ public class AppSettingFragment extends Fragment implements OnBackPressListener 
                 // 스위치 버튼이 체크되었는지 검사
                 if (isChecked){ //버튼이 체크 됬다면
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                    darkmodSwitch.setChecked(true);
+                    darkmodSwitch.setChecked(true); //굳이 필요할까? 왜냐면 꺼진상태에서 켜진상태가 되면서 이 메소드가 실행 되는건데 다시한번 더 true로 해주는거임
                     Toast.makeText(rootView.getContext(), "다크모드 활성화", Toast.LENGTH_SHORT).show();
 
                 }
                 else{
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                    darkmodSwitch.setChecked(false);
+                    darkmodSwitch.setChecked(false);//굳이 필요할까? 왜냐면 꺼진상태에서 켜진상태가 되면서 이 메소드가 실행 되는건데 다시한번 더 true로 해주는거임
                     Toast.makeText(rootView.getContext(), "주간모드 활성화", Toast.LENGTH_SHORT).show();
                 }
             }

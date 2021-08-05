@@ -47,7 +47,7 @@ class HistoryFragment : Fragment(),OnBackPressListener {
         viewModel.getProductName.observe(viewLifecycleOwner,{
             if(it == "finish"){
                 binding.historyPb.visibility = View.INVISIBLE
-                viewModel.getData(helper,activity, prefs)
+                viewModel.getData(helper, prefs)
             }
         })
         HistoryViewModel.selected.observe(viewLifecycleOwner,{

@@ -135,6 +135,9 @@ public class RecycleDayInfoFragment extends Fragment {
         String str = address;
         List<String> addressList = Arrays.asList(str.split(" "));
 
+        //인텐트를 이용해서 권한설정 창으로 이동되게 함
+        //-> ContextCompat.checkSelfRequestPermission()
+
         textViewWhere.setText("현재위치 : "+ addressList.get(1) + " " +  addressList.get(2));
         textViewToday.setText("오늘은 " + weekDay + "입니다");
         textViewNextday.setText("내일은 " + nextDay + "입니다");

@@ -81,8 +81,6 @@ public class PopupFragmentAddpage extends DialogFragment implements  View.OnClic
             sendBarcode = bundle.getString("barcode");
         }
 
-
-
         saveButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -102,7 +100,7 @@ public class PopupFragmentAddpage extends DialogFragment implements  View.OnClic
 
 
                         /*
-                        db.collection("cities").document("LA")
+                        db.collection("cities")
                                 .set(products)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
