@@ -105,7 +105,8 @@ class MainFragment : Fragment() {
         }
 
         viewModel.zoomCnt.observe(viewLifecycleOwner,{
-            cameraController!!.setZoomRatio(it)
+            val f = it.substring(0..2).toFloat()
+            cameraController!!.setZoomRatio(f)
             binding.invalidateAll()
         })
 

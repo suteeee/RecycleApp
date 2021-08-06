@@ -33,7 +33,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.23000002"
-                android:text="@{Float.toString(viewmodel.zoomCnt)}"/>
+                android:text="@{viewmodel.zoomCnt}"/>
 
             <SeekBar
                 android:id="@+id/camera_seekv"

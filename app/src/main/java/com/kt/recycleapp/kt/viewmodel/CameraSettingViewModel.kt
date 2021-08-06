@@ -4,5 +4,5 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class CameraSettingViewModel:ViewModel() {
-    var zoomCnt = MutableLiveData<Float>()
+    var zoomCnt = MutableLiveData<String>()
 }
