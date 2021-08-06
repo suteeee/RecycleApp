@@ -34,6 +34,7 @@ class HistoryFragment : Fragment(),OnBackPressListener {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater,R.layout.history_fragment, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
+        (activity as MainActivity).viewModel.toolbarText.value = "히스토리"
 
         var prefs = MyPreferenceManager(requireContext())
 

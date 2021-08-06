@@ -34,6 +34,7 @@ import java.text.SimpleDateFormat
 import androidx.camera.core.CameraSelector
 import androidx.lifecycle.MutableLiveData
 import androidx.room.Room
+import com.kt.recycleapp.kt.activity.MainActivity
 import com.kt.recycleapp.model.DatabaseReadModel
 import com.kt.recycleapp.model.MyRoomDatabase
 import com.kt.recycleapp.model.RoomHelper
@@ -65,6 +66,7 @@ class MainFragment : Fragment() {
         super.onCreate(savedInstanceState)
         outputDirectory = getOutputDirectory()
         cameraExecutor = Executors.newSingleThreadExecutor()
+
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -76,6 +78,7 @@ class MainFragment : Fragment() {
             binding.viewmodel = viewModel
             binding.invalidateAll()
         }
+        (activity as MainActivity).viewModel.toolbarText.value = "수거했어 오늘도!"
 
         val rootView = binding.root
 
@@ -93,6 +96,10 @@ class MainFragment : Fragment() {
                     Log.d("torch","off")
                 }
             }
+        }
+
+        binding.HistoryBtn.setOnClickListener {
+            activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.small_layout1,HistoryFragment())?.commit()
         }
 
         mScaleGestureDetector = ScaleGestureDetector(rootView.context,

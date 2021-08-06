@@ -7,20 +7,30 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.kt.recycleapp.java.fragment.*
 import com.kt.recycleapp.kt.fragment.*
+import com.kt.recycleapp.kt.viewmodel.MainViewmodel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.navi_header.view.*
 import java.recycleapp.R
+import java.recycleapp.databinding.ActivityMainBinding
 
 
 class MainActivity : AppCompatActivity() {
     var mBackPressListener : OnBackPressListener? = null
     var pressedTime = 0L
+    lateinit var viewModel :MainViewmodel
+    lateinit var binding:ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        viewModel = ViewModelProvider(this).get(MainViewmodel::class.java)
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
 
         //팝업창 추가
         val popup = PopupFragmentStartpage.getInstance()

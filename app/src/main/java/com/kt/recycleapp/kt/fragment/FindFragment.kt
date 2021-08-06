@@ -26,7 +26,7 @@ class FindFragment : Fragment(),OnBackPressListener{
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_find, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
-       // binding.findBigRv.layoutManager = LinearLayoutManager(binding.root.context)
+        (activity as MainActivity).viewModel.toolbarText.value = "찾아보기"
 
         viewModel = ViewModelProvider(this).get(FindFragmentViewModel::class.java)
         binding.bigItem =viewModel

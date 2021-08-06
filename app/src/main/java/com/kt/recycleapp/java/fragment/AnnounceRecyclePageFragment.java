@@ -47,6 +47,7 @@ import java.util.Set;
         //36~45번줄 뷰바인딩 및 전달받은 물품 이름 셋팅 하는 코드
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_announce_recycle_page, container, false);
         viewModel = new ViewModelProvider(this).get(AnnounceRecyclePageViewModel.class);
+        ((MainActivity)getActivity()).viewModel.getToolbarText().setValue("분리수거 방법 안내");
 
         bundle = getArguments();
 

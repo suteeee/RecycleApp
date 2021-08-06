@@ -54,6 +54,7 @@ public class RecycleDayInfoFragment extends Fragment {
     public String getCurrentAddress( double latitude, double longitude, Context context) {
         //지오코더... GPS를 주소로 변환
         Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+
         List<Address> addresses;
         try {
             addresses = geocoder.getFromLocation( latitude, longitude, 100);
@@ -122,6 +123,7 @@ public class RecycleDayInfoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_recycle_day_info, container, false);
+        ((MainActivity)getActivity()).viewModel.getToolbarText().setValue("분리수거 요일제 안내");
 
         TextView textViewWhere = rootView.findViewById(R.id.nowwhere_bt1);
         TextView textViewToday = rootView.findViewById(R.id.dayoftheweektoday_bt1);

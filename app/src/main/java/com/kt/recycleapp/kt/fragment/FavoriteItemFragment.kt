@@ -31,6 +31,8 @@ class FavoriteItemFragment : Fragment(),OnBackPressListener {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_favorite_item, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
+        (activity as MainActivity).viewModel.toolbarText.value = "즐겨찾기"
+
         helper = Room.databaseBuilder(requireContext(), RoomHelper::class.java,"Database").allowMainThreadQueries().build()
 
         viewModel = ViewModelProvider(this).get(FavoriteViewModel::class.java)
