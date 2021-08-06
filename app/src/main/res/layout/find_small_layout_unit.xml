@@ -14,7 +14,7 @@
         android:id="@+id/findBig_layout"
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:background="@drawable/edge_black"
+        android:background="@color/main_backg_color"
         android:clickable="true"
         android:focusable="true">
 
@@ -34,6 +34,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:clickable="true"
+            android:textColor="@color/main_text_color"
             android:fontFamily="@font/gmarket_middle"
             android:gravity="center"
             android:text="@{small.str}"

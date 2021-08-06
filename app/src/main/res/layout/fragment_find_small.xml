@@ -13,12 +13,14 @@
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/main_backg_color"
         tools:context="com.kt.recycleapp.kt.fragment.FindSmallFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/findSmall_rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/main_backg_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

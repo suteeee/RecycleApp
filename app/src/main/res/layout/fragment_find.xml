@@ -13,7 +13,7 @@
         android:id="@+id/find_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#ffffff"
+        android:background="@color/main_backg_color"
         android:clickable="true"
         android:focusable="true"
         tools:context="com.kt.recycleapp.kt.fragment.FindFragment">
@@ -22,6 +22,7 @@
             android:id="@+id/findBig_rv"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:background="@color/main_backg_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

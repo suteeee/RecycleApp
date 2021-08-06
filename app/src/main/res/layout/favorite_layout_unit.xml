@@ -14,60 +14,82 @@
         android:id="@+id/favoriteunit_layout"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:background="@drawable/edge_black"
+        android:background="@color/main_backg_color"
         android:clickable="true"
         android:focusable="true">
 
-        <ImageView
-            android:id="@+id/favorite_iv"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:cardUseCompatPadding="true"
+            app:cardElevation="5dp"
+            app:cardCornerRadius="3dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/favoriteDate_tv"
-            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/favoriteDate_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:focusable="true"
-            android:fontFamily="@font/gmarket_middle"
-            android:gravity="center"
-            android:text="@{data.date}"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.529"
-            app:layout_constraintHorizontal_weight="3"
-            app:layout_constraintStart_toEndOf="@+id/favorite_iv"
-            app:layout_constraintTop_toBottomOf="@+id/favoriteName_tv" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/histiryItem_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/main_backg_color">
 
-        <TextView
-            android:id="@+id/favoriteName_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/gmarket_middle"
-            android:gravity="center"
-            android:text="@{data.name}"
-            android:textSize="28sp"
-            app:layout_constraintBottom_toTopOf="@+id/favoriteDate_tv"
-            app:layout_constraintEnd_toStartOf="@+id/favorite_btn"
-            app:layout_constraintStart_toEndOf="@+id/favorite_iv"
-            app:layout_constraintTop_toTopOf="parent" />
+                <ImageView
+                    android:id="@+id/favorite_iv"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/historyDate_tv"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/favorite_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            android:layout_marginBottom="20dp"
-            app:layout_constraintBottom_toTopOf="@+id/favoriteDate_tv"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/favoriteName_tv"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_star" />
+                <TextView
+                    android:id="@+id/historyDate_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:fontFamily="@font/gmarket_middle"
+                    android:gravity="center"
+                    android:text="@{data.date}"
+                    android:textColor="@color/main_text_color"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_weight="3"
+                    app:layout_constraintStart_toEndOf="@+id/favorite_iv"
+                    app:layout_constraintTop_toBottomOf="@+id/favoriteName_tv" />
+
+                <TextView
+                    android:id="@+id/favoriteName_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/gmarket_middle"
+                    android:gravity="center"
+                    android:text="@{data.name}"
+                    android:textColor="@color/main_text_color"
+                    android:textSize="28sp"
+                    app:layout_constraintBottom_toTopOf="@+id/historyDate_tv"
+                    app:layout_constraintEnd_toStartOf="@+id/favorite_btn"
+                    app:layout_constraintStart_toEndOf="@+id/favorite_iv"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/favorite_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="20dp"
+                    app:layout_constraintBottom_toTopOf="@+id/historyDate_tv"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/favoriteName_tv"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_star" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
