@@ -2,16 +2,11 @@ package com.kt.recycleapp.manager;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
-
-import com.kt.recycleapp.kt.etc.FavoriteData;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Set;
 
 
 /*
@@ -32,22 +27,29 @@ public class MyPreferenceManager {
     private static final String STORED_TIME = "123";
     private static final String FAVORITE_KEY = "F";
 
-    public void setStoredTime(String date){
-        prefs.edit().putString(STORED_TIME,date).apply();
-    }
+    private static final String DARKMOD_SWITCH = "onoff";
+
 
     public String getStoredTime(){
         return prefs.getString(STORED_TIME, "20000101");
     }
-
+    public void setStoredTime(String date){
+        prefs.edit().putString(STORED_TIME,date).apply();
+    }
 
 
     public Boolean getIsNeverShow() {
         return prefs.getBoolean(isNeverShowEdtKey,false);
     }
-
     public void setIsNeverShow(Boolean b) {
         prefs.edit().putBoolean(isNeverShowEdtKey,b).apply();
+    }
+
+    public boolean getDarkmodSwitch(){
+        return prefs.getBoolean(DARKMOD_SWITCH, false);
+    }
+    public void setDarkmodSwitch(Boolean b){
+        prefs.edit().putBoolean(DARKMOD_SWITCH, b).apply();
     }
 
 
