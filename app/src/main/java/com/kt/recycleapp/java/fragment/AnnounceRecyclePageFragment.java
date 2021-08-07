@@ -103,7 +103,13 @@ import java.util.Set;
         bundle.putString("barcode", barcode);
         frg.setArguments(bundle);
 
-       frg.show(act.getSupportFragmentManager(), PopupFragmentStartpage.TAG_EVENT_DIALOG);
+        Log.d("search1",act.viewModel.getSelectedFragment().getValue());
+       if(!act.viewModel.getSelectedFragment().getValue().equals("find")){
+           frg.show(act.getSupportFragmentManager(), PopupFragmentStartpage.TAG_EVENT_DIALOG);
+       }
+       else{
+           act.getSupportFragmentManager().beginTransaction().replace(R.id.small_layout1,new MainFragment()).commit();
+       }
     }
 
     public void onAttach(Context context) {

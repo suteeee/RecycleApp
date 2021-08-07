@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.ObservableArrayList
 import androidx.room.Room
 import com.kt.recycleapp.java.fragment.AnnounceRecyclePageFragment
 import com.kt.recycleapp.kt.activity.MainActivity
@@ -48,7 +47,7 @@ class HistoryFragment : Fragment(),OnBackPressListener {
         viewModel.getProductName.observe(viewLifecycleOwner,{
             if(it == "finish"){
                 binding.historyPb.visibility = View.INVISIBLE
-                viewModel.getData(helper, prefs)
+                viewModel.getData(helper, prefs, activity as MainActivity)
             }
         })
         HistoryViewModel.selected.observe(viewLifecycleOwner,{
@@ -70,6 +69,17 @@ class HistoryFragment : Fragment(),OnBackPressListener {
 
         mAdapter = HistoryAdapter()
         binding.historyRv.adapter = mAdapter
+
+        (activity as MainActivity).viewModel.searchFlag.observe(viewLifecycleOwner,{
+            Log.d("search",(activity as MainActivity).viewModel.searchFlag.value.toString())
+            if(it == "finish"){
+                Log.d("search","do")
+                viewModel.filterList(MainActivity.historyItemsForSearch)
+            }
+            if(it == "reset"){
+                viewModel.resetList()
+            }
+        })
 
         return binding.root
     }

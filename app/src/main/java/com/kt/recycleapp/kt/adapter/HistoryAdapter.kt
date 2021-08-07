@@ -35,6 +35,7 @@ class HistoryAdapter: RecyclerView.Adapter<HistoryAdapter.MyHolder>() {
 
         list = helper?.databaseDao()?.getAll()
 
+
         val holder = MyHolder(binding,parent.context)
         return holder
     }

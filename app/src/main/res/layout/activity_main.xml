@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.kt.recycleapp.kt.viewmodel.MainViewmodel" />
+            type="com.kt.recycleapp.kt.viewmodel.MainViewModel" />
     </data>
 
     <androidx.drawerlayout.widget.DrawerLayout
@@ -43,9 +43,16 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:menu="@menu/toolbar_menu"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                     app:titleTextColor="#000000" />
+
+                <SearchView
+                    android:id="@+id/toolbar_sv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/title_tv"
