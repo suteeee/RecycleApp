@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/AskDataAdd_layout"
     android:layout_width="350dp"
-    android:layout_height="400dp"
+    android:layout_height="500dp"
     android:layout_gravity="center"
     android:background="@color/main_backg_color"
     tools:context="com.kt.recycleapp.java.fragment.PopupFragmentAddpage">
@@ -40,14 +40,15 @@
         android:id="@+id/addInfo_tv1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:fontFamily="@font/gmarket_middle"
-        android:textColor="@color/main_text_color"
+        android:gravity="center"
         android:text="@string/askDataAdd"
+        android:textColor="@color/main_text_color"
+        app:layout_constraintBottom_toTopOf="@+id/attention_tv1"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -62,7 +63,7 @@
         app:layout_constraintBottom_toTopOf="@+id/inputProductName_et1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/askBarcode_tv1"
-        app:layout_constraintTop_toBottomOf="@+id/addInfo_tv1" />
+        app:layout_constraintTop_toBottomOf="@+id/attention_tv1" />
 
     <EditText
         android:id="@+id/inputProductName_et1"
@@ -81,24 +82,38 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/gmarket_middle"
-        android:textColor="@color/main_text_color"
         android:text="바코드"
+        android:textColor="@color/main_text_color"
         app:layout_constraintBottom_toTopOf="@+id/askProductName_tv1"
         app:layout_constraintEnd_toStartOf="@+id/inputBarcode_et1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addInfo_tv1" />
+        app:layout_constraintTop_toBottomOf="@+id/attention_tv1" />
 
     <TextView
         android:id="@+id/askProductName_tv1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/gmarket_middle"
-        android:textColor="@color/main_text_color"
         android:text="물품명"
+        android:textColor="@color/main_text_color"
         app:layout_constraintBottom_toTopOf="@+id/askNo_bt1"
         app:layout_constraintEnd_toStartOf="@+id/inputProductName_et1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/askBarcode_tv1" />
+
+    <TextView
+        android:id="@+id/attention_tv1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/gmarket_thick"
+        android:gravity="center"
+        android:textColor="#F90404"
+        android:text="@string/attention"
+        app:layout_constraintBottom_toTopOf="@+id/inputBarcode_et1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addInfo_tv1" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

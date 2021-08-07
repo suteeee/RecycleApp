@@ -5,37 +5,33 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.LocationManager;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.text.Spannable;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+
 import com.kt.recycleapp.kt.activity.MainActivity;
 
 import java.io.IOException;
 import java.recycleapp.R;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import kotlin.reflect.jvm.internal.impl.descriptors.Visibilities;
 
 
 public class RecycleDayInfoFragment extends Fragment {
@@ -44,6 +40,10 @@ public class RecycleDayInfoFragment extends Fragment {
     String weekDay = dateFormat.format(calendar.getTime());
     long tmp = System.currentTimeMillis() + (1000 * 60 * 60 * 24);
     String nextDay = dateFormat.format(tmp);
+
+
+
+
 
     private static final int GPS_ENABLE_REQUEST_CODE = 2000;
     private static final int PERMISSIONS_REQUEST_CODE = 100;
@@ -54,26 +54,25 @@ public class RecycleDayInfoFragment extends Fragment {
     public String getCurrentAddress( double latitude, double longitude, Context context) {
         //지오코더... GPS를 주소로 변환
         Geocoder geocoder = new Geocoder(context, Locale.getDefault());
-
         List<Address> addresses;
         try {
             addresses = geocoder.getFromLocation( latitude, longitude, 100);
         }
         catch (IOException ioException) {
             Toast.makeText(context, "서비스 사용불가", Toast.LENGTH_LONG).show();
-            showDialogForLocationServiceSetting(context);
+            //showDialogForLocationServiceSetting(context);
             return "서비스 사용불가";
         }
         catch (IllegalArgumentException illegalArgumentException) {
             Toast.makeText(context, "잘못된 GPS 좌표", Toast.LENGTH_LONG).show();
-            showDialogForLocationServiceSetting(context);
+            //showDialogForLocationServiceSetting(context);
             return "잘못된 GPS 좌표";
         }
 
         if (addresses == null || addresses.size() == 0) {
-            Toast.makeText(context, "주소 미발견", Toast.LENGTH_LONG).show();
-            showDialogForLocationServiceSetting(context);
-            return "주소 미발견";
+            Toast.makeText(context, "현재 위치 미발견", Toast.LENGTH_LONG).show();
+            //showDialogForLocationServiceSetting(context);
+            return "현재 위치 미발견";
         }
 
         Address address = addresses.get(0);
@@ -81,7 +80,8 @@ public class RecycleDayInfoFragment extends Fragment {
     }
 
 
-    //여기부터는 GPS 활성화를 위한 메소드들
+    //여기부터는 GPS 활성화를 위한 메소드
+    /*
     private void showDialogForLocationServiceSetting(Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("위치 서비스 비활성화");
@@ -99,8 +99,13 @@ public class RecycleDayInfoFragment extends Fragment {
             public void onClick(DialogInterface dialog, int id) { dialog.cancel();
             }
         });
+
+
         builder.create().show();
+
+
     }
+    */
 
     /*
     @Override
@@ -124,6 +129,18 @@ public class RecycleDayInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_recycle_day_info, container, false);
         ((MainActivity)getActivity()).viewModel.getToolbarText().setValue("분리수거 요일제 안내");
+        int ASDFASDF = 1;
+
+        if(ContextCompat.checkSelfPermission(
+                getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)!=PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},ASDFASDF);
+        }
+
+        if(ContextCompat.checkSelfPermission(
+                getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION)!=PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},ASDFASDF);
+        }
+
 
         TextView textViewWhere = rootView.findViewById(R.id.nowwhere_bt1);
         TextView textViewToday = rootView.findViewById(R.id.dayoftheweektoday_bt1);
@@ -135,12 +152,16 @@ public class RecycleDayInfoFragment extends Fragment {
         String address = getCurrentAddress(latitude, longitude, rootView.getContext());
 
         String str = address;
-        List<String> addressList = Arrays.asList(str.split(" "));
+        if(address!=null){
+            List<String> addressList = Arrays.asList(str.split(" "));
+            textViewWhere.setText("현재위치 : "+ addressList.get(1) + " " +  addressList.get(2));
+        }
+        else{
+            textViewWhere.setText("위치권환을 허용해주세요.");
+        }
 
-        //인텐트를 이용해서 권한설정 창으로 이동되게 함
-        //-> ContextCompat.checkSelfRequestPermission()
 
-        textViewWhere.setText("현재위치 : "+ addressList.get(1) + " " +  addressList.get(2));
+
         textViewToday.setText("오늘은 " + weekDay + "입니다");
         textViewNextday.setText("내일은 " + nextDay + "입니다");
 

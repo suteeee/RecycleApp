@@ -20,6 +20,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.kt.recycleapp.kt.activity.MainActivity;
 import com.kt.recycleapp.kt.activity.OnBackPressListener;
 import com.kt.recycleapp.kt.fragment.MainFragment;
@@ -44,6 +45,7 @@ public class PopupFragmentAddpage extends DialogFragment implements  View.OnClic
     private Button saveButton;
     private Button cancleButton;
     private String sendBarcode;
+
 
 
     public PopupFragmentAddpage(){
@@ -77,6 +79,8 @@ public class PopupFragmentAddpage extends DialogFragment implements  View.OnClic
 
         Bundle bundle = getArguments();
 
+        Map<String, Object> tmpProduct = new HashMap<>();
+
         if(bundle != null){
             sendBarcode = bundle.getString("barcode");
         }
@@ -90,34 +94,33 @@ public class PopupFragmentAddpage extends DialogFragment implements  View.OnClic
                         //key에 바코드 저장하고 value에 물품명 저장하자
 
                         if(task.isSuccessful()){
-                            Map<String, Object> products = new HashMap<>();
-                            products.put(sendBarcode, writeProductName.toString());
-                            Toast.makeText(rootView.getContext(), "상품이 등록되었습니다!", Toast.LENGTH_SHORT).show();
+                            tmpProduct.put(sendBarcode, writeProductName.getText().toString());
+
+                            db.collection("products").document("productlist")
+                                    .update(tmpProduct)//set하면 문서날라감
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Toast.makeText(rootView.getContext(), "상품이 등록되었습니다!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Toast.makeText(rootView.getContext(), "등록실패", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+
                         }
                         else{
                             Toast.makeText(rootView.getContext(), "등록실패, 다시입력하세요", Toast.LENGTH_SHORT).show();
                         }
 
 
-                        /*
-                        db.collection("cities")
-                                .set(products)
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        Toast.makeText(rootView.getContext(), "상품이 등록되었습니다!", Toast.LENGTH_SHORT).show();
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(rootView.getContext(), "등록실패", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                        */
-
                     }
                 });
+
+
             }
         });
 
