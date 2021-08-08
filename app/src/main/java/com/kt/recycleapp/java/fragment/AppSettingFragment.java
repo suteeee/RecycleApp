@@ -74,9 +74,6 @@ public class AppSettingFragment extends Fragment implements OnBackPressListener 
 
 
 
-
-
-
         return rootView;
     }
 
