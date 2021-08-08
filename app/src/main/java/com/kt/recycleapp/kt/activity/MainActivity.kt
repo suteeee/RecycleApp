@@ -15,6 +15,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.kt.recycleapp.java.fragment.*
 import com.kt.recycleapp.kt.etc.FavoriteData
+import com.kt.recycleapp.kt.etc.FindBigData
+import com.kt.recycleapp.kt.etc.FindSmallData
 import com.kt.recycleapp.kt.etc.HistoryData
 import com.kt.recycleapp.kt.fragment.*
 import com.kt.recycleapp.kt.viewmodel.MainViewModel
@@ -34,6 +36,8 @@ class MainActivity : AppCompatActivity() {
     companion object{
         var historyItemsForSearch = ArrayList<HistoryData>()
         var favoriteItemForSearch = ArrayList<FavoriteData>()
+        var findBigForSearch = ArrayList<FindBigData>()
+        var findSmallForSearch = ArrayList<FindSmallData>()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
-        viewModel.selectedFragment.value = "main"
+
         binding.toolbarSv.setOnSearchClickListener {
             tempText = viewModel.toolbarText.value!!
             viewModel.toolbarText.value=""
@@ -56,11 +60,19 @@ class MainActivity : AppCompatActivity() {
             return@OnCloseListener false
         })
         viewModel.selectedFragment.observe(this,{
-            binding.toolbarSv.setOnQueryTextListener(object:SearchView.OnQueryTextListener{
+            val sv = binding.toolbarSv
 
+            if(it != "history" && it != "favorite" && it != "find" && it != "findsmall"){
+                sv.visibility = View.INVISIBLE
+            }
+            else{
+                sv.visibility = View.VISIBLE
+            }
+
+            sv.setOnQueryTextListener(object:SearchView.OnQueryTextListener{
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     Log.d("query","summit")
-                    binding.toolbarSv.setQuery("",false)
+                    sv.setQuery("",false)
                     viewModel.searchFlag.value = "selected"
                     if(it =="history"){
                         val temp = ArrayList<HistoryData>()
@@ -81,6 +93,25 @@ class MainActivity : AppCompatActivity() {
                         favoriteItemForSearch = temp
                     }
 
+                    else  if(it =="find"){
+                        val temp = ArrayList<FindBigData>()
+                        findBigForSearch.forEach {res->
+                            if(res.str.lowercase().contains(query!!.lowercase())){
+                                temp.add(res)
+                            }
+                        }
+                        findBigForSearch = temp
+                    }
+                    else  if(it =="findsmall"){
+                        val temp = ArrayList<FindSmallData>()
+                        findSmallForSearch.forEach {res->
+                            if(res.str.lowercase().contains(query!!.lowercase())){
+                                temp.add(res)
+                            }
+                        }
+                        findSmallForSearch = temp
+                    }
+
                     viewModel.searchFlag.value = "finish"
 
                     return false
@@ -90,8 +121,9 @@ class MainActivity : AppCompatActivity() {
                     Log.d("query","change")
                     return false
                 }
-
             })
+
+
         })
 
         //팝업창 추가

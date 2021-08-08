@@ -14,7 +14,7 @@ import com.kt.recycleapp.java.fragment.AnnounceRecyclePageFragment
 import com.kt.recycleapp.kt.activity.MainActivity
 import com.kt.recycleapp.kt.activity.OnBackPressListener
 import com.kt.recycleapp.kt.adapter.FindSmallAdapter
-import com.kt.recycleapp.kt.viewmodel.FindFragmentViewModel
+import com.kt.recycleapp.kt.viewmodel.FindViewModel
 import java.recycleapp.R
 import java.recycleapp.databinding.FragmentFindSmallBinding
 
@@ -24,14 +24,14 @@ class FindSmallFragment : Fragment(), OnBackPressListener {
 
     }
     lateinit var binding:FragmentFindSmallBinding
-    lateinit var viewModel: FindFragmentViewModel
+    lateinit var viewModel: FindViewModel
     lateinit var mAdapter: FindSmallAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_find_small, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
 
-        viewModel = ViewModelProvider(this).get(FindFragmentViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(FindViewModel::class.java)
         viewModel.findSmall()
         binding.smallItem = viewModel
 
@@ -43,12 +43,13 @@ class FindSmallFragment : Fragment(), OnBackPressListener {
             if(it == "finish"){
                 binding.findSmallPb.visibility = View.INVISIBLE
                 var idx = 0
-                when(FindFragmentViewModel.selectDoc){
+                when(FindViewModel.selectDoc){
                     "종이"->idx = 0
                     "플라스틱"->idx = 1
                 }
 
                 viewModel.addSmallItem(idx)
+                MainActivity.findSmallForSearch = viewModel.smallItemList
             }
         })
 
@@ -58,14 +59,26 @@ class FindSmallFragment : Fragment(), OnBackPressListener {
             }
         })
 
+
+        (activity as MainActivity).viewModel.searchFlag.observe(viewLifecycleOwner,{
+            Log.d("search",(activity as MainActivity).viewModel.searchFlag.value.toString())
+            if(it == "finish"){
+                Log.d("search","do")
+                viewModel.smallFilterList(MainActivity.findSmallForSearch)
+            }
+            if(it == "reset"){
+                viewModel.smallResetList()
+            }
+        })
+
         return binding.root
     }
 
     fun viewClick() {
         val frg = AnnounceRecyclePageFragment()
         val bundle = Bundle()
-        bundle.putString("item",FindFragmentViewModel.selectItem)
-        Log.d(FindFragmentViewModel.selectItem,"click")
+        bundle.putString("item",FindViewModel.selectItem)
+        Log.d(FindViewModel.selectItem,"click")
 
         frg.arguments = bundle
 

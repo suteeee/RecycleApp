@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.bumptech.glide.Glide
@@ -65,8 +66,18 @@ class HistoryAdapter: RecyclerView.Adapter<HistoryAdapter.MyHolder>() {
                             colorString = "#ff0000"
                             state = "true"
                         }
-                        (it as ImageView).setColorFilter(Color.parseColor(colorString), PorterDuff.Mode.SRC_ATOP)
-                        helper?.databaseDao()?.updateFavorite(position+1,state)
+                        var check = 0
+                        list?.forEach { if(list?.get(position)?.favorite == "true"){ check += 1 } }
+
+                        Log.d("check",check.toString())
+                        if(check < 10){
+                            (it as ImageView).setColorFilter(Color.parseColor(colorString), PorterDuff.Mode.SRC_ATOP)
+                            helper?.databaseDao()?.updateFavorite(position+1,state)
+                        }
+                        else{
+                            Toast.makeText(context,"즐겨찾기는 최대 10개까지 등록 가능합니다.",Toast.LENGTH_SHORT).show()
+                        }
+
                     }
                 },0)
 

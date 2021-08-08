@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.kt.recycleapp.kt.etc.FindSmallData
 import com.kt.recycleapp.kt.fragment.FindSmallFragment
-import com.kt.recycleapp.kt.viewmodel.FindFragmentViewModel
+import com.kt.recycleapp.kt.viewmodel.FindViewModel
 import java.recycleapp.databinding.FindSmallLayoutUnitBinding
 
 class FindSmallAdapter : RecyclerView.Adapter<FindSmallAdapter.SmallAdapterHolder>() {
@@ -29,7 +29,7 @@ class FindSmallAdapter : RecyclerView.Adapter<FindSmallAdapter.SmallAdapterHolde
         fun bind(data:FindSmallData) {
             binding.small = data
             binding.findSmallTv.setOnClickListener {
-                FindFragmentViewModel.selectItem = binding.findSmallTv.text.toString()
+                FindViewModel.selectItem = binding.findSmallTv.text.toString()
                 FindSmallFragment.smallClick.value = "start"
             }
         }

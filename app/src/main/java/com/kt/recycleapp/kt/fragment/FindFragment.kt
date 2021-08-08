@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.kt.recycleapp.kt.activity.MainActivity
 import com.kt.recycleapp.kt.activity.OnBackPressListener
 import com.kt.recycleapp.kt.adapter.FindBigAdapter
-import com.kt.recycleapp.kt.viewmodel.FindFragmentViewModel
+import com.kt.recycleapp.kt.viewmodel.FindViewModel
 import java.recycleapp.R
 import java.recycleapp.databinding.FragmentFindBinding
 
@@ -21,14 +21,14 @@ class FindFragment : Fragment(),OnBackPressListener{
     companion object{ var click = MutableLiveData<String>()}
     lateinit var binding:FragmentFindBinding
     lateinit var mAdapter : FindBigAdapter
-    lateinit var viewModel:FindFragmentViewModel
+    lateinit var viewModel:FindViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_find, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         (activity as MainActivity).viewModel.toolbarText.value = "찾아보기"
 
-        viewModel = ViewModelProvider(this).get(FindFragmentViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(FindViewModel::class.java)
         binding.bigItem =viewModel
 
         mAdapter = FindBigAdapter()
@@ -41,6 +41,7 @@ class FindFragment : Fragment(),OnBackPressListener{
                 for(i in 0 until viewModel.itemData.size){
                     viewModel.addItem(i)
                 }
+                MainActivity.findBigForSearch = viewModel.itemList
             }
         })
 
@@ -55,6 +56,18 @@ class FindFragment : Fragment(),OnBackPressListener{
             Log.d("c3",it.toString())
         })
 
+        (activity as MainActivity).viewModel.searchFlag.observe(viewLifecycleOwner,{
+            Log.d("search",(activity as MainActivity).viewModel.searchFlag.value.toString())
+            if(it == "finish"){
+                Log.d("search","do")
+                viewModel.bigFilterList(MainActivity.findBigForSearch)
+            }
+            if(it == "reset"){
+                viewModel.bigResetList()
+            }
+        })
+
+
         return binding.root
     }
 
@@ -65,6 +78,7 @@ class FindFragment : Fragment(),OnBackPressListener{
 
     fun viewClick() {
         Log.d("click","click")
+        (activity as MainActivity).viewModel.selectedFragment.value = "findsmall"
         activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.small_layout1,FindSmallFragment())?.commit()
     }
 

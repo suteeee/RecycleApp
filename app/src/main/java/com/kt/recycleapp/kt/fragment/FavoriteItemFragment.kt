@@ -29,12 +29,6 @@ class FavoriteItemFragment : Fragment(),OnBackPressListener {
     lateinit var prefs:MyPreferenceManager
     var helper:RoomHelper? = null
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_favorite_item, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
@@ -45,7 +39,15 @@ class FavoriteItemFragment : Fragment(),OnBackPressListener {
         viewModel = ViewModelProvider(this).get(FavoriteViewModel::class.java)
         binding.favorite = viewModel
         prefs = MyPreferenceManager(requireContext())
-        viewModel.setData(helper!!)
+
+        viewModel.getFireData()
+
+        viewModel.getProductName.observe(viewLifecycleOwner,{
+            if(it == "finish"){
+                binding.favoritePb.visibility = View.INVISIBLE
+                viewModel.setData(helper!!)
+            }
+        })
 
         mAdapter = FavoriteAdapter()
         binding.favoriteRv.adapter = mAdapter

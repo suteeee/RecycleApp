@@ -7,7 +7,7 @@ import android.util.Log
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.FirebaseFirestore
-import com.kt.recycleapp.kt.viewmodel.FindFragmentViewModel
+import com.kt.recycleapp.kt.viewmodel.FindViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -46,7 +46,7 @@ class DatabaseReadModel {
 
     fun findSmall(findSmallProgress: MutableLiveData<String>):  ArrayList<HashMap<String,String>>{
         findSmallProgress.value = "start"
-        var selected = FindFragmentViewModel.selectDoc
+        var selected = FindViewModel.selectDoc
         val collection = db.collection("products")
         val arr = ArrayList<HashMap<String,String>>()
         //컬렉션 Arr 안에 문서 arr 안에 값 hashmap 구조

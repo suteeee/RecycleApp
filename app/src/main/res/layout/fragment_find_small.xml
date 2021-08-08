@@ -5,7 +5,7 @@
     <data>
         <variable
             name="smallItem"
-            type="com.kt.recycleapp.kt.viewmodel.FindFragmentViewModel" />
+            type="com.kt.recycleapp.kt.viewmodel.FindViewModel" />
 
     </data>
 

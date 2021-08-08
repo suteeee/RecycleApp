@@ -18,6 +18,8 @@ class FavoriteViewModel: ViewModel() {
     }
     val itemList = ObservableArrayList<FavoriteData>()
     var tempList = ObservableArrayList<FavoriteData>()
+    val model = DatabaseReadModel()
+    var getProductName = MutableLiveData<String>()
 
     fun setData(helper: RoomHelper) {
       helper.databaseDao().getFavoriteAll().forEach {
@@ -37,17 +39,26 @@ class FavoriteViewModel: ViewModel() {
           }
           var newDate = "${date1}년 ${date2}월 ${date3}일"
 
+          DatabaseReadModel.name.forEach {
+              Log.d(it.key,it.value)
+          }
+          Log.d("db",DatabaseReadModel.name[barcode].toString())
 
-          if(DatabaseReadModel.name[barcode] == null){
+          if(barcode == null){
               barcode = "바코드 값 : ${barcode}"
           }
           else{
-              barcode = "제품명 : ${DatabaseReadModel.name[barcode]}"
+              barcode = "제품명 : ${DatabaseReadModel.name[barcode].toString()}"
           }
+
 
           itemList.add(FavoriteData(image,barcode,newDate))
       }
         MainActivity.favoriteItemForSearch = itemList
+    }
+
+    fun getFireData(){
+        model.getProduct(getProductName)
     }
 
     fun filterList(historyItemsForSearch: ArrayList<FavoriteData>) {

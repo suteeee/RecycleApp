@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.kt.recycleapp.kt.etc.FindBigData
 import com.kt.recycleapp.kt.fragment.FindFragment
-import com.kt.recycleapp.kt.viewmodel.FindFragmentViewModel
+import com.kt.recycleapp.kt.viewmodel.FindViewModel
 import java.recycleapp.databinding.FindBigLayoutUnitBinding
 
 class FindBigAdapter : RecyclerView.Adapter<FindBigAdapter.MyViewHolder>() {
@@ -30,7 +30,7 @@ class FindBigAdapter : RecyclerView.Adapter<FindBigAdapter.MyViewHolder>() {
             binding.big = data
             binding.findBigTv.setOnClickListener {
                 FindFragment.click.value = "start"
-                FindFragmentViewModel.selectDoc = binding.findBigTv.text.toString()
+                FindViewModel.selectDoc = binding.findBigTv.text.toString()
             }
         }
     }

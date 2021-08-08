@@ -105,12 +105,8 @@ import java.util.Set;
         Log.d("search1",act.viewModel.isPopup().getValue().toString());
         Log.d("search1",act.viewModel.getSelectedFragment().getValue().toString());
 
-       if(!act.viewModel.getSelectedFragment().getValue().equals("find") &&
-               !act.viewModel.getSelectedFragment().getValue().equals("history") &&
-               !act.viewModel.getSelectedFragment().getValue().equals("favorite") &&
-               act.viewModel.isPopup().getValue().equals("false")){
+       if(act.viewModel.getSelectedFragment().getValue().equals("main")){
            frg.show(act.getSupportFragmentManager(), PopupFragmentStartpage.TAG_EVENT_DIALOG);
-           act.viewModel.isPopup().setValue("true");
        }
        else{
            act.setOnBackPressListener(null);
