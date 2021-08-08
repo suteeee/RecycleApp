@@ -61,7 +61,7 @@ class HistoryViewModel : ViewModel() {
             }
 
 
-                Log.d("것",DatabaseReadModel.name[it.barcode]!!)
+                //Log.d("것",DatabaseReadModel.name[it.barcode]!!)
 
 
 

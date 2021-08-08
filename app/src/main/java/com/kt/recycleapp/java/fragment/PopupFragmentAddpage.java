@@ -57,7 +57,6 @@ public class PopupFragmentAddpage extends DialogFragment implements  View.OnClic
     MutableLiveData<String> ld = new MutableLiveData<String>();
     private String product = "";
 
-
     public PopupFragmentAddpage(){
         Bundle bundle = getArguments();
 
@@ -100,8 +99,6 @@ public class PopupFragmentAddpage extends DialogFragment implements  View.OnClic
             @Override
             public void onChanged(String s) {
                 if(s.equals("finish")){
-                    Log.d("것것",s);
-                    Log.d("것것",arr.toString());
                     spinner = rootView.findViewById(R.id.products_sp);
                     ArrayAdapter adt = new ArrayAdapter(rootView.getContext(), android.R.layout.simple_spinner_dropdown_item,arr);
                     spinner.setAdapter(adt);
@@ -109,6 +106,7 @@ public class PopupFragmentAddpage extends DialogFragment implements  View.OnClic
                     spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                            Log.d("것것",spinner.getItemAtPosition(i).toString());
                             product = spinner.getItemAtPosition(i).toString();
                         }
 
