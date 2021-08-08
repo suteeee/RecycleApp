@@ -1,5 +1,6 @@
 package com.kt.recycleapp.kt.fragment
 
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -27,6 +28,12 @@ class FavoriteItemFragment : Fragment(),OnBackPressListener {
     lateinit var mAdapter : FavoriteAdapter
     lateinit var prefs:MyPreferenceManager
     var helper:RoomHelper? = null
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_favorite_item, container, false)
@@ -57,6 +64,17 @@ class FavoriteItemFragment : Fragment(),OnBackPressListener {
             frg.arguments = bundle
 
             activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.small_layout1,frg)?.commit()
+        })
+
+        (activity as MainActivity).viewModel.searchFlag.observe(viewLifecycleOwner,{
+            Log.d("search",(activity as MainActivity).viewModel.searchFlag.value.toString())
+            if(it == "finish"){
+                Log.d("search","do")
+                viewModel.filterList(MainActivity.favoriteItemForSearch)
+            }
+            if(it == "reset"){
+                viewModel.resetList()
+            }
         })
 
         return binding.root

@@ -2,6 +2,7 @@ package com.kt.recycleapp.kt.fragment
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -262,6 +263,9 @@ class MainFragment : Fragment() {
         super.onDestroy()
     }
 
-
-
+    override fun onAttach(context: Context) {
+        (activity as MainActivity).viewModel.selectedFragment.value = "main"
+        Log.d("search","create!!")
+        super.onAttach(context)
+    }
 }

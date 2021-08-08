@@ -6,7 +6,9 @@ import androidx.databinding.ObservableArrayList
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.kt.recycleapp.kt.activity.MainActivity
 import com.kt.recycleapp.kt.etc.FavoriteData
+import com.kt.recycleapp.kt.etc.HistoryData
 import com.kt.recycleapp.model.DatabaseReadModel
 import com.kt.recycleapp.model.RoomHelper
 
@@ -15,6 +17,7 @@ class FavoriteViewModel: ViewModel() {
         var selected = MutableLiveData<Int>()
     }
     val itemList = ObservableArrayList<FavoriteData>()
+    var tempList = ObservableArrayList<FavoriteData>()
 
     fun setData(helper: RoomHelper) {
       helper.databaseDao().getFavoriteAll().forEach {
@@ -44,5 +47,22 @@ class FavoriteViewModel: ViewModel() {
 
           itemList.add(FavoriteData(image,barcode,newDate))
       }
+        MainActivity.favoriteItemForSearch = itemList
+    }
+
+    fun filterList(historyItemsForSearch: ArrayList<FavoriteData>) {
+        Log.d("search","filter")
+        itemList.forEach { tempList.add(it) }
+        itemList.clear()
+        historyItemsForSearch.forEach {
+            itemList.add(it)
+        }
+    }
+
+    fun resetList() {
+        itemList.clear()
+        tempList.forEach { itemList.add(it) }
+        tempList.clear()
+        MainActivity.favoriteItemForSearch = itemList
     }
 }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.room.Database;
@@ -29,6 +30,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.kt.recycleapp.kt.activity.MainActivity;
 import com.kt.recycleapp.kt.activity.OnBackPressListener;
+import com.kt.recycleapp.kt.fragment.FavoriteItemFragment;
+import com.kt.recycleapp.kt.fragment.FindFragment;
+import com.kt.recycleapp.kt.fragment.HistoryFragment;
 import com.kt.recycleapp.kt.fragment.MainFragment;
 import com.kt.recycleapp.manager.MyPreferenceManager;
 import com.kt.recycleapp.model.DatabaseReadModel;
@@ -46,7 +50,7 @@ import java.util.Map;
 //내 기억으로 이건 코틀린 영역에서 이 창이 뜨게해야하므로 주광님 화이팅!
 
 
-public class PopupFragmentAddpage extends DialogFragment implements  View.OnClickListener {
+public class PopupFragmentAddpage extends DialogFragment implements  OnBackPressListener{
     public static final String TAG_EVENT_DIALOG = "testtest";
     private Spinner spinner;
     private EditText writeProductName;
@@ -174,10 +178,36 @@ public class PopupFragmentAddpage extends DialogFragment implements  View.OnClic
         return rootView;
     }
 
-
-
     @Override
-    public void onClick(View view) {
+    public void onBack() {
+       /* MainActivity act = (MainActivity)getActivity();
+        act.setOnBackPressListener(null);
+
+        Log.d("search2",act.viewModel.getSelectedFragment().getValue());
+        Fragment fragment = new MainFragment();
+        act.viewModel.isPopup().setValue("false");
+        switch (act.viewModel.getSelectedFragment().getValue()) {
+            case "find":
+                fragment = new FindFragment();
+                break;
+            case "favorite":
+                fragment = new FavoriteItemFragment();
+                break;
+            case "history":
+                Log.d("search2","준 " + act.toString());
+                fragment = new HistoryFragment();
+                act.getSupportFragmentManager().beginTransaction().replace(R.id.small_layout1,fragment).commit();
+                break;
+        }
+        act.getSupportFragmentManager().beginTransaction().replace(R.id.small_layout1,fragment).commit();
+
+        dismiss();*/
 
     }
+
+ /*   public void onAttach(Context context) {
+        super.onAttach(context);
+        ((MainActivity)context).setOnBackPressListener(this);
+    }*/
+
 }

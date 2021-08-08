@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,6 +22,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.kt.recycleapp.java.viewmodel.AnnounceRecyclePageViewModel;
 import com.kt.recycleapp.kt.activity.MainActivity;
 import com.kt.recycleapp.kt.activity.OnBackPressListener;
+import com.kt.recycleapp.kt.fragment.FavoriteItemFragment;
+import com.kt.recycleapp.kt.fragment.FindFragment;
+import com.kt.recycleapp.kt.fragment.HistoryFragment;
 import com.kt.recycleapp.kt.fragment.MainFragment;
 
 import org.jetbrains.annotations.NotNull;
@@ -58,8 +62,6 @@ import java.util.Set;
             else {viewModel.itemName = name; }
 
             binding.whatisTv2.setText(viewModel.itemName);
-
-            //Log.d("것제발",barcode);
         }
 
 
@@ -69,9 +71,6 @@ import java.util.Set;
 
     public void onBack() {
         MainActivity act = (MainActivity)getActivity();
-        ((MainActivity) act).setOnBackPressListener(null);
-
-
         DialogFragment frg = new PopupFragmentAddpage();
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -103,11 +102,37 @@ import java.util.Set;
         bundle.putString("barcode", barcode);
         frg.setArguments(bundle);
 
-        Log.d("search1",act.viewModel.getSelectedFragment().getValue());
-       if(!act.viewModel.getSelectedFragment().getValue().equals("find")){
+        Log.d("search1",act.viewModel.isPopup().getValue().toString());
+        Log.d("search1",act.viewModel.getSelectedFragment().getValue().toString());
+
+       if(!act.viewModel.getSelectedFragment().getValue().equals("find") &&
+               !act.viewModel.getSelectedFragment().getValue().equals("history") &&
+               !act.viewModel.getSelectedFragment().getValue().equals("favorite") &&
+               act.viewModel.isPopup().getValue().equals("false")){
            frg.show(act.getSupportFragmentManager(), PopupFragmentStartpage.TAG_EVENT_DIALOG);
+           act.viewModel.isPopup().setValue("true");
        }
        else{
+           act.setOnBackPressListener(null);
+           //
+           // Log.d("search2",act.viewModel.getSelectedFragment().getValue());
+          // Fragment fragment = null;
+           //act.viewModel.isPopup().setValue("false");
+           /*switch (act.viewModel.getSelectedFragment().getValue()) {
+               case "find":
+                   fragment = new FindFragment();
+                   break;
+               case "favorite":
+                   fragment = new FavoriteItemFragment();
+                   break;
+               case "history":
+                   fragment = new HistoryFragment();
+                   break;
+               default:
+                   fragment = new MainFragment();
+                   break;
+           }*/
+          // Log.d("search2","준 " + fragment.toString());
            act.getSupportFragmentManager().beginTransaction().replace(R.id.small_layout1,new MainFragment()).commit();
        }
     }
@@ -116,4 +141,10 @@ import java.util.Set;
         super.onAttach(context);
         ((MainActivity)context).setOnBackPressListener(this);
     }
-}
+
+     @Override
+     public void onDestroy() {
+        Log.d("search","destroy");
+         super.onDestroy();
+     }
+ }

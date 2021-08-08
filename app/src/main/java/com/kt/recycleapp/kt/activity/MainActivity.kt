@@ -14,6 +14,7 @@ import androidx.databinding.Observable
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.kt.recycleapp.java.fragment.*
+import com.kt.recycleapp.kt.etc.FavoriteData
 import com.kt.recycleapp.kt.etc.HistoryData
 import com.kt.recycleapp.kt.fragment.*
 import com.kt.recycleapp.kt.viewmodel.MainViewModel
@@ -32,6 +33,7 @@ class MainActivity : AppCompatActivity() {
 
     companion object{
         var historyItemsForSearch = ArrayList<HistoryData>()
+        var favoriteItemForSearch = ArrayList<FavoriteData>()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,10 +48,18 @@ class MainActivity : AppCompatActivity() {
             tempText = viewModel.toolbarText.value!!
             viewModel.toolbarText.value=""
         }
+        binding.toolbarSv.setOnCloseListener (SearchView.OnCloseListener {
+            if(binding.toolbarSv.query.isNotEmpty() || viewModel.searchFlag.value == "finish") {
+                viewModel.toolbarText.value = tempText
+                viewModel.searchFlag.value = "reset"
+            }
+            return@OnCloseListener false
+        })
         viewModel.selectedFragment.observe(this,{
             binding.toolbarSv.setOnQueryTextListener(object:SearchView.OnQueryTextListener{
 
                 override fun onQueryTextSubmit(query: String?): Boolean {
+                    Log.d("query","summit")
                     binding.toolbarSv.setQuery("",false)
                     viewModel.searchFlag.value = "selected"
                     if(it =="history"){
@@ -61,21 +71,28 @@ class MainActivity : AppCompatActivity() {
                         }
                         historyItemsForSearch = temp
                     }
+                    else  if(it =="favorite"){
+                        val temp = ArrayList<FavoriteData>()
+                        favoriteItemForSearch.forEach {res->
+                            if(res.name!!.lowercase().contains(query!!.lowercase())){
+                                temp.add(res)
+                            }
+                        }
+                        favoriteItemForSearch = temp
+                    }
+
                     viewModel.searchFlag.value = "finish"
 
                     return false
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
+                    Log.d("query","change")
                     return false
                 }
 
             })
         })
-
-
-
-
 
         //팝업창 추가
         val popup = PopupFragmentStartpage.getInstance()
@@ -161,7 +178,7 @@ class MainActivity : AppCompatActivity() {
 
             if (fragment != null) {
                 //프래그먼트 트랜잭션(프래그먼트 전환)
-                supportFragmentManager.beginTransaction().replace(R.id.small_layout1,fragment).commit()
+                supportFragmentManager.beginTransaction().replace(R.id.small_layout1,fragment).addToBackStack(null).commit()
             }
             true
         }
@@ -176,6 +193,7 @@ class MainActivity : AppCompatActivity() {
             //홈 버튼(메뉴버튼 눌렀을때)
             android.R.id.home->{
                 //메뉴 오픈
+                viewModel.isDrawerOpen.value = true
                 drawer_layout.openDrawer(GravityCompat.START)
                 return true
             }
@@ -191,8 +209,15 @@ class MainActivity : AppCompatActivity() {
     override fun onBackPressed() {
         if(!binding.toolbarSv.isIconified){
             viewModel.toolbarText.value = tempText
-            viewModel.searchFlag.value = "reset"
+            Log.d(binding.toolbarSv.query.length.toString(),"query")
+            if(binding.toolbarSv.query.isNotEmpty() || viewModel.searchFlag.value == "finish"){
+                viewModel.searchFlag.value = "reset"
+            }
             binding.toolbarSv.isIconified = true
+        }
+        else if(binding.viewModel!!.isDrawerOpen.value == true){
+            drawer_layout.closeDrawer(GravityCompat.START)
+            binding.viewModel!!.isDrawerOpen.value = false
         }
         else{
             if(mBackPressListener != null){
