@@ -13,25 +13,39 @@ import android.os.Bundle;
 import android.text.Spannable;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.kt.recycleapp.kt.activity.MainActivity;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.recycleapp.R;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 
 public class RecycleDayInfoFragment extends Fragment {
@@ -42,13 +56,9 @@ public class RecycleDayInfoFragment extends Fragment {
     String nextDay = dateFormat.format(tmp);
 
 
-
-
-
     private static final int GPS_ENABLE_REQUEST_CODE = 2000;
     private static final int PERMISSIONS_REQUEST_CODE = 100;
     String[] REQUIRED_PERMISSIONS  = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
-
 
 
     public String getCurrentAddress( double latitude, double longitude, Context context) {
@@ -145,6 +155,8 @@ public class RecycleDayInfoFragment extends Fragment {
         TextView textViewWhere = rootView.findViewById(R.id.nowwhere_bt1);
         TextView textViewToday = rootView.findViewById(R.id.dayoftheweektoday_bt1);
         TextView textViewNextday = rootView.findViewById(R.id.dayoftheweektomorrow_bt1);
+        TextView textViewCanRecycle = rootView.findViewById((R.id.canrecycle_bt1));
+        TextView textViewCanRecycleAnnounce = rootView.findViewById((R.id.canrecycleannounce_tv1));
 
         GpsTracker gpsTracker = new GpsTracker(rootView.getContext());
         double latitude = gpsTracker.getLatitude();// 위도
@@ -152,23 +164,90 @@ public class RecycleDayInfoFragment extends Fragment {
         String address = getCurrentAddress(latitude, longitude, rootView.getContext());
 
         String str = address;
+        String targetGps = "s";
         if(address!=null){
             List<String> addressList = Arrays.asList(str.split(" "));
             textViewWhere.setText("현재위치 : "+ addressList.get(1) + " " +  addressList.get(2));
+            targetGps = addressList.get(1)+ " "+addressList.get(2);
         }
         else{
             textViewWhere.setText("위치권환을 허용해주세요.");
         }
 
-
-
         textViewToday.setText("오늘은 " + weekDay + "입니다");
         textViewNextday.setText("내일은 " + nextDay + "입니다");
+
 
         Spannable span1 = (Spannable) textViewToday.getText();
         Spannable span2 = (Spannable) textViewNextday.getText();
         span1.setSpan(new ForegroundColorSpan(Color.BLUE), 4, 7, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
         span2.setSpan(new ForegroundColorSpan(Color.RED), 4, 7, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+
+        char oneNextDay = nextDay.charAt(0);
+        //Log.d(targetGps, "test12");    //잘나옴 강원도원주시
+
+        DocumentReference docRef = db.collection("recycleInfo").document(targetGps);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>(){
+            @Override
+            public void onComplete(@NonNull @NotNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    DocumentSnapshot document = task.getResult();
+                    //Log.i(document.getData().toString(), "test123");
+                    String canRecycle = " " ;
+                    //Log.d(canRecycle, "test13");
+                    try{
+                        if(oneNextDay=='월'){
+                            //Log.d(canRecycle, "test14");    //잘나옴 강원도 원주시
+                            canRecycle=document.getData().get("월").toString();
+                            textViewCanRecycle.setText(canRecycle);
+                            textViewCanRecycleAnnounce.setText(nextDay+" 가능품목");
+                        }
+                        else if(oneNextDay=='화'){
+                            canRecycle=document.getData().get("화").toString();
+                            textViewCanRecycle.setText(canRecycle);
+                            textViewCanRecycleAnnounce.setText(nextDay+" 가능품목");
+                        }
+                        else if(oneNextDay=='수'){
+                            canRecycle=document.getData().get("수").toString();
+                            textViewCanRecycle.setText(canRecycle);
+                            textViewCanRecycleAnnounce.setText(nextDay+" 가능품목");
+                        }
+                        else if(oneNextDay=='목'){
+                            canRecycle=document.getData().get("목").toString();
+                            textViewCanRecycle.setText(canRecycle);
+                            textViewCanRecycleAnnounce.setText(nextDay+" 가능품목");
+                        }
+                        else if(oneNextDay=='금'){
+                            canRecycle=document.getData().get("금").toString();
+                            textViewCanRecycle.setText(canRecycle);
+                            textViewCanRecycleAnnounce.setText(nextDay+" 가능품목");
+                        }
+                        else if(oneNextDay=='토'){
+                            canRecycle=document.getData().get("토").toString();
+                            textViewCanRecycle.setText(canRecycle);
+                            textViewCanRecycleAnnounce.setText(nextDay+" 가능품목");
+                        }
+                        else {
+                            textViewCanRecycle.setText("없음");
+                            textViewCanRecycleAnnounce.setText(nextDay+" 가능품목");
+                        }
+                    }
+                    catch(Exception e){
+                        textViewCanRecycle.setText("미등록 지역입니다.");
+                        Toast.makeText(rootView.getContext(), "추후 업데이트 예정", Toast.LENGTH_LONG).show();
+                    }
+
+
+                }
+                else {
+                    textViewCanRecycle.setText("미등록 지역입니다.");
+                    Toast.makeText(rootView.getContext(), "잘못된 GPS 좌표", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
 
 
         return rootView;

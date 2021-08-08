@@ -40,8 +40,6 @@ public class AdvancedSearchFragment extends Fragment implements OnBackPressListe
         webView.loadUrl(url);
         webView.setWebViewClient(new WebViewClient()); // 클릭시 새창 안뜨게
 
-
-
         //아래코드는 무조건 webView아래에 있어야함
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true); //자바 스크립트 허용
@@ -49,10 +47,6 @@ public class AdvancedSearchFragment extends Fragment implements OnBackPressListe
         webSettings.setSupportZoom(true); // 화면 줌 허용 여부
         webSettings.setBuiltInZoomControls(true); // 화면 확대 축소 허용 여부
         webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN); // 컨텐츠 사이즈 맞추기
-
-
-
-
 
         return rootView;
     }
