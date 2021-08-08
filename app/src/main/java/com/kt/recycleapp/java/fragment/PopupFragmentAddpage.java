@@ -38,7 +38,7 @@ import java.util.Map;
 //내 기억으로 이건 코틀린 영역에서 이 창이 뜨게해야하므로 주광님 화이팅!
 
 
-public class PopupFragmentAddpage extends DialogFragment implements  View.OnClickListener, OnBackPressListener {
+public class PopupFragmentAddpage extends DialogFragment implements  View.OnClickListener {
     public static final String TAG_EVENT_DIALOG = "testtest";
     private EditText writeBarcode;
     private EditText writeProductName;
@@ -92,7 +92,6 @@ public class PopupFragmentAddpage extends DialogFragment implements  View.OnClic
                     @Override
                     public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
                         //key에 바코드 저장하고 value에 물품명 저장하자
-
                         if(task.isSuccessful()){
                             tmpProduct.put(sendBarcode, writeProductName.getText().toString());
 
@@ -115,7 +114,6 @@ public class PopupFragmentAddpage extends DialogFragment implements  View.OnClic
                         else{
                             Toast.makeText(rootView.getContext(), "등록실패, 다시입력하세요", Toast.LENGTH_SHORT).show();
                         }
-
 
                     }
                 });
@@ -141,16 +139,6 @@ public class PopupFragmentAddpage extends DialogFragment implements  View.OnClic
         return rootView;
     }
 
-    public void onBack() {
-        MainActivity act = (MainActivity)getActivity();
-        ((MainActivity) act).setOnBackPressListener(null);
-        act.getSupportFragmentManager().beginTransaction().replace(R.id.small_layout1,new MainFragment()).commit();
-    }
-
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        ((MainActivity)context).setOnBackPressListener(this);
-    }
 
 
     @Override
