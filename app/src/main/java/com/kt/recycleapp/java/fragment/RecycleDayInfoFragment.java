@@ -26,6 +26,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -55,13 +56,9 @@ public class RecycleDayInfoFragment extends Fragment {
     String nextDay = dateFormat.format(tmp);
 
 
-
-
-
     private static final int GPS_ENABLE_REQUEST_CODE = 2000;
     private static final int PERMISSIONS_REQUEST_CODE = 100;
     String[] REQUIRED_PERMISSIONS  = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
-
 
 
     public String getCurrentAddress( double latitude, double longitude, Context context) {
@@ -180,6 +177,7 @@ public class RecycleDayInfoFragment extends Fragment {
         textViewToday.setText("오늘은 " + weekDay + "입니다");
         textViewNextday.setText("내일은 " + nextDay + "입니다");
 
+
         Spannable span1 = (Spannable) textViewToday.getText();
         Spannable span2 = (Spannable) textViewNextday.getText();
         span1.setSpan(new ForegroundColorSpan(Color.BLUE), 4, 7, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
@@ -200,46 +198,56 @@ public class RecycleDayInfoFragment extends Fragment {
                     //Log.i(document.getData().toString(), "test123");
                     String canRecycle = " " ;
                     //Log.d(canRecycle, "test13");
-                    if(oneNextDay=='월'){
-                        //Log.d(canRecycle, "test14");    //잘나옴 강원도 원주시
-                        canRecycle=document.getData().get("월").toString();
-                        textViewCanRecycle.setText(canRecycle);
-                        textViewCanRecycleAnnounce.setText(nextDay+" 가능품목");
+                    try{
+                        if(oneNextDay=='월'){
+                            //Log.d(canRecycle, "test14");    //잘나옴 강원도 원주시
+                            canRecycle=document.getData().get("월").toString();
+                            textViewCanRecycle.setText(canRecycle);
+                            textViewCanRecycleAnnounce.setText(nextDay+" 가능품목");
+                        }
+                        else if(oneNextDay=='화'){
+                            canRecycle=document.getData().get("화").toString();
+                            textViewCanRecycle.setText(canRecycle);
+                            textViewCanRecycleAnnounce.setText(nextDay+" 가능품목");
+                        }
+                        else if(oneNextDay=='수'){
+                            canRecycle=document.getData().get("수").toString();
+                            textViewCanRecycle.setText(canRecycle);
+                            textViewCanRecycleAnnounce.setText(nextDay+" 가능품목");
+                        }
+                        else if(oneNextDay=='목'){
+                            canRecycle=document.getData().get("목").toString();
+                            textViewCanRecycle.setText(canRecycle);
+                            textViewCanRecycleAnnounce.setText(nextDay+" 가능품목");
+                        }
+                        else if(oneNextDay=='금'){
+                            canRecycle=document.getData().get("금").toString();
+                            textViewCanRecycle.setText(canRecycle);
+                            textViewCanRecycleAnnounce.setText(nextDay+" 가능품목");
+                        }
+                        else if(oneNextDay=='토'){
+                            canRecycle=document.getData().get("토").toString();
+                            textViewCanRecycle.setText(canRecycle);
+                            textViewCanRecycleAnnounce.setText(nextDay+" 가능품목");
+                        }
+                        else {
+                            textViewCanRecycle.setText("없음");
+                            textViewCanRecycleAnnounce.setText(nextDay+" 가능품목");
+                        }
                     }
-                    else if(oneNextDay=='화'){
-                        canRecycle=document.getData().get("화").toString();
-                        textViewCanRecycle.setText(canRecycle);
-                        textViewCanRecycleAnnounce.setText(nextDay+" 가능품목");
-                    }
-                    else if(oneNextDay=='수'){
-                        canRecycle=document.getData().get("수").toString();
-                        textViewCanRecycle.setText(canRecycle);
-                        textViewCanRecycleAnnounce.setText(nextDay+" 가능품목");
-                    }
-                    else if(oneNextDay=='목'){
-                        canRecycle=document.getData().get("목").toString();
-                        textViewCanRecycle.setText(canRecycle);
-                        textViewCanRecycleAnnounce.setText(nextDay+" 가능품목");
-                    }
-                    else if(oneNextDay=='금'){
-                        canRecycle=document.getData().get("금").toString();
-                        textViewCanRecycle.setText(canRecycle);
-                        textViewCanRecycleAnnounce.setText(nextDay+" 가능품목");
-                    }
-                    else if(oneNextDay=='토'){
-                        canRecycle=document.getData().get("토").toString();
-                        textViewCanRecycle.setText(canRecycle);
-                        textViewCanRecycleAnnounce.setText(nextDay+" 가능품목");
-                    }
-                    else {
-                        textViewCanRecycle.setText("없음");
-                        textViewCanRecycleAnnounce.setText(nextDay+" 가능품목");
+                    catch(Exception e){
+                        textViewCanRecycle.setText("미등록 지역입니다.");
+                        Toast.makeText(rootView.getContext(), "추후 업데이트 예정", Toast.LENGTH_LONG).show();
                     }
 
+
+                }
+                else {
+                    textViewCanRecycle.setText("미등록 지역입니다.");
+                    Toast.makeText(rootView.getContext(), "잘못된 GPS 좌표", Toast.LENGTH_LONG).show();
                 }
             }
         });
-
 
 
         return rootView;
