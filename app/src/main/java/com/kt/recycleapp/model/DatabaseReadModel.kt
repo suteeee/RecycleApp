@@ -7,13 +7,14 @@ import android.util.Log
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.FirebaseFirestore
+import com.kt.recycleapp.kt.viewmodel.FindFragmentViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class DatabaseReadModel {
     val db = FirebaseFirestore.getInstance()
     companion object {
-        var name:Map<String,String> = HashMap()
+        var name = HashMap<String, String>()
         var decodeImageList = ArrayList<Bitmap>()
     }
 
@@ -43,33 +44,27 @@ class DatabaseReadModel {
         return arr
     }
 
-    fun findSmall(findSmallProgress: MutableLiveData<String>):  ArrayList<ArrayList<HashMap<String,String>>> {
+    fun findSmall(findSmallProgress: MutableLiveData<String>):  ArrayList<HashMap<String,String>>{
         findSmallProgress.value = "start"
-        val collection = db.collection("find-small")
-        val arr = ArrayList<ArrayList<HashMap<String,String>>>()
+        var selected = FindFragmentViewModel.selectDoc
+        val collection = db.collection("products")
+        val arr = ArrayList<HashMap<String,String>>()
         //컬렉션 Arr 안에 문서 arr 안에 값 hashmap 구조
-
         collection.get().addOnCompleteListener {
             val variable = it.result.documents
-            var c = 0
             variable.forEach { doc->
-
-                val tArr = ArrayList<HashMap<String,String>>()
-               for(i in 0 until doc.data?.keys?.size!!){
-                   val temp = HashMap<String,String>()
-                   temp.put(doc.data!!.keys.elementAt(i), doc.data!!.values.elementAt(i).toString())
-                   tArr.add(temp)
-               }
-                arr.add(tArr)
-
-                arr.forEach {
-                    it.forEach { res->
-                        Log.d(res.toString(),"doc")
+                Log.d("것","${doc.id} , $selected")
+                if(doc.id == selected){
+                    for(i in 0 until doc.data?.keys?.size!!){
+                        val temp = HashMap<String,String>()
+                        temp.put(doc.data!!.keys.elementAt(i), doc.data!!.values.elementAt(i).toString())
+                        arr.add(temp)
                     }
                 }
-                c++
             }
-
+            arr.forEach {
+                Log.d("것",it.toString())
+            }
             findSmallProgress.value = "finish"
         }
         return arr
@@ -81,11 +76,27 @@ class DatabaseReadModel {
         var collection = db.collection("products")
         collection.get().addOnCompleteListener {
             Log.d("start","junnn")
-            for(doc in it.result) {
-                name = doc.data as Map<String, String>
+            for(doc in it.result.documents) {
+               doc.data?.forEach { res->
+                   name.put(res.key,res.value.toString())
+               }
             }
-            Log.d(name.toString(),"junnnn1")
+            Log.d("junnnn1",name.toString())
             getProductName.value="finish"
         }
+    }
+
+    fun getProductsList(arr:MutableLiveData<String>) : ArrayList<String>{
+        arr.value = "start"
+        var collection = db.collection("products")
+        var list = ArrayList<String>()
+        collection.get().addOnCompleteListener {
+            (it.result.documents).forEach {
+                list.add(it.id)
+            }
+            Log.d("것것1",list.toString())
+            arr.value = "finish"
+        }
+        return list
     }
 }

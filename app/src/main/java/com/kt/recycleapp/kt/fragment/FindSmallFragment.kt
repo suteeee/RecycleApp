@@ -47,12 +47,8 @@ class FindSmallFragment : Fragment(), OnBackPressListener {
                     "종이"->idx = 0
                     "플라스틱"->idx = 1
                 }
-                viewModel.itemDataSmall[idx].forEach {
-                    Log.d("check",it.toString())
-                }
-                for(i in 0 until viewModel.itemDataSmall[idx].size){
-                    viewModel.addSmallItem(i,idx)
-                }
+
+                viewModel.addSmallItem(idx)
             }
         })
 

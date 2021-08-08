@@ -53,19 +53,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/inputBarcode_et1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:editable="true"
-        android:ems="8"
-        android:gravity="center"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/inputProductName_et1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/askBarcode_tv1"
-        app:layout_constraintTop_toBottomOf="@+id/attention_tv1" />
-
-    <EditText
         android:id="@+id/inputProductName_et1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -74,19 +61,19 @@
         android:inputType="textPersonName"
         app:layout_constraintBottom_toTopOf="@+id/askNo_bt1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/askProductName_tv1"
-        app:layout_constraintTop_toBottomOf="@+id/inputBarcode_et1" />
+        app:layout_constraintTop_toBottomOf="@id/products_sp"
+        app:layout_constraintStart_toEndOf="@+id/askProductName_tv1" />
 
     <TextView
         android:id="@+id/askBarcode_tv1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/gmarket_middle"
-        android:text="바코드"
+        android:text="물품 분류"
         android:textColor="@color/main_text_color"
         app:layout_constraintBottom_toTopOf="@+id/askProductName_tv1"
-        app:layout_constraintEnd_toStartOf="@+id/inputBarcode_et1"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/products_sp"
         app:layout_constraintTop_toBottomOf="@+id/attention_tv1" />
 
     <TextView
@@ -107,13 +94,22 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/gmarket_thick"
         android:gravity="center"
-        android:textColor="#F90404"
         android:text="@string/attention"
-        app:layout_constraintBottom_toTopOf="@+id/inputBarcode_et1"
+        android:textColor="#F90404"
+        app:layout_constraintBottom_toTopOf="@id/products_sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addInfo_tv1" />
+
+    <Spinner
+        android:id="@+id/products_sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/inputProductName_et1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/askBarcode_tv1"
+        app:layout_constraintTop_toBottomOf="@+id/attention_tv1" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

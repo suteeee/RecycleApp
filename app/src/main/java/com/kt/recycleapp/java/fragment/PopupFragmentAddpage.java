@@ -5,13 +5,19 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+import androidx.room.Database;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,11 +31,13 @@ import com.kt.recycleapp.kt.activity.MainActivity;
 import com.kt.recycleapp.kt.activity.OnBackPressListener;
 import com.kt.recycleapp.kt.fragment.MainFragment;
 import com.kt.recycleapp.manager.MyPreferenceManager;
+import com.kt.recycleapp.model.DatabaseReadModel;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.recycleapp.R;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,12 +48,14 @@ import java.util.Map;
 
 public class PopupFragmentAddpage extends DialogFragment implements  View.OnClickListener, OnBackPressListener {
     public static final String TAG_EVENT_DIALOG = "testtest";
-    private EditText writeBarcode;
+    private Spinner spinner;
     private EditText writeProductName;
     private Button saveButton;
     private Button cancleButton;
     private String sendBarcode;
-
+    private DatabaseReadModel data = new DatabaseReadModel();
+    MutableLiveData<String> ld = new MutableLiveData<String>();
+    private String product = "";
 
 
     public PopupFragmentAddpage(){
@@ -72,7 +82,8 @@ public class PopupFragmentAddpage extends DialogFragment implements  View.OnClic
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        writeBarcode = (EditText) rootView.findViewById(R.id.inputBarcode_et1);
+        ArrayList arr = data.getProductsList(ld);
+
         writeProductName = (EditText) rootView.findViewById(R.id.inputProductName_et1);
         saveButton = (Button) rootView.findViewById(R.id.askYes_bt1);
         cancleButton = (Button) rootView.findViewById(R.id.askNo_bt1);
@@ -85,6 +96,32 @@ public class PopupFragmentAddpage extends DialogFragment implements  View.OnClic
             sendBarcode = bundle.getString("barcode");
         }
 
+        ld.observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                if(s.equals("finish")){
+                    Log.d("것것",s);
+                    Log.d("것것",arr.toString());
+                    spinner = rootView.findViewById(R.id.products_sp);
+                    ArrayAdapter adt = new ArrayAdapter(rootView.getContext(), android.R.layout.simple_spinner_dropdown_item,arr);
+                    spinner.setAdapter(adt);
+                    adt.notifyDataSetChanged();
+                    spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                            product = spinner.getItemAtPosition(i).toString();
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+
+                        }
+                    });
+
+                }
+            }
+        });
+
         saveButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -96,7 +133,7 @@ public class PopupFragmentAddpage extends DialogFragment implements  View.OnClic
                         if(task.isSuccessful()){
                             tmpProduct.put(sendBarcode, writeProductName.getText().toString());
 
-                            db.collection("products").document("productlist")
+                            db.collection("products").document(product)
                                     .update(tmpProduct)//set하면 문서날라감
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
@@ -120,7 +157,7 @@ public class PopupFragmentAddpage extends DialogFragment implements  View.OnClic
                     }
                 });
 
-
+                dismiss();
             }
         });
 

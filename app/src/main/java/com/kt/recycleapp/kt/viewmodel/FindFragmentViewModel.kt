@@ -18,7 +18,7 @@ class FindFragmentViewModel: ViewModel() {
     val itemList = ObservableArrayList<FindBigData>()
     val smallItemList = ObservableArrayList<FindSmallData>()
     var itemData = ArrayList<HashMap<String,String>>()
-    var itemDataSmall =  ArrayList<ArrayList<HashMap<String,String>>>()
+    var itemDataSmall =  ArrayList<HashMap<String,String>>()
     var findBigProgress = MutableLiveData<String>()
     var findSmallProgress = MutableLiveData<String>()
 
@@ -30,23 +30,27 @@ class FindFragmentViewModel: ViewModel() {
         itemList.add(FindBigData(imgArr[index],itemData[index][index.toString()]!!))
     }
 
-    fun addSmallItem(index: Int, idx: Int){
+    fun addSmallItem(idx: Int){
         var temp = paperPng
         when(idx){
             0->temp = paperPng
             1->temp = platicPng
         }
-        smallItemList.add(FindSmallData(temp[index],itemDataSmall[idx][index][index.toString()]!!))
+
+        var cnt = 0
+
+        itemDataSmall.forEach {
+            smallItemList.add(FindSmallData(temp[idx],itemDataSmall[cnt].values.elementAt(0)))
+            cnt++
+        }
     }
 
     fun findBig() :ArrayList<HashMap<String,String>>{
         itemData = model.findBig(findBigProgress)
-        Log.d(findBigProgress.toString(),"doc")
-
         return itemData
     }
 
-    fun findSmall(): ArrayList<ArrayList<HashMap<String,String>>>{
+    fun findSmall(): ArrayList<HashMap<String,String>>{
         itemDataSmall = model.findSmall(findSmallProgress)
 
         return itemDataSmall

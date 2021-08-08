@@ -60,6 +60,11 @@ class HistoryViewModel : ViewModel() {
                 date = "2021년 07월 31일"
             }
 
+
+                Log.d("것",DatabaseReadModel.name[it.barcode]!!)
+
+
+
             if(DatabaseReadModel.name[it.barcode] == null){
                 barcode = "바코드 값 : ${it.barcode}"
             }
