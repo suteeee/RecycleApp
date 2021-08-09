@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/AskDataAdd_layout"
     android:layout_width="350dp"
-    android:layout_height="500dp"
+    android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:background="@color/main_backg_color"
     tools:context="com.kt.recycleapp.java.fragment.PopupFragmentAddpage">
@@ -14,33 +14,32 @@
         android:layout_height="wrap_content"
         android:background="@drawable/common_buttom_design"
         android:fontFamily="@font/gmarket_middle"
-        android:textSize="10sp"
-        android:text="추가"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="추가하러 가기 >>>"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@id/askNo_bt1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/askNo_bt1"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.95" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/attention_tv1" />
 
     <Button
         android:id="@+id/askNo_bt1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/common_buttom_design"
+        android:background="@color/main_backg_color"
         android:fontFamily="@font/gmarket_middle"
-        android:textSize="10sp"
         android:text="취소"
+        android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/askYes_bt1"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.95" />
+        app:layout_constraintTop_toBottomOf="@id/askYes_bt1" />
 
     <TextView
         android:id="@+id/addInfo_tv1"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="20dp"
         android:fontFamily="@font/gmarket_middle"
         android:gravity="center"
@@ -52,64 +51,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/inputProductName_et1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="8"
-        android:gravity="center"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/askNo_bt1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/products_sp"
-        app:layout_constraintStart_toEndOf="@+id/askProductName_tv1" />
-
-    <TextView
-        android:id="@+id/askBarcode_tv1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/gmarket_middle"
-        android:text="물품 분류"
-        android:textColor="@color/main_text_color"
-        app:layout_constraintBottom_toTopOf="@+id/askProductName_tv1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/products_sp"
-        app:layout_constraintTop_toBottomOf="@+id/attention_tv1" />
-
-    <TextView
-        android:id="@+id/askProductName_tv1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/gmarket_middle"
-        android:text="물품명"
-        android:textColor="@color/main_text_color"
-        app:layout_constraintBottom_toTopOf="@+id/askNo_bt1"
-        app:layout_constraintEnd_toStartOf="@+id/inputProductName_et1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/askBarcode_tv1" />
-
     <TextView
         android:id="@+id/attention_tv1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:fontFamily="@font/gmarket_thick"
         android:gravity="center"
         android:text="@string/attention"
         android:textColor="#F90404"
-        app:layout_constraintBottom_toTopOf="@id/products_sp"
+        app:layout_constraintBottom_toTopOf="@+id/askYes_bt1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addInfo_tv1" />
-
-    <Spinner
-        android:id="@+id/products_sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/inputProductName_et1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/askBarcode_tv1"
-        app:layout_constraintTop_toBottomOf="@+id/attention_tv1" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

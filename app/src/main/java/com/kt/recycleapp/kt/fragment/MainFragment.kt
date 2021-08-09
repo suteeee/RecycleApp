@@ -142,6 +142,7 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as MainActivity).viewModel.selectedFragment.value = "main"
         if (allPermissionsGranted()) {
             startCamera()
         } else {
@@ -264,7 +265,6 @@ class MainFragment : Fragment() {
     }
 
     override fun onAttach(context: Context) {
-        (activity as MainActivity).viewModel.selectedFragment.value = "main"
         Log.d("search","create!!")
         super.onAttach(context)
     }

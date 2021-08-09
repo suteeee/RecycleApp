@@ -58,7 +58,7 @@ public class AppSettingFragment extends Fragment implements OnBackPressListener 
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                     Toast.makeText(rootView.getContext(), "다크모드 활성화", Toast.LENGTH_SHORT).show();
                     prefs.setDarkmodSwitch(true);
-                    //darkmodSwitch.setChecked(true); //여기에서 팅김
+                    darkmodSwitch.setChecked(true); //여기에서 팅김
                 }
                 else if(prefs.getDarkmodSwitch()==true){
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);

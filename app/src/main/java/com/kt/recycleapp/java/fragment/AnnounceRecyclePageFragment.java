@@ -71,7 +71,6 @@ import java.util.Set;
 
     public void onBack() {
         MainActivity act = (MainActivity)getActivity();
-        DialogFragment frg = new PopupFragmentAddpage();
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("products").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
@@ -99,36 +98,14 @@ import java.util.Set;
 
 
 
-        bundle.putString("barcode", barcode);
-        frg.setArguments(bundle);
-
-        Log.d("search1",act.viewModel.isPopup().getValue().toString());
-        Log.d("search1",act.viewModel.getSelectedFragment().getValue().toString());
-
        if(act.viewModel.getSelectedFragment().getValue().equals("main")){
+           bundle.putString("barcode", barcode);
+           DialogFragment frg = new PopupFragmentAddpage();
+           frg.setArguments(bundle);
            frg.show(act.getSupportFragmentManager(), PopupFragmentStartpage.TAG_EVENT_DIALOG);
        }
        else{
            act.setOnBackPressListener(null);
-           //
-           // Log.d("search2",act.viewModel.getSelectedFragment().getValue());
-          // Fragment fragment = null;
-           //act.viewModel.isPopup().setValue("false");
-           /*switch (act.viewModel.getSelectedFragment().getValue()) {
-               case "find":
-                   fragment = new FindFragment();
-                   break;
-               case "favorite":
-                   fragment = new FavoriteItemFragment();
-                   break;
-               case "history":
-                   fragment = new HistoryFragment();
-                   break;
-               default:
-                   fragment = new MainFragment();
-                   break;
-           }*/
-          // Log.d("search2","준 " + fragment.toString());
            act.getSupportFragmentManager().beginTransaction().replace(R.id.small_layout1,new MainFragment()).commit();
        }
     }

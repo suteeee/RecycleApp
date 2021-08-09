@@ -76,6 +76,16 @@ object BindingAdapters {
         recyclerView.adapter?.notifyDataSetChanged()
     }
 
+    @BindingAdapter("add")
+    @JvmStatic
+    fun addItem(recyclerView: RecyclerView,item:ObservableArrayList<Int>) {
+        val adt = AddAdapter()
+        val lm = LinearLayoutManager(recyclerView.context)
 
+        recyclerView.layoutManager = lm
+        recyclerView.adapter = adt
+        (recyclerView.adapter as AddAdapter).items = item
+        recyclerView.adapter?.notifyDataSetChanged()
+    }
 
 }
