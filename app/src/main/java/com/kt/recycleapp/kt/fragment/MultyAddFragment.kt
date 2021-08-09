@@ -72,22 +72,20 @@ class MultyAddFragment : Fragment(), OnBackPressListener {
                     Log.d("것것","${res.key} ${res.value}")
                 }
             }
-            GlobalScope.launch {
+
                 for(i in 0 until list.size){
                     if(i == 0){
                         db.collection("products").document(AddViewModel.products[i])
                             .update(list[i])
                     }
                     else{
-                        db.collection("products").document("복합물품")
+                        db.collection("products").document("복합물품").collection("sublist").document(AddViewModel.products[i])
                             .update(list[i])
                     }
                     Log.d("것것","123123")
-                    delay(100)
                 }
                 binding.multyPb.visibility = View.INVISIBLE
-                //Toast.makeText(context,"상품 등록이 완료되었습니다.",Toast.LENGTH_SHORT).show()
-            }
+                Toast.makeText(context,"상품 등록이 완료되었습니다.",Toast.LENGTH_SHORT).show()
         }
         return binding.root
     }

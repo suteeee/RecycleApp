@@ -47,6 +47,7 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
+        viewModel.selectedFragment.value = "main"
 
         binding.toolbarSv.setOnSearchClickListener {
             tempText = viewModel.toolbarText.value!!

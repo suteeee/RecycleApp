@@ -37,6 +37,7 @@ import androidx.camera.core.CameraSelector
 import androidx.lifecycle.MutableLiveData
 import androidx.room.Room
 import com.kt.recycleapp.kt.activity.MainActivity
+import com.kt.recycleapp.kt.viewmodel.MainViewModel
 import com.kt.recycleapp.model.DatabaseReadModel
 import com.kt.recycleapp.model.MyRoomDatabase
 import com.kt.recycleapp.model.RoomHelper
