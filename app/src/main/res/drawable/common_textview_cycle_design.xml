@@ -2,11 +2,17 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android" >
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <solid android:color="#00FF00" />
+    <solid android:color="@color/box_color" />
     <size android:width="100dp" android:height="100dp" />
 
     <stroke
         android:width="4dp"
-        android:color="#006400" />
+        android:color="@color/box_color_border" />
+
+    <corners
+        android:topLeftRadius="10dp"
+        android:topRightRadius="10dp"
+        android:bottomLeftRadius="10dp"
+        android:bottomRightRadius="10dp"  /> // 선 휘는각도
 
 </shape>

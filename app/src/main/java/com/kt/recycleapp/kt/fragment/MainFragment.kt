@@ -9,13 +9,14 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import androidx.fragment.app.Fragment
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.kt.recycleapp.java.fragment.AnnounceRecyclePageFragment
 import com.kt.recycleapp.kt.camera.MyImageAnalyzer
@@ -142,7 +143,6 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as MainActivity).viewModel.selectedFragment.value = "main"
         if (allPermissionsGranted()) {
             startCamera()
         } else {
@@ -265,6 +265,7 @@ class MainFragment : Fragment() {
     }
 
     override fun onAttach(context: Context) {
+       // (activity as MainActivity).viewModel.selectedFragment.value = "main"
         Log.d("search","create!!")
         super.onAttach(context)
     }

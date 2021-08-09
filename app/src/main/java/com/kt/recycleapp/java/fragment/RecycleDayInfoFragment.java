@@ -1,10 +1,7 @@
 package com.kt.recycleapp.java.fragment;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Address;
@@ -13,7 +10,6 @@ import android.os.Bundle;
 import android.text.Spannable;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,18 +17,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.kt.recycleapp.kt.activity.MainActivity;
 
 import org.jetbrains.annotations.NotNull;
@@ -42,10 +34,8 @@ import java.recycleapp.R;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 
 public class RecycleDayInfoFragment extends Fragment {
@@ -155,8 +145,8 @@ public class RecycleDayInfoFragment extends Fragment {
         TextView textViewWhere = rootView.findViewById(R.id.nowwhere_bt1);
         TextView textViewToday = rootView.findViewById(R.id.dayoftheweektoday_bt1);
         TextView textViewNextday = rootView.findViewById(R.id.dayoftheweektomorrow_bt1);
-        TextView textViewCanRecycle = rootView.findViewById((R.id.canrecycle_bt1));
-        TextView textViewCanRecycleAnnounce = rootView.findViewById((R.id.canrecycleannounce_tv1));
+        TextView textViewCanRecycle = rootView.findViewById((R.id.canrecycle_bt2));
+        TextView textViewTodayCanRecycle = rootView.findViewById(R.id.canrecycle_bt1);
 
         GpsTracker gpsTracker = new GpsTracker(rootView.getContext());
         double latitude = gpsTracker.getLatitude();// 위도
@@ -185,7 +175,7 @@ public class RecycleDayInfoFragment extends Fragment {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-
+        char oneWeekDay = weekDay.charAt(0);
         char oneNextDay = nextDay.charAt(0);
         //Log.d(targetGps, "test12");    //잘나옴 강원도원주시
 
@@ -197,42 +187,55 @@ public class RecycleDayInfoFragment extends Fragment {
                     DocumentSnapshot document = task.getResult();
                     //Log.i(document.getData().toString(), "test123");
                     String canRecycle = " " ;
+                    String canTodayRecycle = " ";
                     //Log.d(canRecycle, "test13");
                     try{
                         if(oneNextDay=='월'){
                             //Log.d(canRecycle, "test14");    //잘나옴 강원도 원주시
                             canRecycle=document.getData().get("월").toString();
                             textViewCanRecycle.setText(canRecycle);
-                            textViewCanRecycleAnnounce.setText(nextDay+" 가능품목");
+                            textViewTodayCanRecycle.setText("없음");
                         }
                         else if(oneNextDay=='화'){
                             canRecycle=document.getData().get("화").toString();
                             textViewCanRecycle.setText(canRecycle);
-                            textViewCanRecycleAnnounce.setText(nextDay+" 가능품목");
+                            canTodayRecycle=document.getData().get("월").toString();
+                            textViewTodayCanRecycle.setText(canTodayRecycle);
+
                         }
                         else if(oneNextDay=='수'){
                             canRecycle=document.getData().get("수").toString();
                             textViewCanRecycle.setText(canRecycle);
-                            textViewCanRecycleAnnounce.setText(nextDay+" 가능품목");
+                            canTodayRecycle=document.getData().get("화").toString();
+                            textViewTodayCanRecycle.setText(canTodayRecycle);
+
                         }
                         else if(oneNextDay=='목'){
                             canRecycle=document.getData().get("목").toString();
                             textViewCanRecycle.setText(canRecycle);
-                            textViewCanRecycleAnnounce.setText(nextDay+" 가능품목");
+                            canTodayRecycle=document.getData().get("수").toString();
+                            textViewTodayCanRecycle.setText(canTodayRecycle);
+
                         }
                         else if(oneNextDay=='금'){
                             canRecycle=document.getData().get("금").toString();
                             textViewCanRecycle.setText(canRecycle);
-                            textViewCanRecycleAnnounce.setText(nextDay+" 가능품목");
+                            canTodayRecycle=document.getData().get("목").toString();
+                            textViewTodayCanRecycle.setText(canTodayRecycle);
+
                         }
                         else if(oneNextDay=='토'){
                             canRecycle=document.getData().get("토").toString();
                             textViewCanRecycle.setText(canRecycle);
-                            textViewCanRecycleAnnounce.setText(nextDay+" 가능품목");
+                            canTodayRecycle=document.getData().get("금").toString();
+                            textViewTodayCanRecycle.setText(canTodayRecycle);
+
                         }
                         else {
                             textViewCanRecycle.setText("없음");
-                            textViewCanRecycleAnnounce.setText(nextDay+" 가능품목");
+                            canTodayRecycle=document.getData().get("토").toString();
+                            textViewTodayCanRecycle.setText(canTodayRecycle);
+
                         }
                     }
                     catch(Exception e){

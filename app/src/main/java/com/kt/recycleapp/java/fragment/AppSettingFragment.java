@@ -25,7 +25,9 @@ import java.recycleapp.R;
 
 public class AppSettingFragment extends Fragment implements OnBackPressListener {
     private Button seeAnnounceButton;
-    private Switch darkmodSwitch;
+    //private Switch darkmodSwitch;
+    private Button darkmodButton;
+
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -35,9 +37,18 @@ public class AppSettingFragment extends Fragment implements OnBackPressListener 
         ((MainActivity)getActivity()).viewModel.getToolbarText().setValue("환경 설정");
 
         seeAnnounceButton = (Button) rootView.findViewById(R.id.announce_bt1);
-        darkmodSwitch = (Switch) rootView.findViewById(R.id.darkmod_sch1);
+        //darkmodSwitch = (Switch) rootView.findViewById(R.id.darkmod_sch1);
+        darkmodButton = (Button) rootView.findViewById(R.id.darkmodonoff_bt1);
+
 
         MyPreferenceManager prefs = new MyPreferenceManager(requireContext()); //만들었던 preferenceManager를 쓸수있게 생성
+
+        if(prefs.getDarkmodSwitch()==false){
+            darkmodButton.setText("OFF");
+        }
+        else if(prefs.getDarkmodSwitch()==true){
+            darkmodButton.setText("ON");
+        }
 
         seeAnnounceButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,28 +59,45 @@ public class AppSettingFragment extends Fragment implements OnBackPressListener 
             }
         });
 
+        darkmodButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(prefs.getDarkmodSwitch()==false){
+                    prefs.setDarkmodSwitch(true);
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    Toast.makeText(rootView.getContext(), "다크모드 활성화", Toast.LENGTH_SHORT).show();
+                }
+                else if(prefs.getDarkmodSwitch()==true){
+                    prefs.setDarkmodSwitch(false);
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    Toast.makeText(rootView.getContext(), "주간모드 활성화", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
+        /* 스위치 왜안될까...
         darkmodSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 // 스위치 버튼이 체크되었는지 검사
 
-                if(prefs.getDarkmodSwitch()==false){
+                if(prefs.getDarkmodSwitch()==true){
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                     Toast.makeText(rootView.getContext(), "다크모드 활성화", Toast.LENGTH_SHORT).show();
-                    prefs.setDarkmodSwitch(true);
+                    prefs.setDarkmodSwitch(false);
                     darkmodSwitch.setChecked(true); //여기에서 팅김
                 }
-                else if(prefs.getDarkmodSwitch()==true){
+                else if(prefs.getDarkmodSwitch()==false){
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                     Toast.makeText(rootView.getContext(), "주간모드 활성화", Toast.LENGTH_SHORT).show();
-                    prefs.setDarkmodSwitch(false);
-                   // darkmodSwitch.setChecked(false);
-
+                    prefs.setDarkmodSwitch(true);
+                    darkmodSwitch.setChecked(false);
 
                 }
             }
         });
+        */
+
 
 
 
