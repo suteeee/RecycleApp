@@ -9,36 +9,37 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import androidx.fragment.app.Fragment
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
+import androidx.room.Room
 import com.kt.recycleapp.java.fragment.AnnounceRecyclePageFragment
+import com.kt.recycleapp.kt.activity.MainActivity
 import com.kt.recycleapp.kt.camera.MyImageAnalyzer
 import com.kt.recycleapp.kt.viewmodel.CameraSettingViewModel
+import com.kt.recycleapp.manager.MyPreferenceManager
+import com.kt.recycleapp.model.DatabaseReadModel
+import com.kt.recycleapp.model.MyRoomDatabase
+import com.kt.recycleapp.model.RoomHelper
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.navi_header.*
 import kotlinx.android.synthetic.main.navi_header.view.*
 import java.io.File
+import java.recycleapp.R
 import java.recycleapp.databinding.FragmentMainBinding
+import java.text.SimpleDateFormat
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicBoolean
-import java.recycleapp.R
-import java.text.SimpleDateFormat
-import androidx.camera.core.CameraSelector
-import androidx.lifecycle.MutableLiveData
-import androidx.room.Room
-import com.kt.recycleapp.kt.activity.MainActivity
-import com.kt.recycleapp.model.DatabaseReadModel
-import com.kt.recycleapp.model.MyRoomDatabase
-import com.kt.recycleapp.model.RoomHelper
 
 typealias BarcodeListener = (barcode: String) -> Unit
 
@@ -117,6 +118,16 @@ class MainFragment : Fragment() {
             cameraController!!.setZoomRatio(f)
             binding.invalidateAll()
         })
+
+        /*
+        val prefs = MyPreferenceManager(requireContext()) //만들었던 preferenceManager를 쓸수있게 생성
+        if (prefs.darkmodSwitch == false) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else if (prefs.darkmodSwitch == true) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+        */
+
 
         return rootView
     }
@@ -264,7 +275,7 @@ class MainFragment : Fragment() {
     }
 
     override fun onAttach(context: Context) {
-        (activity as MainActivity).viewModel.selectedFragment.value = "main"
+       // (activity as MainActivity).viewModel.selectedFragment.value = "main"
         Log.d("search","create!!")
         super.onAttach(context)
     }

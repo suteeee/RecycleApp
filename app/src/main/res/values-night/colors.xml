@@ -6,6 +6,8 @@
     <color name="comon_button_background">#00FF00</color>
     <color name="love_star">#FFFF00</color>
     <color name="target">#FFFF00</color>
+    <color name="box_color">#424242</color>
+    <color name="box_color_border">#BDBDBD</color>
 
 
 </resources>
