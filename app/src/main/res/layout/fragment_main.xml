@@ -82,6 +82,7 @@
                 android:id="@+id/History_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:background="@color/main_color"
                 android:src="@drawable/ic_history"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -90,13 +91,12 @@
 
             <Button
                 android:id="@+id/capture_btn"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/circle_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_flashon"
                 android:clickable="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/History_btn"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
