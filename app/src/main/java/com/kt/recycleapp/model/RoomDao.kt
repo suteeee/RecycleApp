@@ -5,7 +5,7 @@ import androidx.room.OnConflictStrategy.REPLACE
 
 @Dao
 interface RoomDAO {
-    @Query("select * from `database`")
+    @Query("select * from `Database`")
     fun getAll():List<MyRoomDatabase>
 
     @Insert(onConflict = REPLACE)
@@ -14,15 +14,15 @@ interface RoomDAO {
     @Delete
     fun delete(db:MyRoomDatabase)
 
-    @Query("UPDATE `database` SET favorite = :state WHERE `no` == :position")
+    @Query("UPDATE `Database` SET favorite = :state WHERE `no` == :position")
     fun updateFavorite(position:Int,state:String)
 
-    @Query("SELECT `no` FROM `database`")
+    @Query("SELECT `no` FROM `Database`")
     fun getNo():List<Long?>
 
-    @Query("SELECT `barcode` FROM `database` WHERE `no` == :position")
+    @Query("SELECT `barcode` FROM `Database` WHERE `no` == :position")
     fun getBarcode(position: Int):String
 
-    @Query("select * from `database` WHERE favorite = 'true'")
+    @Query("select * from `Database` WHERE favorite = 'true'")
     fun getFavoriteAll() : List<MyRoomDatabase>
 }

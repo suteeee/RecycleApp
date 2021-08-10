@@ -31,7 +31,7 @@ class MultyAddFragment : Fragment(), OnBackPressListener {
     var data = DatabaseReadModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
+ 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_multy_add, container, false)
         val arr = data.getProductsList(ld)
         viewModel = ViewModelProvider(this).get(AddViewModel::class.java)
@@ -67,12 +67,6 @@ class MultyAddFragment : Fragment(), OnBackPressListener {
             binding.multyPb.visibility = View.VISIBLE
             val db = FirebaseFirestore.getInstance()
             val list = AddViewModel.addItems
-            list.forEach {
-                it.forEach { res->
-                    Log.d("것것","${res.key} ${res.value}")
-                }
-            }
-
                 for(i in 0 until list.size){
                     if(i == 0){
                         db.collection("products").document(AddViewModel.products[i])
@@ -82,7 +76,6 @@ class MultyAddFragment : Fragment(), OnBackPressListener {
                         db.collection("products").document("복합물품").collection("sublist").document(AddViewModel.products[i])
                             .update(list[i])
                     }
-                    Log.d("것것","123123")
                 }
                 binding.multyPb.visibility = View.INVISIBLE
                 Toast.makeText(context,"상품 등록이 완료되었습니다.",Toast.LENGTH_SHORT).show()
@@ -93,7 +86,7 @@ class MultyAddFragment : Fragment(), OnBackPressListener {
     override fun onBack() {
         val act = activity as MainActivity?
         act!!.setOnBackPressListener(null)
-        act!!.supportFragmentManager.beginTransaction().replace(R.id.small_layout1, MainFragment()).commit()
+        act.supportFragmentManager.beginTransaction().replace(R.id.small_layout1, MainFragment()).commit()
     }
 
     override fun onAttach(context: Context) {
