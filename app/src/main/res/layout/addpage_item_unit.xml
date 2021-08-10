@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-             <variable
+        <variable
             name="big"
-            type="com.kt.recycleapp.kt.etc.FindBigData" />
+            type="com.kt.recycleapp.kt.etc.FindBigData"
+            />
 
     </data>
 
@@ -14,7 +15,6 @@
         android:id="@+id/addpage_item_layout"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:background="@color/main_backg_color"
         android:clickable="true">
 
         <androidx.cardview.widget.CardView
@@ -23,6 +23,7 @@
             app:cardCornerRadius="3dp"
             app:cardElevation="5dp"
             app:cardUseCompatPadding="true"
+            android:background="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
