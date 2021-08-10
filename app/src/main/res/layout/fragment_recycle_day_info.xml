@@ -13,11 +13,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/gmarket_thin"
-        android:textColor="@color/main_text_color"
         android:text="현재 위치정보"
+        android:textColor="@color/main_text_color"
         app:layout_constraintBottom_toTopOf="@+id/dayoftheweektoday_bt1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -25,13 +25,14 @@
         android:id="@+id/dayoftheweektoday_bt1"
         android:layout_width="200dp"
         android:layout_height="100dp"
-        android:layout_marginBottom="1dp"
+        android:layout_marginTop="60dp"
         android:bufferType="spannable"
         android:fontFamily="@font/gmarket_middle"
         android:text="오늘은 ?요일"
         android:textAlignment="center"
         android:textColor="@color/main_text_color"
         android:textSize="30sp"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/canrecycle_bt1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,6 +42,7 @@
         android:id="@+id/dayoftheweektomorrow_bt1"
         android:layout_width="200dp"
         android:layout_height="100dp"
+        android:layout_marginTop="100dp"
         android:bufferType="spannable"
         android:fontFamily="@font/gmarket_middle"
         android:text="내일은 ?요일"
@@ -49,7 +51,6 @@
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/canrecycle_bt2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.484"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/canrecycle_bt1" />
 
@@ -60,12 +61,11 @@
         android:background="@drawable/common_textview_cycle_design"
         android:fontFamily="@font/gmarket_middle"
         android:gravity="center"
-        android:text="1번가능품목"
+        android:text="로딩중..."
         android:textAlignment="center"
         android:textColor="@color/main_text_color"
         app:layout_constraintBottom_toTopOf="@+id/dayoftheweektomorrow_bt1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dayoftheweektoday_bt1" />
 
@@ -73,18 +73,17 @@
         android:id="@+id/canrecycle_bt2"
         android:layout_width="350dp"
         android:layout_height="50dp"
+        android:layout_marginBottom="50dp"
         android:background="@drawable/common_textview_cycle_design"
         android:fontFamily="@font/gmarket_middle"
         android:gravity="center"
-        android:text="1번가능품목"
+        android:text="로딩중..."
         android:textAlignment="center"
         android:textColor="@color/main_text_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dayoftheweektomorrow_bt1" />
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

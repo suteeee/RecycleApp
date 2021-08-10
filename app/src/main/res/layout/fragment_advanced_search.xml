@@ -9,38 +9,18 @@
     tools:context="com.kt.recycleapp.java.fragment.AdvancedSearchFragment"
     android:focusable="true">
 
-    <!--
-      android:inputType 멀까?
-      http://search.me.go.kr/search/totalSearch/search.jsp?q=검색어
-
-      -->
-
-    <SearchView
-        android:id="@+id/searchtext_sv1"
-        android:layout_width="280dp"
-        android:layout_height="48dp"
-        android:layout_marginBottom="600dp"
-        android:background="@drawable/button_ractangle"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.192" />
 
     <WebView
         android:id="@+id/webresult_wv1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="30dp"
         android:background="#ffffff"
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchtext_sv1"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

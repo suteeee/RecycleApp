@@ -24,7 +24,7 @@ import java.recycleapp.R;
 public class AdvancedSearchFragment extends Fragment implements OnBackPressListener {
 
     private WebView webView;
-    private String url = "http://m.me.go.kr/m/mob/search/list.do"; //모바일 링크
+    private String url = "http://m.me.go.kr/m/mob/main.do"; //모바일 링크
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -33,8 +33,7 @@ public class AdvancedSearchFragment extends Fragment implements OnBackPressListe
         View rootView = inflater.inflate(R.layout.fragment_advanced_search, container, false);
         ((MainActivity)getActivity()).viewModel.getToolbarText().setValue("상세정보검색");
 
-        SearchView searchView;
-        searchView = rootView.findViewById(R.id.searchtext_sv1);
+
 
         webView = (WebView)rootView.findViewById(R.id.webresult_wv1);
         webView.loadUrl(url);

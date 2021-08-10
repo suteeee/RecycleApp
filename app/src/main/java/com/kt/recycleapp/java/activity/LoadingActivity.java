@@ -37,18 +37,6 @@ public class LoadingActivity extends AppCompatActivity {
         imageLoad();
         loadingStart();
 
-
-
-
-
-
-
-        //startActivity(new Intent(현재Activity.this, 불러올Activity.class));
-        //overridePendingTransition(R.anim.현재(사라질)Activity애니메이션, R.anim.현재(사라질)Activity애니메이션);
-
-       // Intent intent = new Intent(LoadingActivity.this, MainActivity.class);
-        //startActivity(intent);
-       // overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
     }
 
     private void imageLoad() {
@@ -68,8 +56,15 @@ public class LoadingActivity extends AppCompatActivity {
         Handler handler=new Handler();
         handler.postDelayed(new Runnable(){
             public void run(){
+                //startActivity(new Intent(현재Activity.this, 불러올Activity.class));
+                //overridePendingTransition(R.anim.현재(사라질)Activity애니메이션, R.anim.현재(사라질)Activity애니메이션);
+
+                //Intent intent = new Intent(LoadingActivity.this, MainActivity.class);
+                //startActivity(intent);
+                // overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.anim_slide_in_left,R.anim.anim_slide_out_right);
                 finish();
             }
         }, 2000);

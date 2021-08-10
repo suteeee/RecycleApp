@@ -8,6 +8,8 @@
     <color name="target">#FFFF00</color>
     <color name="box_color">#01DF01</color>
     <color name="box_color_border">#585858</color>
+    <color name="popup_color">#E0F8EC</color>
+    <color name="popup_color_border">#585858</color>
 
 
     <color name="purple_200">#FFBB86FC</color>
