@@ -26,6 +26,7 @@ import com.kt.recycleapp.kt.fragment.FavoriteItemFragment;
 import com.kt.recycleapp.kt.fragment.FindFragment;
 import com.kt.recycleapp.kt.fragment.HistoryFragment;
 import com.kt.recycleapp.kt.fragment.MainFragment;
+import com.kt.recycleapp.kt.viewmodel.MainViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -52,6 +53,7 @@ import java.util.Set;
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_announce_recycle_page, container, false);
         viewModel = new ViewModelProvider(this).get(AnnounceRecyclePageViewModel.class);
         ((MainActivity)getActivity()).viewModel.getToolbarText().setValue("분리수거 방법 안내");
+        ((MainActivity) getActivity()).viewModel.isPopup().setValue(true);
 
         bundle = getArguments();
 
@@ -96,18 +98,20 @@ import java.util.Set;
         });
 
 
+        Boolean check = ((MainActivity) getActivity()).viewModel.isPopup().getValue();
 
-
-       if(act.viewModel.getSelectedFragment().getValue().equals("main")){
+       if(act.viewModel.getSelectedFragment().getValue().equals("main") && check){
            bundle.putString("barcode", barcode);
            DialogFragment frg = new PopupFragmentAddpage();
            frg.setArguments(bundle);
            frg.show(act.getSupportFragmentManager(), PopupFragmentStartpage.TAG_EVENT_DIALOG);
+           ((MainActivity)getActivity()).viewModel.isPopup().setValue(false);
        }
        else{
            act.setOnBackPressListener(null);
            act.getSupportFragmentManager().beginTransaction().replace(R.id.small_layout1,new MainFragment()).commit();
        }
+
     }
 
     public void onAttach(Context context) {

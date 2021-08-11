@@ -7,6 +7,6 @@ class MainViewModel:ViewModel() {
         var toolbarText = MutableLiveData<String>()
         var selectedFragment = MutableLiveData<String>()
         var searchFlag = MutableLiveData<String>()
-        var isPopup = MutableLiveData<String>("false")
+        var isPopup = MutableLiveData(true)
         var isDrawerOpen = MutableLiveData(false)
 }

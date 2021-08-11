@@ -118,10 +118,8 @@ public class PopupFragmentAddpage extends DialogFragment implements  OnBackPress
         if(bundle != null){
             sendBarcode = bundle.getString("barcode");
             AddViewModel.Companion.setBarcode(sendBarcode);
-            Log.d(sendBarcode,"준");
         }
         else{
-            Log.d("씨발","준");
         }
 
         ld.observe(getViewLifecycleOwner(), new Observer<String>() {
