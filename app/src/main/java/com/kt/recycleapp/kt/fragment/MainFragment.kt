@@ -7,8 +7,11 @@ import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.*
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.camera.core.*
@@ -162,11 +165,9 @@ class MainFragment : Fragment() {
             override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                 captureIsFinish.value="no"
                 val saveUri = Uri.fromFile(photoFile)
-                Log.d(outputDirectory.toString(),name.toString())
                 val path ="$outputDirectory/$name"
                 val bm = BitmapFactory.decodeFile(path)
                 DatabaseReadModel.decodeImageList.add(bm)
-                Toast.makeText(context,"카메라 캡쳐 & 저장 $saveUri",Toast.LENGTH_SHORT).show()
                 captureIsFinish.value="yes"
             }
 
@@ -185,6 +186,7 @@ class MainFragment : Fragment() {
         return "${filename}.png"
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
 
@@ -229,6 +231,36 @@ class MainFragment : Fragment() {
                 cameraController = camera!!.cameraControl
                 cameraInfo = camera!!.cameraInfo
 
+                binding.previewView.setOnTouchListener { v, event ->
+                    val iv = binding.focustabIv
+                    when(event.action){
+                        MotionEvent.ACTION_DOWN ->{
+                            v.performClick()
+                            val handler = Handler(Looper.getMainLooper())
+                            handler.postDelayed({
+                                iv.x = event.x - iv.width/2
+                                iv.y = event.y - iv.height*2
+                                iv.visibility = View.VISIBLE
+                            },0)
+                            return@setOnTouchListener true
+                        }
+                        MotionEvent.ACTION_UP ->{
+                            val factory = binding.previewView.meteringPointFactory
+                            val point = factory.createPoint(event.x,event.y)
+                            val action = FocusMeteringAction.Builder(point).build()
+                            cameraController?.startFocusAndMetering(action)
+                            v.performClick()
+
+                            val handler = Handler(Looper.getMainLooper())
+                            handler.postDelayed({
+                               iv.visibility = View.INVISIBLE
+                            },1000)
+                            return@setOnTouchListener true
+                        }
+                        else -> return@setOnTouchListener false
+                    }
+                }
+
 
             } catch (e: Exception) {
                 Log.e("PreviewUseCase", "Binding failed! :(", e)
@@ -246,7 +278,7 @@ class MainFragment : Fragment() {
             if (allPermissionsGranted()) {
                 startCamera()
             } else {
-                Toast.makeText(requireContext(), "Permissions not granted by the user.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "카메라 기능을 사용하실 수 없습니다.", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -266,7 +298,6 @@ class MainFragment : Fragment() {
     }
 
     override fun onAttach(context: Context) {
-       // (activity as MainActivity).viewModel.selectedFragment.value = "main"
         Log.d("search","create!!")
         super.onAttach(context)
     }

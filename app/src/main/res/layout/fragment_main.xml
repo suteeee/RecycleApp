@@ -42,6 +42,65 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/overlay_layout3"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@color/black_80"
+                    app:layout_constraintBottom_toTopOf="@+id/overlay_layout2"
+                    app:layout_constraintEnd_toStartOf="@id/focus_iv"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/overlay_layout1">
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/overlay_layout4"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@color/black_80"
+                    app:layout_constraintBottom_toTopOf="@+id/overlay_layout2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/focus_iv"
+                    app:layout_constraintTop_toBottomOf="@+id/overlay_layout1">
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/overlay_layout2"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:background="@color/black_80"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/focus_iv">
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/overlay_layout1"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@color/black_80"
+                    app:layout_constraintBottom_toTopOf="@+id/focus_iv"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <ImageView
+                    android:id="@+id/focustab_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/focustab" />
+
                 <TextView
                     android:id="@+id/zoonShow_tv"
                     android:layout_width="wrap_content"
