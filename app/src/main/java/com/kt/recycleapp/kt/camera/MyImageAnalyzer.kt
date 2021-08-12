@@ -29,7 +29,4 @@ class MyImageAnalyzer(private val barcodeListener : BarcodeListener): ImageAnaly
 
     }
 
-    //abstract fun detectInImage(image: InputIma)
-
-
 }

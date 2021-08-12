@@ -11,39 +11,39 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.*
-import android.widget.ImageView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
+import androidx.room.Room
 import com.kt.recycleapp.java.fragment.AnnounceRecyclePageFragment
+import com.kt.recycleapp.kt.activity.MainActivity
 import com.kt.recycleapp.kt.camera.MyImageAnalyzer
 import com.kt.recycleapp.kt.viewmodel.CameraSettingViewModel
+import com.kt.recycleapp.model.DatabaseReadModel
+import com.kt.recycleapp.model.MyRoomDatabase
+import com.kt.recycleapp.model.RoomHelper
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.navi_header.*
 import kotlinx.android.synthetic.main.navi_header.view.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.io.File
+import java.recycleapp.R
 import java.recycleapp.databinding.FragmentMainBinding
+import java.text.SimpleDateFormat
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicBoolean
-import java.recycleapp.R
-import java.text.SimpleDateFormat
-import androidx.camera.core.CameraSelector
-import androidx.lifecycle.MutableLiveData
-import androidx.room.Room
-import com.kt.recycleapp.kt.activity.MainActivity
-import com.kt.recycleapp.kt.viewmodel.MainViewModel
-import com.kt.recycleapp.model.DatabaseReadModel
-import com.kt.recycleapp.model.MyRoomDatabase
-import com.kt.recycleapp.model.RoomHelper
+import kotlin.math.sqrt
 
 typealias BarcodeListener = (barcode: String) -> Unit
 
@@ -62,11 +62,12 @@ class MainFragment : Fragment() {
     private var imageCapture :ImageCapture?= null
 
     private lateinit var outputDirectory:File
-    private lateinit var mScaleGestureDetector : ScaleGestureDetector
-    private var mScaleFactor = 1.0f
     var helper :RoomHelper? = null
 
     var captureIsFinish = MutableLiveData<String>()
+
+    var dist = 0.0f
+    var zoomCnt = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,22 +105,18 @@ class MainFragment : Fragment() {
             }
         }
 
+        binding.zoomRefreshIv.setOnClickListener {
+            viewModel.zoomCnt.value = "1.0x"
+        }
+
         binding.HistoryBtn.setOnClickListener {
             activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.small_layout1,HistoryFragment())?.commit()
         }
 
-        mScaleGestureDetector = ScaleGestureDetector(rootView.context,
-            com.kt.recycleapp.kt.etc.ScaleListener(viewModel, mScaleFactor)
-        )
-
-        binding.previewView.setOnTouchListener{view, motionEvent->
-            mScaleGestureDetector.onTouchEvent(motionEvent)
-            return@setOnTouchListener false
-        }
 
         viewModel.zoomCnt.observe(viewLifecycleOwner,{
             val f = it.substring(0..2).toFloat()
-            cameraController!!.setZoomRatio(f)
+            cameraController?.setZoomRatio(f)
             binding.invalidateAll()
         })
 
@@ -130,7 +127,6 @@ class MainFragment : Fragment() {
         val date = fineName.split("_")[1]
         val data = MyRoomDatabase(barcode,date,fineName,"false")
         helper?.databaseDao()?.insert(data)
-        Log.d("data","write")
     }
 
 
@@ -148,7 +144,7 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (allPermissionsGranted()) {
-            startCamera()
+            initCamera()
         } else {
             requestPermissions(REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
         }
@@ -187,7 +183,7 @@ class MainFragment : Fragment() {
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private fun startCamera() {
+    private fun initCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
 
         cameraProviderFuture.addListener({
@@ -230,32 +226,82 @@ class MainFragment : Fragment() {
                 camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageAnalysis,imageCapture)
                 cameraController = camera!!.cameraControl
                 cameraInfo = camera!!.cameraInfo
-
+                var multiTouch = false
                 binding.previewView.setOnTouchListener { v, event ->
                     val iv = binding.focustabIv
-                    when(event.action){
-                        MotionEvent.ACTION_DOWN ->{
-                            v.performClick()
-                            val handler = Handler(Looper.getMainLooper())
-                            handler.postDelayed({
-                                iv.x = event.x - iv.width/2
-                                iv.y = event.y - iv.height*2
-                                iv.visibility = View.VISIBLE
-                            },0)
+                    when(event.action and MotionEvent.ACTION_MASK){
+
+                        MotionEvent.ACTION_MOVE ->{
+                            if(event.pointerCount == 2) {
+                                if (zoomCnt >= 1){
+                                    zoomCnt = 0
+                                    multiTouch = true
+                                val max = 3.0f
+                                val min = 1.0f
+                                val newDist = getFingerSpacing(event)
+                                val curZoom = viewModel.zoomCnt.value?.substring(0..2)?.toFloat()
+
+                                if (dist < newDist && curZoom != null) {
+                                    if (curZoom < max) {
+                                        viewModel.zoomCnt.value = String.format("%.1f",curZoom + 0.1f) + "x"
+                                    }
+                                    else{
+                                        viewModel.zoomCnt.value = "3.0x"
+                                    }
+                                } else if (dist > newDist && curZoom != null) {
+                                    if (curZoom > min) {
+                                        viewModel.zoomCnt.value = String.format("%.1f",curZoom - 0.1f) + "x"
+                                    }
+                                    else{
+                                        viewModel.zoomCnt.value = "1.0x"
+                                    }
+                                }
+                                Log.d("touch", viewModel.zoomCnt.value!!)
+                                dist = newDist
+                                iv.visibility = View.INVISIBLE
+                            }
+                                else zoomCnt++
+                            }
+                            return@setOnTouchListener false
+                        }
+                        MotionEvent.ACTION_DOWN -> {
+                            GlobalScope.launch {
+                                delay(100)
+                                if(!multiTouch){
+                                    v.performClick()
+                                    val handler = Handler(Looper.getMainLooper())
+                                    handler.postDelayed({
+                                        iv.x = event.x - iv.width / 2
+                                        iv.y = event.y - iv.height * 2
+                                        iv.visibility = View.VISIBLE
+                                    }, 0)
+                                }
+                            }
                             return@setOnTouchListener true
                         }
-                        MotionEvent.ACTION_UP ->{
-                            val factory = binding.previewView.meteringPointFactory
-                            val point = factory.createPoint(event.x,event.y)
-                            val action = FocusMeteringAction.Builder(point).build()
-                            cameraController?.startFocusAndMetering(action)
-                            v.performClick()
+                        MotionEvent.ACTION_UP -> {
+                            if (!multiTouch) {
+                                Log.d("touch2",multiTouch.toString())
+                                val factory = binding.previewView.meteringPointFactory
+                                val point = factory.createPoint(event.x, event.y)
+                                val action = FocusMeteringAction.Builder(point).build()
+                                GlobalScope.launch {
+                                    delay(100)
 
-                            val handler = Handler(Looper.getMainLooper())
-                            handler.postDelayed({
-                               iv.visibility = View.INVISIBLE
-                            },1000)
+                                    cameraController?.startFocusAndMetering(action)
+                                    v.performClick()
+
+                                    val handler = Handler(Looper.getMainLooper())
+                                    handler.postDelayed({
+                                        iv.visibility = View.INVISIBLE
+                                    }, 2000)
+                                }
+                            }
+                            Log.d("touch3",multiTouch.toString())
+                            multiTouch = false
+
                             return@setOnTouchListener true
+
                         }
                         else -> return@setOnTouchListener false
                     }
@@ -268,6 +314,12 @@ class MainFragment : Fragment() {
         }, ContextCompat.getMainExecutor(requireContext()))
     }
 
+    fun getFingerSpacing(event :MotionEvent):Float {
+        val x = event.getX(0) - event.getX(1)
+        val y = event.getY(0) - event.getY(1)
+        return sqrt((x * x + y * y).toDouble()).toFloat()
+    }
+
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(requireContext(), it) == PackageManager.PERMISSION_GRANTED
     }
@@ -276,7 +328,7 @@ class MainFragment : Fragment() {
         requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (allPermissionsGranted()) {
-                startCamera()
+                initCamera()
             } else {
                 Toast.makeText(requireContext(), "카메라 기능을 사용하실 수 없습니다.", Toast.LENGTH_SHORT).show()
             }
