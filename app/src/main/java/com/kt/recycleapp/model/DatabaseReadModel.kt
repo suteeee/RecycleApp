@@ -6,6 +6,8 @@ import android.graphics.BitmapFactory
 import android.util.Log
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.kt.recycleapp.kt.viewmodel.FindViewModel
 import kotlinx.coroutines.GlobalScope
@@ -26,18 +28,13 @@ class DatabaseReadModel {
          }
     }
 
-    fun findBig(findBigProgress: MutableLiveData<String>):ArrayList<HashMap<String,String>>{
+    fun findBig(findBigProgress: MutableLiveData<String>):ArrayList<String>{
         findBigProgress.value = "start"
-        val collection = db.collection("find-big")
-        val arr = ArrayList<HashMap<String,String>>()
+        val collection = db.collection("products")
+        val arr = ArrayList<String>()
         collection.get().addOnCompleteListener {
             for(document in it.result){
-                for(i in 0 until document.data.keys.size){
-                    val temp = HashMap<String,String>()
-                    temp[document.data.keys.elementAt(i).toString()] =
-                        document.data.values.elementAt(i).toString()
-                    arr.add(temp)
-                }
+                arr.add(document.id)
             }
             findBigProgress.value = "finish"
         }
@@ -48,25 +45,35 @@ class DatabaseReadModel {
         findSmallProgress.value = "start"
         var selected = FindViewModel.selectDoc
         val collection = db.collection("products")
+        val multi = db.collection("products").document("복합물품").collection("sublist")
         val arr = ArrayList<HashMap<String,String>>()
         //컬렉션 Arr 안에 문서 arr 안에 값 hashmap 구조
-        collection.get().addOnCompleteListener {
-            val variable = it.result.documents
-            variable.forEach { doc->
-                Log.d("것","${doc.id} , $selected")
-                if(doc.id == selected){
-                    for(i in 0 until doc.data?.keys?.size!!){
-                        val temp = HashMap<String,String>()
-                        temp.put(doc.data!!.keys.elementAt(i), doc.data!!.values.elementAt(i).toString())
-                        arr.add(temp)
+
+        val c =
+            if(selected == "복합물품") multi.get()
+            else collection.get()
+
+            c.addOnCompleteListener {
+                val variable = it.result.documents
+                variable.forEach { doc->
+                    if(selected != "복합물품"){
+                        if(doc.id == selected){
+                            for(i in 0 until doc.data?.keys?.size!!){
+                                val temp = HashMap<String,String>()
+                                temp[doc.data!!.keys.elementAt(i)] = doc.data!!.values.elementAt(i).toString()
+                                arr.add(temp)
+                            }
+                        }
+                    }else{
+                        for(i in 0 until doc.data?.keys?.size!!){
+                            val temp = HashMap<String,String>()
+                            temp[doc.data!!.keys.elementAt(i)] = doc.data!!.values.elementAt(i).toString()
+                            arr.add(temp)
+                        }
                     }
                 }
+                findSmallProgress.value = "finish"
             }
-            arr.forEach {
-                Log.d("것",it.toString())
-            }
-            findSmallProgress.value = "finish"
-        }
         return arr
     }
 

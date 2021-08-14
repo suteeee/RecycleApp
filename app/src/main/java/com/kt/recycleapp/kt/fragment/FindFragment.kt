@@ -45,21 +45,15 @@ class FindFragment : Fragment(),OnBackPressListener{
             }
         })
 
-        Log.d((binding.findBigRv.adapter as FindBigAdapter).toString(),mAdapter.toString())
-
-
         click.observe(viewLifecycleOwner,{
             if(it == "start"){
                 viewClick()
                 click.value = "stop"
             }
-            Log.d("c3",it.toString())
         })
 
         (activity as MainActivity).viewModel.searchFlag.observe(viewLifecycleOwner,{
-            Log.d("search",(activity as MainActivity).viewModel.searchFlag.value.toString())
             if(it == "finish"){
-                Log.d("search","do")
                 viewModel.bigFilterList(MainActivity.findBigForSearch)
             }
             if(it == "reset"){
@@ -77,7 +71,6 @@ class FindFragment : Fragment(),OnBackPressListener{
     }
 
     fun viewClick() {
-        Log.d("click","click")
         (activity as MainActivity).viewModel.selectedFragment.value = "findsmall"
         activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.small_layout1,FindSmallFragment())?.commit()
     }

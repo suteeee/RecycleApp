@@ -19,7 +19,7 @@ class FindViewModel: ViewModel() {
     val model = DatabaseReadModel()
     val itemList = ObservableArrayList<FindBigData>()
     val smallItemList = ObservableArrayList<FindSmallData>()
-    var itemData = ArrayList<HashMap<String,String>>()
+    var itemData = ArrayList<String>()
     var itemDataSmall =  ArrayList<HashMap<String,String>>()
     var findBigProgress = MutableLiveData<String>()
     var findSmallProgress = MutableLiveData<String>()
@@ -31,7 +31,7 @@ class FindViewModel: ViewModel() {
     val platicPng = arrayOf(R.drawable.plasticlego,R.drawable.plasticpettop,R.drawable.strrow,R.drawable.plasticpringlestop)
 
     fun addItem(index:Int){
-        itemList.add(FindBigData(imgArr[index],itemData[index][index.toString()]!!))
+        itemList.add(FindBigData(imgArr[0],itemData[index]))
     }
 
     fun addSmallItem(idx: Int){
@@ -49,7 +49,7 @@ class FindViewModel: ViewModel() {
         }
     }
 
-    fun findBig() :ArrayList<HashMap<String,String>>{
+    fun findBig() :ArrayList<String>{
         itemData = model.findBig(findBigProgress)
         return itemData
     }
