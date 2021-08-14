@@ -87,5 +87,6 @@ class FindFragment : Fragment(){
         val v = act.viewModel
         v.fragmentStack.pop()
         v.selectedFragment.value = v.fragmentStack.peek()
+        if(v.fragmentStack.peek() == "main") act.supportFragmentManager.beginTransaction().replace(R.id.small_layout1,MainFragment()).commit()
     }
 }

@@ -13,6 +13,8 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -102,8 +104,9 @@ import java.util.Set;
 
         Boolean check = ((MainActivity) getActivity()).viewModel.isPopup().getValue();
 
-        Log.d(act.viewModel.getSelectedFragment().getValue(),"fff");
+        Log.d(act.viewModel.getSelectedFragment().getValue(),"ffff");
        if(act.viewModel.getSelectedFragment().getValue().equals("main") && check){
+           Log.d("dd","ffff");
            bundle.putString("barcode", barcode);
            DialogFragment frg = new PopupFragmentAddpage();
            frg.setArguments(bundle);
@@ -112,9 +115,15 @@ import java.util.Set;
        }
        else{
            act.setOnBackPressListener(null);
-           //if(new MainViewModel().getSelectedFragment().equals("favorite"))
-           //act.getSupportFragmentManager().beginTransaction().replace(R.id.small_layout1,new FavoriteItemFragment()).commit();
-           act.getSupportFragmentManager().beginTransaction().remove(this).commit();
+
+           FragmentTransaction t = act.getSupportFragmentManager().beginTransaction();
+           if(act.viewModel.getSelectedFragment().getValue().equals("main")){
+               t.remove(this).commit();
+               t.add(R.id.small_layout1,new MainFragment());
+           }
+           else {
+               t.remove(this).commit();
+           }
        }
 
     }

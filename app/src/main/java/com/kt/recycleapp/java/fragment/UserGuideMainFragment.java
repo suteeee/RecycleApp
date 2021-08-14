@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.google.firebase.firestore.auth.User;
 import com.kt.recycleapp.kt.activity.MainActivity;
+import com.kt.recycleapp.kt.fragment.MainFragment;
 
 import java.recycleapp.R;
 
@@ -44,7 +45,7 @@ public class UserGuideMainFragment extends Fragment {
 
     /*
     * ************건드리지 마시오!************
-    * 아래 부분은 백버튼 구현 메소드
+    * *****아래 부분은 백버튼 구현 메소드******
     * ************건드리지 마시오!************
     * */
     public void onAttach(Context context) {
@@ -56,9 +57,11 @@ public class UserGuideMainFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        ((MainActivity)getActivity()).viewModel.getFragmentStack().pop();
-        ((MainActivity)getActivity()).viewModel.getSelectedFragment().setValue(
-                ((MainActivity)getActivity()).viewModel.getFragmentStack().peek());
+        MainActivity act = ((MainActivity)getActivity());
+        act.viewModel.getFragmentStack().pop();
+        act.viewModel.getSelectedFragment().setValue(act.viewModel.getFragmentStack().peek());
+        if(act.viewModel.getFragmentStack().peek().equals("main"))
+            act.getSupportFragmentManager().beginTransaction().replace(R.id.small_layout1,new MainFragment()).commit();
     }
 
 }

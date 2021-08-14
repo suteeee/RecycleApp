@@ -43,6 +43,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        supportFragmentManager.beginTransaction().replace(R.id.small_layout1,MainFragment()).commit()
+
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
         binding.viewModel = viewModel
@@ -260,6 +262,9 @@ class MainActivity : AppCompatActivity() {
         }
         else if(viewModel.selectedFragment.value != "main"){
             super.onBackPressed()
+        }
+        else if(mBackPressListener != null){
+            mBackPressListener!!.onBack()
         }
         else{
             if (pressedTime == 0L) {

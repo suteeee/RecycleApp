@@ -105,8 +105,10 @@ public class DailyTipFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        ((MainActivity)getActivity()).viewModel.getFragmentStack().pop();
-        ((MainActivity)getActivity()).viewModel.getSelectedFragment().setValue(
-                ((MainActivity)getActivity()).viewModel.getFragmentStack().peek());
+        MainActivity act = ((MainActivity)getActivity());
+        act.viewModel.getFragmentStack().pop();
+        act.viewModel.getSelectedFragment().setValue(act.viewModel.getFragmentStack().peek());
+        if(act.viewModel.getFragmentStack().peek().equals("main"))
+            act.getSupportFragmentManager().beginTransaction().replace(R.id.small_layout1,new MainFragment()).commit();
     }
 }
