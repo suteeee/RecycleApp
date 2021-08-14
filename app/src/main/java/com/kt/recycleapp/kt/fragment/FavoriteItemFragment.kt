@@ -69,7 +69,6 @@ class FavoriteItemFragment : Fragment(),OnBackPressListener {
         })
 
         (activity as MainActivity).viewModel.searchFlag.observe(viewLifecycleOwner,{
-            Log.d("search",(activity as MainActivity).viewModel.searchFlag.value.toString())
             if(it == "finish"){
                 Log.d("search","do")
                 viewModel.filterList(MainActivity.favoriteItemForSearch)

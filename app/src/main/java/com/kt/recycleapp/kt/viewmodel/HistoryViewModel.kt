@@ -38,7 +38,7 @@ class HistoryViewModel : ViewModel() {
             var date1:String? = ""
             var date2 :String?= ""
             var date3 :String?= ""
-            var image = it.image
+            val image = it.image
             var barcode = ""
 
             var arr :ArrayList<String> = ArrayList()
@@ -47,23 +47,11 @@ class HistoryViewModel : ViewModel() {
             arr.add(image!!)
             prefs.favoriteList = arr
 
-            Log.d(prefs.favoriteList.toString(),"거거")
+            date1 = it.dateTime?.substring(0..3)
+            date2 = it.dateTime?.substring(4..5)
+            date3 = it.dateTime?.substring(6..7)
 
-            if(it.dateTime != "Recycle") {
-
-                date1 = it.dateTime?.substring(0..3)
-                date2 = it.dateTime?.substring(4..5)
-                date3 = it.dateTime?.substring(6..7)
-            }
-            var date = "${date1}년 ${date2}월 ${date3}일"
-            if(it.dateTime == "Recycle"){
-                date = "2021년 07월 31일"
-            }
-
-
-                //Log.d("것",DatabaseReadModel.name[it.barcode]!!)
-
-
+            val date = "${date1}년 ${date2}월 ${date3}일"
 
             if(DatabaseReadModel.name[it.barcode] == null){
                 barcode = "바코드 값 : ${it.barcode}"

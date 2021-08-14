@@ -175,36 +175,29 @@ class MainActivity : AppCompatActivity() {
 
             //메뉴마다 액션 지정
             if (id == R.id.find) {
-                Toast.makeText(this, "$title: find", Toast.LENGTH_SHORT).show()
                 viewModel.selectedFragment.value = "find"
                 fragment = FindFragment()
             } else if (id == R.id.advancedSearch) {
-                Toast.makeText(this, "$title: adv", Toast.LENGTH_SHORT).show()
                 viewModel.selectedFragment.value = "adv"
                 fragment = AdvancedSearchFragment()
             }
             else if (id == R.id.favoriteItem) {
-                Toast.makeText(this, "$title: cs", Toast.LENGTH_SHORT).show()
                 viewModel.selectedFragment.value = "favorite"
                 fragment = FavoriteItemFragment()
             }
             else if (id == R.id.history) {
-                Toast.makeText(this, "$title: cs", Toast.LENGTH_SHORT).show()
                 viewModel.selectedFragment.value = "history"
                 fragment = HistoryFragment()
             }
             else if (id == R.id.recycleDayInfo) {
-                Toast.makeText(this, "$title: cs", Toast.LENGTH_SHORT).show()
                 viewModel.selectedFragment.value = "recycle"
                 fragment = RecycleDayInfoFragment()
             }
             else if (id == R.id.dailyTip) {
-                Toast.makeText(this, "$title: cs", Toast.LENGTH_SHORT).show()
                 viewModel.selectedFragment.value = "tip"
                 fragment = DailyTipFragment()
             }
             else if (id == R.id.AppSetting) {
-                Toast.makeText(this, "$title: cs", Toast.LENGTH_SHORT).show()
                 viewModel.selectedFragment.value = "setting"
                 fragment = AppSettingFragment()
             }
@@ -267,7 +260,6 @@ class MainActivity : AppCompatActivity() {
                         pressedTime = 0
                     } else {
                         super.onBackPressed()
-                        Log.e("!!!", "OnBackPressed:Finished, killProcess")
                         finish()
                     }
                 }

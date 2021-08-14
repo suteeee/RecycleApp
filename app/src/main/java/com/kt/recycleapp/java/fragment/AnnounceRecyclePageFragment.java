@@ -119,9 +119,4 @@ import java.util.Set;
         ((MainActivity)context).setOnBackPressListener(this);
     }
 
-     @Override
-     public void onDestroy() {
-        Log.d("search","destroy");
-         super.onDestroy();
-     }
  }

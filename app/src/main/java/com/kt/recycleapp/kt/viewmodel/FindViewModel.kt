@@ -61,7 +61,6 @@ class FindViewModel: ViewModel() {
     }
 
     fun bigFilterList(findBigForSearch: ArrayList<FindBigData>) {
-        Log.d("search","filter")
         itemList.forEach { bigTempList.add(it) }
         itemList.clear()
         findBigForSearch.forEach {
@@ -77,7 +76,6 @@ class FindViewModel: ViewModel() {
     }
 
     fun smallFilterList(findSmallForSearch: ArrayList<FindSmallData>) {
-        Log.d("search","filter")
         smallItemList.forEach { smallTempList.add(it) }
         smallItemList.clear()
         findSmallForSearch.forEach {

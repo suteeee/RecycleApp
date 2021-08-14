@@ -42,7 +42,6 @@ class FavoriteViewModel: ViewModel() {
           DatabaseReadModel.name.forEach {
               Log.d(it.key,it.value)
           }
-          Log.d("db",DatabaseReadModel.name[barcode].toString())
 
           if(barcode == null){
               barcode = "바코드 값 : ${barcode}"
@@ -62,7 +61,6 @@ class FavoriteViewModel: ViewModel() {
     }
 
     fun filterList(historyItemsForSearch: ArrayList<FavoriteData>) {
-        Log.d("search","filter")
         itemList.forEach { tempList.add(it) }
         itemList.clear()
         historyItemsForSearch.forEach {

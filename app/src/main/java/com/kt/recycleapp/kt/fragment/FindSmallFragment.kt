@@ -63,7 +63,6 @@ class FindSmallFragment : Fragment(), OnBackPressListener {
         (activity as MainActivity).viewModel.searchFlag.observe(viewLifecycleOwner,{
             Log.d("search",(activity as MainActivity).viewModel.searchFlag.value.toString())
             if(it == "finish"){
-                Log.d("search","do")
                 viewModel.smallFilterList(MainActivity.findSmallForSearch)
             }
             if(it == "reset"){
@@ -78,7 +77,6 @@ class FindSmallFragment : Fragment(), OnBackPressListener {
         val frg = AnnounceRecyclePageFragment()
         val bundle = Bundle()
         bundle.putString("item",FindViewModel.selectItem)
-        Log.d(FindViewModel.selectItem,"click")
 
         frg.arguments = bundle
 

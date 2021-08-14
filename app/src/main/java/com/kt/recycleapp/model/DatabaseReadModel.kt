@@ -82,13 +82,11 @@ class DatabaseReadModel {
 
         var collection = db.collection("products")
         collection.get().addOnCompleteListener {
-            Log.d("start","junnn")
             for(doc in it.result.documents) {
                doc.data?.forEach { res->
                    name.put(res.key,res.value.toString())
                }
             }
-            Log.d("junnnn1",name.toString())
             getProductName.value="finish"
         }
     }
@@ -101,7 +99,6 @@ class DatabaseReadModel {
             (it.result.documents).forEach {
                 list.add(it.id)
             }
-            Log.d("것것1",list.toString())
             arr.value = "finish"
         }
         return list

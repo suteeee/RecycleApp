@@ -39,7 +39,6 @@ class HistoryFragment : Fragment(),OnBackPressListener {
 
         helper = Room.databaseBuilder(requireContext(), RoomHelper::class.java,"Database").allowMainThreadQueries().build()
 
-        Log.d(helper?.databaseDao()?.getNo().toString(),"것")
         viewModel = ViewModelProvider(this).get(HistoryViewModel::class.java)
         binding.model = viewModel
         viewModel.getFireData()
@@ -55,7 +54,6 @@ class HistoryFragment : Fragment(),OnBackPressListener {
             val list = helper?.databaseDao()?.getAll()
             val barcodes = ArrayList<String>()
             list?.forEach {res -> barcodes.add(res.barcode!!) }
-            Log.d("것",barcodes.toString())
 
             val frg = AnnounceRecyclePageFragment()
             val bundle = Bundle()
@@ -71,9 +69,7 @@ class HistoryFragment : Fragment(),OnBackPressListener {
         binding.historyRv.adapter = mAdapter
 
         (activity as MainActivity).viewModel.searchFlag.observe(viewLifecycleOwner,{
-            Log.d("search",(activity as MainActivity).viewModel.searchFlag.value.toString())
             if(it == "finish"){
-                Log.d("search","do")
                 viewModel.filterList(MainActivity.historyItemsForSearch)
             }
             if(it == "reset"){
