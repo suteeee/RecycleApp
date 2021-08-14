@@ -40,6 +40,13 @@ public class UserGuideMainFragment extends Fragment {
         return rootView;
     }
 
+
+
+    /*
+    * ************건드리지 마시오!************
+    * 아래 부분은 백버튼 구현 메소드
+    * ************건드리지 마시오!************
+    * */
     public void onAttach(Context context) {
         super.onAttach(context);
         ((MainActivity)getActivity()).viewModel.getSelectedFragment().setValue("userGuide");
