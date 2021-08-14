@@ -108,15 +108,15 @@ import java.util.Set;
            ((MainActivity)getActivity()).viewModel.isPopup().setValue(false);
        }
        else{
-           act.setOnBackPressListener(null);
-           act.getSupportFragmentManager().beginTransaction().replace(R.id.small_layout1,new MainFragment()).commit();
+          // act.setOnBackPressListener(null);
+          // act.getSupportFragmentManager().beginTransaction().replace(R.id.small_layout1,new MainFragment()).commit();
        }
 
     }
 
     public void onAttach(Context context) {
         super.onAttach(context);
-        ((MainActivity)context).setOnBackPressListener(this);
+       // ((MainActivity)context).setOnBackPressListener(this);
     }
 
  }

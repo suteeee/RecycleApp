@@ -201,6 +201,10 @@ class MainActivity : AppCompatActivity() {
                 viewModel.selectedFragment.value = "setting"
                 fragment = AppSettingFragment()
             }
+            else if (id == R.id.userGuide) {
+                viewModel.selectedFragment.value = "userGuide"
+                fragment = UserGuideMainFragment()
+            }
 
             if (fragment != null) {
                 //프래그먼트 트랜잭션(프래그먼트 전환)

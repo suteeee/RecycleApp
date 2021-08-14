@@ -46,6 +46,11 @@
                 android:icon="@drawable/ic_launcher_foreground"
                 android:title="@string/appSettingTitle"
                 />
+            <item
+                android:id="@+id/userGuide"
+                android:icon="@drawable/ic_launcher_foreground"
+                android:title="유저가이드"
+                />
         </menu>
     </item>
 </menu>

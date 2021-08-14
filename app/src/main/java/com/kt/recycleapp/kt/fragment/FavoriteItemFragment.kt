@@ -17,6 +17,7 @@ import com.kt.recycleapp.kt.activity.OnBackPressListener
 import com.kt.recycleapp.kt.adapter.FavoriteAdapter
 import com.kt.recycleapp.kt.viewmodel.FavoriteViewModel
 import com.kt.recycleapp.manager.MyPreferenceManager
+import com.kt.recycleapp.model.DatabaseReadModel
 import com.kt.recycleapp.model.RoomHelper
 import java.recycleapp.R
 import java.recycleapp.databinding.FragmentFavoriteItemBinding
@@ -30,6 +31,7 @@ class FavoriteItemFragment : Fragment(),OnBackPressListener {
     var helper:RoomHelper? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        Log.d("fff","ffff")
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_favorite_item, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         (activity as MainActivity).viewModel.toolbarText.value = "즐겨찾기"
@@ -62,10 +64,11 @@ class FavoriteItemFragment : Fragment(),OnBackPressListener {
             }
             val frg = AnnounceRecyclePageFragment()
             val bundle = Bundle()
-            bundle.putString("barcode",barcodes[it])
+            val temp = DatabaseReadModel.name[barcodes[it]]
+            bundle.putString("barcode", temp ?: barcodes[it])
             frg.arguments = bundle
 
-            activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.small_layout1,frg)?.commit()
+            activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.small_layout1,frg)?.addToBackStack(null)?.commit()
         })
 
         (activity as MainActivity).viewModel.searchFlag.observe(viewLifecycleOwner,{
@@ -82,15 +85,15 @@ class FavoriteItemFragment : Fragment(),OnBackPressListener {
     }
 
     override fun onBack() {
-        val act = activity as MainActivity
+       /* val act = activity as MainActivity
         act.setOnBackPressListener(null)
-        act.supportFragmentManager.beginTransaction().replace(R.id.small_layout1,MainFragment()).commit()
+        act.supportFragmentManager.beginTransaction().replace(R.id.small_layout1,MainFragment()).commit()*/
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        val act = activity as MainActivity
-        act.setOnBackPressListener(this)
+        /*val act = activity as MainActivity
+        act.setOnBackPressListener(this)*/
     }
 
 }

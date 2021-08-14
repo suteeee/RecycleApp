@@ -83,9 +83,9 @@ class DatabaseReadModel {
         var collection = db.collection("products")
         collection.get().addOnCompleteListener {
             for(doc in it.result.documents) {
-               doc.data?.forEach { res->
-                   name.put(res.key,res.value.toString())
-               }
+                if(doc.id != "복합물품"){
+                    doc.data?.forEach { res-> name.put(res.key,res.value.toString()) }
+                }
             }
             getProductName.value="finish"
         }
