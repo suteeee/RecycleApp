@@ -256,4 +256,18 @@ public class RecycleDayInfoFragment extends Fragment {
         return rootView;
 
     }
+
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        ((MainActivity)getActivity()).viewModel.getSelectedFragment().setValue("recycle");
+        ((MainActivity)getActivity()).viewModel.getFragmentStack().push("recycle");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        ((MainActivity)getActivity()).viewModel.getFragmentStack().pop();
+        ((MainActivity)getActivity()).viewModel.getSelectedFragment().setValue(
+                ((MainActivity)getActivity()).viewModel.getFragmentStack().peek());
+    }
 }

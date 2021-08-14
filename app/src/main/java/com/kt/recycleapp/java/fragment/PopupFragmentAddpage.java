@@ -182,7 +182,7 @@ public class PopupFragmentAddpage extends DialogFragment implements  OnBackPress
 
                 dismiss();*/
 
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.small_layout1,new MultyAddFragment()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.small_layout1,new MultyAddFragment()).commit();
                 dismiss();
             }
         });

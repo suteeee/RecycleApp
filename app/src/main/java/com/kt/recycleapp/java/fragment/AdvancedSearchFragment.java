@@ -21,7 +21,7 @@ import com.kt.recycleapp.kt.fragment.MainFragment;
 import java.recycleapp.R;
 
 
-public class AdvancedSearchFragment extends Fragment implements OnBackPressListener {
+public class AdvancedSearchFragment extends Fragment{
 
     private WebView webView;
     private String url = "http://m.me.go.kr/m/mob/main.do"; //모바일 링크
@@ -50,14 +50,19 @@ public class AdvancedSearchFragment extends Fragment implements OnBackPressListe
         return rootView;
     }
 
-    public void onBack() {
-        MainActivity act = (MainActivity)getActivity();
-        ((MainActivity) act).setOnBackPressListener(null);
-        act.getSupportFragmentManager().beginTransaction().replace(R.id.small_layout1,new MainFragment()).commit();
-    }
+
 
     public void onAttach(Context context) {
         super.onAttach(context);
-        ((MainActivity)context).setOnBackPressListener(this);
+        ((MainActivity)getActivity()).viewModel.getSelectedFragment().setValue("adv");
+        ((MainActivity)getActivity()).viewModel.getFragmentStack().push("adv");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        ((MainActivity)getActivity()).viewModel.getFragmentStack().pop();
+        ((MainActivity)getActivity()).viewModel.getSelectedFragment().setValue(
+                ((MainActivity)getActivity()).viewModel.getFragmentStack().peek());
     }
 }

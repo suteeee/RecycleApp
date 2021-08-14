@@ -49,6 +49,8 @@ import java.util.Set;
         //rootView는 액티비티를 나타냄 (container는 우리끼리 mainactivity레이아웃을 의미하는 것으로 약속)
         //아래 코드는 액티비티 자체를 가져오는 것이다
 
+        Log.d("announceFragment",((MainActivity) getActivity()).viewModel.getSelectedFragment().getValue());
+
         //36~45번줄 뷰바인딩 및 전달받은 물품 이름 셋팅 하는 코드
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_announce_recycle_page, container, false);
         viewModel = new ViewModelProvider(this).get(AnnounceRecyclePageViewModel.class);
@@ -100,6 +102,7 @@ import java.util.Set;
 
         Boolean check = ((MainActivity) getActivity()).viewModel.isPopup().getValue();
 
+        Log.d(act.viewModel.getSelectedFragment().getValue(),"fff");
        if(act.viewModel.getSelectedFragment().getValue().equals("main") && check){
            bundle.putString("barcode", barcode);
            DialogFragment frg = new PopupFragmentAddpage();
@@ -108,15 +111,16 @@ import java.util.Set;
            ((MainActivity)getActivity()).viewModel.isPopup().setValue(false);
        }
        else{
-          // act.setOnBackPressListener(null);
-          // act.getSupportFragmentManager().beginTransaction().replace(R.id.small_layout1,new MainFragment()).commit();
+           act.setOnBackPressListener(null);
+           //if(new MainViewModel().getSelectedFragment().equals("favorite"))
+           //act.getSupportFragmentManager().beginTransaction().replace(R.id.small_layout1,new FavoriteItemFragment()).commit();
+           act.getSupportFragmentManager().beginTransaction().remove(this).commit();
        }
 
     }
 
     public void onAttach(Context context) {
         super.onAttach(context);
-       // ((MainActivity)context).setOnBackPressListener(this);
+        ((MainActivity)context).setOnBackPressListener(this);
     }
-
  }

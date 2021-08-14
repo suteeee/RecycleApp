@@ -1,5 +1,6 @@
 package com.kt.recycleapp.java.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.firebase.firestore.auth.User;
+import com.kt.recycleapp.kt.activity.MainActivity;
 
 import java.recycleapp.R;
 
@@ -37,4 +39,19 @@ public class UserGuideMainFragment extends Fragment {
         pager.setAdapter(adapter);
         return rootView;
     }
+
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        ((MainActivity)getActivity()).viewModel.getSelectedFragment().setValue("userGuide");
+        ((MainActivity)getActivity()).viewModel.getFragmentStack().push("userGuide");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        ((MainActivity)getActivity()).viewModel.getFragmentStack().pop();
+        ((MainActivity)getActivity()).viewModel.getSelectedFragment().setValue(
+                ((MainActivity)getActivity()).viewModel.getFragmentStack().peek());
+    }
+
 }

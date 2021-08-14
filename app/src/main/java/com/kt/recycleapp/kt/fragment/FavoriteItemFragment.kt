@@ -22,7 +22,7 @@ import com.kt.recycleapp.model.RoomHelper
 import java.recycleapp.R
 import java.recycleapp.databinding.FragmentFavoriteItemBinding
 
-class FavoriteItemFragment : Fragment(),OnBackPressListener {
+class FavoriteItemFragment : Fragment() {
 
     lateinit var binding:FragmentFavoriteItemBinding
     lateinit var viewModel : FavoriteViewModel
@@ -34,7 +34,9 @@ class FavoriteItemFragment : Fragment(),OnBackPressListener {
         Log.d("fff","ffff")
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_favorite_item, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
-        (activity as MainActivity).viewModel.toolbarText.value = "즐겨찾기"
+
+        val act = activity as MainActivity
+        act.viewModel.toolbarText.value = "즐겨찾기"
 
         helper = Room.databaseBuilder(requireContext(), RoomHelper::class.java,"Database").allowMainThreadQueries().build()
 
@@ -55,25 +57,27 @@ class FavoriteItemFragment : Fragment(),OnBackPressListener {
         binding.favoriteRv.adapter = mAdapter
 
         FavoriteViewModel.selected.observe(viewLifecycleOwner,{
-            val list = helper?.databaseDao()?.getFavoriteAll()
-            val barcodes = ArrayList<String>()
+            if(it > -1){
+                val list = helper?.databaseDao()?.getFavoriteAll()
+                val barcodes = ArrayList<String>()
 
-            list?.forEach {res->
-                barcodes.add(res.barcode!!)
-                Log.d("favoriteItem ${res.no} $it",res.barcode!!)
+                list?.forEach {res->
+                    barcodes.add(res.barcode!!)
+                    Log.d("favoriteItem ${res.no} $it",res.barcode!!)
+                }
+                val frg = AnnounceRecyclePageFragment()
+                val bundle = Bundle()
+                val temp = DatabaseReadModel.name[barcodes[it]]
+                bundle.putString("barcode", temp ?: barcodes[it])
+                frg.arguments = bundle
+                FavoriteViewModel.selected.value = -1
+                activity?.supportFragmentManager?.beginTransaction()?.add(R.id.small_layout1,frg)?.addToBackStack(null)?.commit()
             }
-            val frg = AnnounceRecyclePageFragment()
-            val bundle = Bundle()
-            val temp = DatabaseReadModel.name[barcodes[it]]
-            bundle.putString("barcode", temp ?: barcodes[it])
-            frg.arguments = bundle
 
-            activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.small_layout1,frg)?.addToBackStack(null)?.commit()
         })
 
         (activity as MainActivity).viewModel.searchFlag.observe(viewLifecycleOwner,{
             if(it == "finish"){
-                Log.d("search","do")
                 viewModel.filterList(MainActivity.favoriteItemForSearch)
             }
             if(it == "reset"){
@@ -84,16 +88,19 @@ class FavoriteItemFragment : Fragment(),OnBackPressListener {
         return binding.root
     }
 
-    override fun onBack() {
-       /* val act = activity as MainActivity
-        act.setOnBackPressListener(null)
-        act.supportFragmentManager.beginTransaction().replace(R.id.small_layout1,MainFragment()).commit()*/
-    }
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        /*val act = activity as MainActivity
-        act.setOnBackPressListener(this)*/
+        val act = activity as MainActivity
+        act.viewModel.selectedFragment.value = "favorite"
+        val v = act.viewModel
+        v.fragmentStack.push("favorite")
     }
 
+    override fun onDetach() {
+        super.onDetach()
+        val act = activity as MainActivity
+        val v = act.viewModel
+        v.fragmentStack.pop()
+        v.selectedFragment.value = v.fragmentStack.peek()
+    }
 }

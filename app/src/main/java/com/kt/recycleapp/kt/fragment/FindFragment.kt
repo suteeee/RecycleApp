@@ -17,7 +17,7 @@ import com.kt.recycleapp.kt.viewmodel.FindViewModel
 import java.recycleapp.R
 import java.recycleapp.databinding.FragmentFindBinding
 
-class FindFragment : Fragment(),OnBackPressListener{
+class FindFragment : Fragment(){
     companion object{ var click = MutableLiveData<String>()}
     lateinit var binding:FragmentFindBinding
     lateinit var mAdapter : FindBigAdapter
@@ -26,7 +26,9 @@ class FindFragment : Fragment(),OnBackPressListener{
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_find, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
-        (activity as MainActivity).viewModel.toolbarText.value = "찾아보기"
+
+        val act = activity as MainActivity
+        act.viewModel.toolbarText.value = "찾아보기"
 
         viewModel = ViewModelProvider(this).get(FindViewModel::class.java)
         binding.bigItem =viewModel
@@ -65,25 +67,25 @@ class FindFragment : Fragment(),OnBackPressListener{
         return binding.root
     }
 
-    override fun onResume() {
-        super.onResume()
-        binding.findBigRv.adapter?.notifyDataSetChanged()
-    }
 
     fun viewClick() {
         (activity as MainActivity).viewModel.selectedFragment.value = "findsmall"
-        activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.small_layout1,FindSmallFragment())?.commit()
-    }
-
-    override fun onBack() {
-        val act = activity as MainActivity
-        act.setOnBackPressListener(null)
-        act.supportFragmentManager.beginTransaction().replace(R.id.small_layout1,MainFragment()).commit()
+        activity?.supportFragmentManager?.beginTransaction()?.add(R.id.small_layout1,FindSmallFragment())?.addToBackStack(null)?.commit()
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         val act = activity as MainActivity
-        act.setOnBackPressListener(this)
+        act.viewModel.selectedFragment.value = "find"
+        val v = act.viewModel
+        v.fragmentStack.push("find")
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        val act = activity as MainActivity
+        val v = act.viewModel
+        v.fragmentStack.pop()
+        v.selectedFragment.value = v.fragmentStack.peek()
     }
 }

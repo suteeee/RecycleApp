@@ -2,6 +2,7 @@ package com.kt.recycleapp.kt.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import java.util.*
 
 class MainViewModel:ViewModel() {
         var toolbarText = MutableLiveData<String>()
@@ -9,4 +10,5 @@ class MainViewModel:ViewModel() {
         var searchFlag = MutableLiveData<String>()
         var isPopup = MutableLiveData(true)
         var isDrawerOpen = MutableLiveData(false)
+        var fragmentStack = Stack<String>()
 }
