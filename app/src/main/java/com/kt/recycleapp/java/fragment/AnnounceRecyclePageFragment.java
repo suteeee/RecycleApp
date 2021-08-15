@@ -13,6 +13,8 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -48,6 +50,8 @@ import java.util.Set;
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //rootView는 액티비티를 나타냄 (container는 우리끼리 mainactivity레이아웃을 의미하는 것으로 약속)
         //아래 코드는 액티비티 자체를 가져오는 것이다
+
+        Log.d("announceFragment",((MainActivity) getActivity()).viewModel.getSelectedFragment().getValue());
 
         //36~45번줄 뷰바인딩 및 전달받은 물품 이름 셋팅 하는 코드
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_announce_recycle_page, container, false);
@@ -100,7 +104,9 @@ import java.util.Set;
 
         Boolean check = ((MainActivity) getActivity()).viewModel.isPopup().getValue();
 
+        Log.d(act.viewModel.getSelectedFragment().getValue(),"ffff");
        if(act.viewModel.getSelectedFragment().getValue().equals("main") && check){
+           Log.d("dd","ffff");
            bundle.putString("barcode", barcode);
            DialogFragment frg = new PopupFragmentAddpage();
            frg.setArguments(bundle);
@@ -108,15 +114,22 @@ import java.util.Set;
            ((MainActivity)getActivity()).viewModel.isPopup().setValue(false);
        }
        else{
-          // act.setOnBackPressListener(null);
-          // act.getSupportFragmentManager().beginTransaction().replace(R.id.small_layout1,new MainFragment()).commit();
+           act.setOnBackPressListener(null);
+
+           FragmentTransaction t = act.getSupportFragmentManager().beginTransaction();
+           if(act.viewModel.getSelectedFragment().getValue().equals("main")){
+               t.remove(this).commit();
+               t.add(R.id.small_layout1,new MainFragment());
+           }
+           else {
+               t.remove(this).commit();
+           }
        }
 
     }
 
     public void onAttach(Context context) {
         super.onAttach(context);
-       // ((MainActivity)context).setOnBackPressListener(this);
+        ((MainActivity)context).setOnBackPressListener(this);
     }
-
  }

@@ -1,5 +1,6 @@
 package com.kt.recycleapp.java.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.google.firebase.firestore.auth.User;
+import com.kt.recycleapp.kt.activity.MainActivity;
+import com.kt.recycleapp.kt.fragment.MainFragment;
 
 import java.recycleapp.R;
 
@@ -60,4 +63,28 @@ public class UserGuideMainFragment extends Fragment {
 
         return rootView;
     }
+
+
+
+    /*
+    * ************건드리지 마시오!************
+    * *****아래 부분은 백버튼 구현 메소드******
+    * ************건드리지 마시오!************
+    * */
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        ((MainActivity)getActivity()).viewModel.getSelectedFragment().setValue("userGuide");
+        ((MainActivity)getActivity()).viewModel.getFragmentStack().push("userGuide");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        MainActivity act = ((MainActivity)getActivity());
+        act.viewModel.getFragmentStack().pop();
+        act.viewModel.getSelectedFragment().setValue(act.viewModel.getFragmentStack().peek());
+        if(act.viewModel.getFragmentStack().peek().equals("main"))
+            act.getSupportFragmentManager().beginTransaction().replace(R.id.small_layout1,new MainFragment()).commit();
+    }
+
 }

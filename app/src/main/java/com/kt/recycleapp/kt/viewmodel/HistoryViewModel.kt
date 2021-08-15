@@ -15,7 +15,7 @@ import com.kt.recycleapp.model.RoomHelper
 
 class HistoryViewModel : ViewModel() {
     companion object{
-        var selected = MutableLiveData<Int>()
+        var selected = MutableLiveData<Int>(-1)
         var image : RequestBuilder<Drawable>? = null
     }
 

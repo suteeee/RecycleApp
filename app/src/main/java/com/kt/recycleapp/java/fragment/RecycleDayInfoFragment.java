@@ -26,6 +26,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.kt.recycleapp.kt.activity.MainActivity;
+import com.kt.recycleapp.kt.fragment.MainFragment;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -255,5 +256,21 @@ public class RecycleDayInfoFragment extends Fragment {
 
         return rootView;
 
+    }
+
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        ((MainActivity)getActivity()).viewModel.getSelectedFragment().setValue("recycle");
+        ((MainActivity)getActivity()).viewModel.getFragmentStack().push("recycle");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        MainActivity act = ((MainActivity)getActivity());
+        act.viewModel.getFragmentStack().pop();
+        act.viewModel.getSelectedFragment().setValue(act.viewModel.getFragmentStack().peek());
+        if(act.viewModel.getFragmentStack().peek().equals("main"))
+            act.getSupportFragmentManager().beginTransaction().replace(R.id.small_layout1,new MainFragment()).commit();
     }
 }

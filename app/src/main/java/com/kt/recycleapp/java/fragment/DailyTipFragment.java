@@ -28,7 +28,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-public class DailyTipFragment extends Fragment implements OnBackPressListener {
+public class DailyTipFragment extends Fragment {
     private TextView textView;
     private ImageView imageView;
     private Button button;
@@ -96,14 +96,19 @@ public class DailyTipFragment extends Fragment implements OnBackPressListener {
 
 
 
-    public void onBack() {
-        MainActivity act = (MainActivity)getActivity();
-        ((MainActivity) act).setOnBackPressListener(null);
-        act.getSupportFragmentManager().beginTransaction().replace(R.id.small_layout1,new MainFragment()).commit();
-    }
-
     public void onAttach(Context context) {
         super.onAttach(context);
-        ((MainActivity)context).setOnBackPressListener(this);
+        ((MainActivity)getActivity()).viewModel.getSelectedFragment().setValue("tip");
+        ((MainActivity)getActivity()).viewModel.getFragmentStack().push("tip");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        MainActivity act = ((MainActivity)getActivity());
+        act.viewModel.getFragmentStack().pop();
+        act.viewModel.getSelectedFragment().setValue(act.viewModel.getFragmentStack().peek());
+        if(act.viewModel.getFragmentStack().peek().equals("main"))
+            act.getSupportFragmentManager().beginTransaction().replace(R.id.small_layout1,new MainFragment()).commit();
     }
 }

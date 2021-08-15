@@ -43,11 +43,14 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        supportFragmentManager.beginTransaction().replace(R.id.small_layout1,MainFragment()).commit()
+
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
         viewModel.selectedFragment.value = "main"
+        viewModel.fragmentStack.push("main")
 
         binding.toolbarSv.setOnSearchClickListener {
             tempText = viewModel.toolbarText.value!!
@@ -148,14 +151,20 @@ class MainActivity : AppCompatActivity() {
         //메뉴 세팅하는 함수
         naviSet()
 
-        supportFragmentManager.beginTransaction().replace(R.id.small_layout1,MainFragment()).commit()
-
         val header = navi_nv.getHeaderView(0)
 
         header.drawerClose_btn.setOnClickListener{
             drawer_layout.closeDrawer(GravityCompat.START)
         }
 
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.selectedFragment.observe(this,{
+            Log.d("fff",viewModel.fragmentStack.toString())
+        })
     }
 
     fun naviSet() {
@@ -171,22 +180,19 @@ class MainActivity : AppCompatActivity() {
             val id = menuItem.itemId
 
             //메뉴의 이름 가져오기
-            val title = menuItem.title.toString()
+            var layout = R.id.small_layout1
 
             //메뉴마다 액션 지정
             if (id == R.id.find) {
-                viewModel.selectedFragment.value = "find"
                 fragment = FindFragment()
             } else if (id == R.id.advancedSearch) {
                 viewModel.selectedFragment.value = "adv"
                 fragment = AdvancedSearchFragment()
             }
             else if (id == R.id.favoriteItem) {
-                viewModel.selectedFragment.value = "favorite"
                 fragment = FavoriteItemFragment()
             }
             else if (id == R.id.history) {
-                viewModel.selectedFragment.value = "history"
                 fragment = HistoryFragment()
             }
             else if (id == R.id.recycleDayInfo) {
@@ -208,7 +214,12 @@ class MainActivity : AppCompatActivity() {
 
             if (fragment != null) {
                 //프래그먼트 트랜잭션(프래그먼트 전환)
-                supportFragmentManager.beginTransaction().replace(R.id.small_layout1,fragment).addToBackStack(null).commit()
+                    val t =    supportFragmentManager.beginTransaction()
+                 if(viewModel.selectedFragment.value == "main"){
+                     t.replace(layout,fragment).addToBackStack(null).commit()
+                 }else{
+                     t.add(layout,fragment).addToBackStack(null).commit()
+                 }
             }
             true
         }
@@ -249,23 +260,24 @@ class MainActivity : AppCompatActivity() {
             drawer_layout.closeDrawer(GravityCompat.START)
             binding.viewModel!!.isDrawerOpen.value = false
         }
+        else if(viewModel.selectedFragment.value != "main"){
+            super.onBackPressed()
+        }
+        else if(mBackPressListener != null){
+            mBackPressListener!!.onBack()
+        }
         else{
-            if(mBackPressListener != null){
-                mBackPressListener?.onBack()
-            }
-            else{
-                if (pressedTime == 0L) {
+            if (pressedTime == 0L) {
+                Toast.makeText(this, "한번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
+                pressedTime = System.currentTimeMillis()
+            } else {
+                val second = (System.currentTimeMillis() - pressedTime).toInt()
+                if (second > 2000) {
                     Toast.makeText(this, "한번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
-                    pressedTime = System.currentTimeMillis()
+                    pressedTime = 0
                 } else {
-                    val second = (System.currentTimeMillis() - pressedTime).toInt()
-                    if (second > 2000) {
-                        Toast.makeText(this, "한번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
-                        pressedTime = 0
-                    } else {
-                        super.onBackPressed()
-                        finish()
-                    }
+                    super.onBackPressed()
+                    finish()
                 }
             }
         }

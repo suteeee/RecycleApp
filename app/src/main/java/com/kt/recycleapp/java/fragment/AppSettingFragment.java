@@ -23,7 +23,7 @@ import com.kt.recycleapp.manager.MyPreferenceManager;
 
 import java.recycleapp.R;
 
-public class AppSettingFragment extends Fragment implements OnBackPressListener {
+public class AppSettingFragment extends Fragment{
     private Button seeAnnounceButton;
     //private Switch darkmodSwitch;
     private Button darkmodButton;
@@ -106,15 +106,20 @@ public class AppSettingFragment extends Fragment implements OnBackPressListener 
     }
 
 
-    public void onBack() {
-        MainActivity act = (MainActivity)getActivity();
-        ((MainActivity) act).setOnBackPressListener(null);
-        act.getSupportFragmentManager().beginTransaction().replace(R.id.small_layout1,new MainFragment()).commit();
-    }
-
     public void onAttach(Context context) {
         super.onAttach(context);
-        ((MainActivity)context).setOnBackPressListener(this);
+        ((MainActivity)getActivity()).viewModel.getSelectedFragment().setValue("setting");
+        ((MainActivity)getActivity()).viewModel.getFragmentStack().push("setting");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        MainActivity act = ((MainActivity)getActivity());
+        act.viewModel.getFragmentStack().pop();
+        act.viewModel.getSelectedFragment().setValue(act.viewModel.getFragmentStack().peek());
+        if(act.viewModel.getFragmentStack().peek().equals("main"))
+            act.getSupportFragmentManager().beginTransaction().replace(R.id.small_layout1,new MainFragment()).commit();
     }
 }
 
