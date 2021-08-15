@@ -21,4 +21,13 @@
         6. 최대 10개까지 자주 버리는 물건을 즐겨찾기에 등록!\n\n\n</string>
     <string name="attention">*주의 반드시 물품명을 상세히 작성해주세요*\n
         허위 및 부정확한 작성시 어플이용이 제한됩니다.</string>
+    <string name="guidebook1">1. 노란색 박스안에 바코드를 인식시켜주세요!</string>
+    <string name="guidebook2">2. 나온 방법에 맞추어 분리수거를 진행해주세요! </string>
+    <string name="guidebook3">3-1. 등록되지 않은 물품이면 뒤로가기를 누를경우 등록창이 떠요.\n
+        3-2. 해당되는 사항에 맞게 중복 선택하고 물품이름을 상세히 적어주세요! </string>
+    <string name="guidebook4">4. 사용한 내역을 히스토리에서 확인하고 자주 확인하는 물품은 즐겨찾기에 등록이 가능해요!</string>
+    <string name="guidebook5">5. 그 외에 다양한 기능들을 둘러보세요~</string>
+    <string name="guidebook6">6.아직미작성</string>
+
+
 </resources>

@@ -3,6 +3,7 @@
     <color name="main_color">#D4F5BA</color>
     <color name="main_backg_color">#E0F8EC</color>
     <color name="main_text_color">#000000</color>
+    <color name="main_text_focus_color">#FE9A2E</color>
     <color name="comon_button_background">#FE2EF7</color>
     <color name="love_star">#FF0000</color>
     <color name="target">#FFFF00</color>
