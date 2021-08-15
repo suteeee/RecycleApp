@@ -10,9 +10,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
-import com.kt.recycleapp.java.fragment.AnnounceRecyclePageFragment
+import com.kt.recycleapp.java.announce.AnnounceRecyclerFragment
 import com.kt.recycleapp.kt.activity.MainActivity
-import com.kt.recycleapp.kt.activity.OnBackPressListener
 import com.kt.recycleapp.kt.adapter.HistoryAdapter
 import com.kt.recycleapp.kt.viewmodel.HistoryViewModel
 import com.kt.recycleapp.manager.MyPreferenceManager
@@ -61,7 +60,7 @@ class HistoryFragment : Fragment(){
                 val barcodes = ArrayList<String>()
                 list?.forEach {res -> barcodes.add(res.barcode!!) }
 
-                val frg = AnnounceRecyclePageFragment()
+                val frg = AnnounceRecyclerFragment()
                 val bundle = Bundle()
                 val temp = DatabaseReadModel.name[barcodes[it]]
 
@@ -70,7 +69,6 @@ class HistoryFragment : Fragment(){
                 frg.arguments = bundle
                 HistoryViewModel.selected.value = -1
                 activity?.supportFragmentManager?.beginTransaction()?.add(R.id.small_layout1,frg)?.addToBackStack(null)?.commit()
-
             }
         })
 

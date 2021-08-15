@@ -4,11 +4,10 @@ import android.app.Activity
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
-import androidx.fragment.app.FragmentActivity
+import androidx.databinding.ObservableArrayList
 import androidx.lifecycle.MutableLiveData
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.kt.recycleapp.java.announce.AnnounceData
 import com.kt.recycleapp.kt.viewmodel.FindViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -102,5 +101,50 @@ class DatabaseReadModel {
             arr.value = "finish"
         }
         return list
+    }
+
+    fun findProductKind(finding:MutableLiveData<String>, product : String, kind: MutableLiveData<String>) {
+        finding.value = "start"
+        var res = ""
+        db.collection("products").get().addOnCompleteListener {
+                (it.result.documents).forEach { doc->
+                    if(doc.data?.values?.contains(product) == true){
+                        res = doc.id
+                        return@forEach
+                    }
+                }
+            Log.d("fff",res.toString())
+            kind.value = res
+            finding.value = "finish"
+            }
+    }
+
+    fun settingResult(setting:MutableLiveData<String>,kind: String,product: ObservableArrayList<AnnounceData>,name:String){
+        setting.value = "start"
+        val infoMap = HashMap<String,String>()
+        var info = ""
+        db.collection("resultInfo").get().addOnCompleteListener {
+            (it.result.documents).forEach { doc ->
+                doc.data?.forEach {
+                    infoMap[it.key] = it.value.toString()
+                }
+            }
+            info = infoMap.get(kind).toString()
+            product.add(AnnounceData(name, info))//첫번째 페이지(주 물품)
+
+            db.collection("products").document("복합물품").collection("sublist").get().addOnCompleteListener {
+                (it.result.documents).forEach { doc->
+                    val d = doc.data
+                    d?.forEach { map->
+                        if(map.key.contains(name)){
+                            product.add(AnnounceData(map.value.toString(),infoMap[doc.id]))
+                        }
+                    }
+
+                }
+                setting.value = "finish"
+            }
+
+        }
     }
 }

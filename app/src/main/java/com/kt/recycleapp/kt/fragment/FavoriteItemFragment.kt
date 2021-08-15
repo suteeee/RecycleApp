@@ -1,6 +1,5 @@
 package com.kt.recycleapp.kt.fragment
 
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -11,9 +10,8 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
-import com.kt.recycleapp.java.fragment.AnnounceRecyclePageFragment
+import com.kt.recycleapp.java.announce.AnnounceRecyclerFragment
 import com.kt.recycleapp.kt.activity.MainActivity
-import com.kt.recycleapp.kt.activity.OnBackPressListener
 import com.kt.recycleapp.kt.adapter.FavoriteAdapter
 import com.kt.recycleapp.kt.viewmodel.FavoriteViewModel
 import com.kt.recycleapp.manager.MyPreferenceManager
@@ -65,7 +63,7 @@ class FavoriteItemFragment : Fragment() {
                     barcodes.add(res.barcode!!)
                     Log.d("favoriteItem ${res.no} $it",res.barcode!!)
                 }
-                val frg = AnnounceRecyclePageFragment()
+                val frg = AnnounceRecyclerFragment()
                 val bundle = Bundle()
                 val temp = DatabaseReadModel.name[barcodes[it]]
                 bundle.putString("barcode", temp ?: barcodes[it])

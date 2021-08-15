@@ -1,15 +1,14 @@
 package com.kt.recycleapp.kt.adapter
 
-import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
-import android.util.Log
 import android.widget.ImageView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableArrayList
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestBuilder
+import com.kt.recycleapp.java.announce.AnnounceAdapter
+import com.kt.recycleapp.java.announce.AnnounceData
 import com.kt.recycleapp.kt.etc.FavoriteData
 import com.kt.recycleapp.kt.etc.FindBigData
 import com.kt.recycleapp.kt.etc.FindSmallData
@@ -87,5 +86,18 @@ object BindingAdapters {
         (recyclerView.adapter as AddAdapter).items = item
         recyclerView.adapter?.notifyDataSetChanged()
     }
+
+    /*@BindingAdapter("announce")
+    @JvmStatic
+    fun set(recyclerView: RecyclerView, item: ObservableArrayList<AnnounceData>) {
+        val adt = AnnounceAdapter()
+        val lm = LinearLayoutManager(recyclerView.context)
+        lm.orientation = RecyclerView.HORIZONTAL
+
+        recyclerView.layoutManager = lm
+        recyclerView.adapter = adt
+        (recyclerView.adapter as AnnounceAdapter).setItems(item)
+        recyclerView.adapter?.notifyDataSetChanged()
+    }*/
 
 }

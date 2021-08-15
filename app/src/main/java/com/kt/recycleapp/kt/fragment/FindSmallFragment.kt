@@ -2,7 +2,6 @@ package com.kt.recycleapp.kt.fragment
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,9 +9,8 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
-import com.kt.recycleapp.java.fragment.AnnounceRecyclePageFragment
+import com.kt.recycleapp.java.announce.AnnounceRecyclerFragment
 import com.kt.recycleapp.kt.activity.MainActivity
-import com.kt.recycleapp.kt.activity.OnBackPressListener
 import com.kt.recycleapp.kt.adapter.FindSmallAdapter
 import com.kt.recycleapp.kt.viewmodel.FindViewModel
 import java.recycleapp.R
@@ -77,9 +75,9 @@ class FindSmallFragment : Fragment() {
     }
 
     fun viewClick() {
-        val frg = AnnounceRecyclePageFragment()
+        val frg = AnnounceRecyclerFragment()
         val bundle = Bundle()
-        bundle.putString("item",FindViewModel.selectItem)
+        bundle.putString("barcode",FindViewModel.selectItem)
 
         frg.arguments = bundle
 

@@ -21,7 +21,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
-import com.kt.recycleapp.java.fragment.AnnounceRecyclePageFragment
+import com.kt.recycleapp.java.announce.AnnounceRecyclerFragment
 import com.kt.recycleapp.kt.activity.MainActivity
 import com.kt.recycleapp.kt.camera.MyImageAnalyzer
 import com.kt.recycleapp.kt.viewmodel.CameraSettingViewModel
@@ -210,7 +210,7 @@ class MainFragment : Fragment() {
                                     val bundle = Bundle()
                                     bundle.putString("barcode",barcode)
 
-                                    val frg = AnnounceRecyclePageFragment()
+                                    val frg = AnnounceRecyclerFragment()
                                     frg.arguments = bundle
 
                                     activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.small_layout1,frg)?.commit()
