@@ -79,6 +79,7 @@ class MultyAddFragment : Fragment(), OnBackPressListener {
                 }
                 binding.multyPb.visibility = View.INVISIBLE
                 Toast.makeText(context,"상품 등록이 완료되었습니다.",Toast.LENGTH_SHORT).show()
+            AddViewModel.addItems.clear()
         }
         return binding.root
     }
