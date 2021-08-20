@@ -1,6 +1,7 @@
 package com.kt.recycleapp.java.fragment;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -46,6 +47,20 @@ public class AdvancedSearchFragment extends Fragment{
         webSettings.setSupportZoom(true); // 화면 줌 허용 여부
         webSettings.setBuiltInZoomControls(true); // 화면 확대 축소 허용 여부
         webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN); // 컨텐츠 사이즈 맞추기
+
+        //속도향상위해 코드 추가
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O) {
+            //기기에 따라서 동작할수도있는걸 확인
+            webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
+
+            //최신 SDK 에서는 Deprecated 이나 아직 성능상에서는 유용
+            webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+
+            //부드러운 전환 또한 아직 동작
+            webSettings.setEnableSmoothTransition(true);
+        }
+        webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+        webSettings.setAppCacheEnabled(true);
 
         return rootView;
     }
