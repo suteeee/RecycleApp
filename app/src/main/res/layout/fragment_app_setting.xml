@@ -12,61 +12,57 @@
 
     <TextView
         android:id="@+id/darkmod_tv1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/font1"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:fontFamily="@font/font3"
         android:text="다크모드"
         android:textColor="@color/main_text_color"
-        app:layout_constraintBottom_toTopOf="@+id/announce_tv1"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/darkmodonoff_bt1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-    <!--
-    <Switch
-        android:id="@+id/darkmod_sch1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/announce_bt1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/darkmod_tv1"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="UseSwitchCompatOrMaterialXml" />
-        -->
-
+        app:layout_constraintVertical_bias="0.12" />
 
     <TextView
         android:id="@+id/announce_tv1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/font1"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:fontFamily="@font/font3"
         android:text="사용설명서"
         android:textColor="@color/main_text_color"
+        android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/announce_bt1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/darkmod_tv1" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.25" />
 
     <Button
         android:id="@+id/announce_bt1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="35dp"
         android:background="@drawable/common_buttom_design"
+        android:fontFamily="@font/font3"
         android:text="보기"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/announce_tv1"
-        app:layout_constraintTop_toBottomOf="@+id/darkmodonoff_bt1" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.25" />
 
     <Button
         android:id="@+id/darkmodonoff_bt1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="35dp"
         android:background="@drawable/common_buttom_design"
+        android:fontFamily="@font/font3"
         android:text="Button"
-        app:layout_constraintBottom_toTopOf="@+id/announce_bt1"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/darkmod_tv1"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.120000005" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

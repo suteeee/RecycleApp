@@ -75,33 +75,6 @@ public class AppSettingFragment extends Fragment{
             }
         });
 
-        /* 스위치 왜안될까...
-        darkmodSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                // 스위치 버튼이 체크되었는지 검사
-
-                if(prefs.getDarkmodSwitch()==true){
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                    Toast.makeText(rootView.getContext(), "다크모드 활성화", Toast.LENGTH_SHORT).show();
-                    prefs.setDarkmodSwitch(false);
-                    darkmodSwitch.setChecked(true); //여기에서 팅김
-                }
-                else if(prefs.getDarkmodSwitch()==false){
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                    Toast.makeText(rootView.getContext(), "주간모드 활성화", Toast.LENGTH_SHORT).show();
-                    prefs.setDarkmodSwitch(true);
-                    darkmodSwitch.setChecked(false);
-
-                }
-            }
-        });
-        */
-
-
-
-
-
         return rootView;
     }
 

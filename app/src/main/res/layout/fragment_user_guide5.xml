@@ -24,6 +24,7 @@
         android:layout_width="350dp"
         android:layout_height="125dp"
         android:fontFamily="@font/font3"
+        android:textColor="@color/main_text_color"
         android:text="@string/guidebook5"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"

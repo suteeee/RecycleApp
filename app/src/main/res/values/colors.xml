@@ -2,12 +2,12 @@
 <resources>
     <color name="main_color">#D4F5BA</color>
     <color name="main_backg_color">#E0F8EC</color>
-    <color name="main_text_color">#000000</color>
+    <color name="main_text_color">#424242</color>
     <color name="main_text_focus_color">#FE9A2E</color>
     <color name="comon_button_background">#FE2EF7</color>
     <color name="love_star">#FF0000</color>
     <color name="target">#FFFF00</color>
-    <color name="box_color">#01DF01</color>
+    <color name="box_color">#9AFE2E</color>
     <color name="box_color_border">#585858</color>
     <color name="popup_color">#E0F8EC</color>
     <color name="popup_color_border">#585858</color>

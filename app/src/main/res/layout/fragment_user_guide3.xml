@@ -24,6 +24,7 @@
         android:id="@+id/textView2"
         android:layout_width="350dp"
         android:layout_height="125dp"
+        android:textColor="@color/main_text_color"
         android:fontFamily="@font/font3"
         android:text="@string/guidebook3"
         android:textSize="18sp"

@@ -4,11 +4,9 @@
 
     <solid android:color="@color/box_color" />
     <size android:width="100dp" android:height="100dp" />
-
     <stroke
-        android:width="4dp"
+        android:width="3dp"
         android:color="@color/box_color_border" />
-
     <corners
         android:topLeftRadius="10dp"
         android:topRightRadius="10dp"
