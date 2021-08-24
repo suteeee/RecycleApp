@@ -11,9 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.google.firebase.firestore.auth.User;
-import com.kt.recycleapp.kt.activity.MainActivity;
-import com.kt.recycleapp.kt.fragment.MainFragment;
+import com.kt.recycleapp.kotlin.activity.MainActivity;
+import com.kt.recycleapp.kotlin.fragment.MainFragment;
 
 import java.recycleapp.R;
 

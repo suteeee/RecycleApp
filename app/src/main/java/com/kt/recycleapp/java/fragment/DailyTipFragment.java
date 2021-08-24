@@ -19,9 +19,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.kt.recycleapp.kt.activity.MainActivity;
-import com.kt.recycleapp.kt.activity.OnBackPressListener;
-import com.kt.recycleapp.kt.fragment.MainFragment;
+import com.kt.recycleapp.kotlin.activity.MainActivity;
+import com.kt.recycleapp.kotlin.fragment.MainFragment;
 
 import java.recycleapp.R;
 import java.util.HashSet;

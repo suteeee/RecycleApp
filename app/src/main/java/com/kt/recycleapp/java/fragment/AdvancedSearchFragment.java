@@ -5,7 +5,6 @@ import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,11 +12,9 @@ import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.SearchView;
 
-import com.kt.recycleapp.kt.activity.MainActivity;
-import com.kt.recycleapp.kt.activity.OnBackPressListener;
-import com.kt.recycleapp.kt.fragment.MainFragment;
+import com.kt.recycleapp.kotlin.activity.MainActivity;
+import com.kt.recycleapp.kotlin.fragment.MainFragment;
 
 import java.recycleapp.R;
 

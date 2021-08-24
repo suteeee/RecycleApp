@@ -6,10 +6,10 @@
     <data>
         <variable
             name="big"
-            type="com.kt.recycleapp.kt.etc.FindBigData" />
+            type="com.kt.recycleapp.kotlin.etc.FindBigData" />
         <variable
             name="fragment"
-            type="com.kt.recycleapp.kt.fragment.FindFragment" />
+            type="com.kt.recycleapp.kotlin.fragment.FindFragment" />
 
     </data>
 

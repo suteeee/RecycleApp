@@ -2,22 +2,15 @@ package com.kt.recycleapp.java.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.room.Room;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
-import com.kt.recycleapp.kt.activity.MainActivity;
+import com.kt.recycleapp.kotlin.activity.MainActivity;
 import com.kt.recycleapp.manager.MyPreferenceManager;
-import com.kt.recycleapp.model.DatabaseReadModel;
-import com.kt.recycleapp.model.MyRoomDatabase;
-import com.kt.recycleapp.model.RoomHelper;
 
 import java.recycleapp.R;
-import java.util.ArrayList;
-import java.util.List;
 
 public class LoadingActivity extends AppCompatActivity {
 

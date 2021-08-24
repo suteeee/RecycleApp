@@ -10,20 +10,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
-import android.os.Handler;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.Switch;
 import android.widget.Toast;
 
-import com.kt.recycleapp.java.activity.LoadingActivity;
-import com.kt.recycleapp.kt.activity.MainActivity;
-import com.kt.recycleapp.kt.activity.OnBackPressListener;
-import com.kt.recycleapp.kt.fragment.MainFragment;
+import com.kt.recycleapp.kotlin.activity.MainActivity;
+import com.kt.recycleapp.kotlin.fragment.MainFragment;
 import com.kt.recycleapp.manager.MyPreferenceManager;
 
 import org.jetbrains.annotations.NotNull;

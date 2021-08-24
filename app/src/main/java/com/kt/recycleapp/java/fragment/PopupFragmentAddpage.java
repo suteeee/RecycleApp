@@ -1,56 +1,27 @@
 package com.kt.recycleapp.java.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
-import androidx.room.Database;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.SetOptions;
-import com.kt.recycleapp.kt.activity.MainActivity;
-import com.kt.recycleapp.kt.activity.OnBackPressListener;
-import com.kt.recycleapp.kt.fragment.FavoriteItemFragment;
-import com.kt.recycleapp.kt.fragment.FindFragment;
-import com.kt.recycleapp.kt.fragment.HistoryFragment;
-import com.kt.recycleapp.kt.fragment.MainFragment;
-import com.kt.recycleapp.kt.fragment.MultyAddFragment;
-import com.kt.recycleapp.kt.viewmodel.AddViewModel;
+import com.kt.recycleapp.kotlin.activity.OnBackPressListener;
+import com.kt.recycleapp.kotlin.fragment.MultyAddFragment;
+import com.kt.recycleapp.kotlin.viewmodel.AddViewModel;
 import com.kt.recycleapp.manager.MyPreferenceManager;
 import com.kt.recycleapp.model.DatabaseReadModel;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.recycleapp.R;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 //물건이 등록되지 않은 물품일 떄 실행 된다.
 //내 기억으로 이건 코틀린 영역에서 이 창이 뜨게해야하므로 주광님 화이팅!

@@ -8,7 +8,7 @@ import androidx.databinding.ObservableArrayList
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.FirebaseFirestore
 import com.kt.recycleapp.java.announce.AnnounceData
-import com.kt.recycleapp.kt.viewmodel.FindViewModel
+import com.kt.recycleapp.kotlin.viewmodel.FindViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 

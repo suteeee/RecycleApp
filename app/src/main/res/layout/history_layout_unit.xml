@@ -6,10 +6,10 @@
     <data>
         <variable
             name="history"
-            type="com.kt.recycleapp.kt.etc.HistoryData" />
+            type="com.kt.recycleapp.kotlin.etc.HistoryData" />
         <variable
             name="viewmodel"
-            type="com.kt.recycleapp.kt.viewmodel.HistoryViewModel" />
+            type="com.kt.recycleapp.kotlin.viewmodel.HistoryViewModel" />
 
     </data>
 

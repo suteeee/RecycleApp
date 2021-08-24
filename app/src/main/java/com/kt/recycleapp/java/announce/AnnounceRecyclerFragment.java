@@ -1,11 +1,8 @@
 package com.kt.recycleapp.java.announce;
 
 import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ObservableArrayList;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Context;
@@ -14,8 +11,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,10 +23,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.kt.recycleapp.java.fragment.PopupFragmentAddpage;
 import com.kt.recycleapp.java.fragment.PopupFragmentStartpage;
-import com.kt.recycleapp.kt.activity.MainActivity;
-import com.kt.recycleapp.kt.activity.OnBackPressListener;
-import com.kt.recycleapp.kt.fragment.MainFragment;
-import com.kt.recycleapp.model.DatabaseReadModel;
+import com.kt.recycleapp.kotlin.activity.MainActivity;
+import com.kt.recycleapp.kotlin.activity.OnBackPressListener;
+import com.kt.recycleapp.kotlin.fragment.MainFragment;
 
 import org.jetbrains.annotations.NotNull;
 

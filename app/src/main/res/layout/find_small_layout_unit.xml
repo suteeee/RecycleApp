@@ -6,7 +6,7 @@
     <data>
         <variable
             name="small"
-            type="com.kt.recycleapp.kt.etc.FindSmallData" />
+            type="com.kt.recycleapp.kotlin.etc.FindSmallData" />
 
     </data>
 
