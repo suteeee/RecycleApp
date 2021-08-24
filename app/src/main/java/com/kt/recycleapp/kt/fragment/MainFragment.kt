@@ -144,7 +144,10 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (allPermissionsGranted()) {
-            initCamera()
+            try {
+                initCamera()
+            }
+            catch (e:Exception){}
         } else {
             requestPermissions(REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
         }
@@ -188,11 +191,11 @@ class MainFragment : Fragment() {
 
         cameraProviderFuture.addListener({
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
-            val preview = Preview.Builder().build().also {
-                it.setSurfaceProvider(
-                    previewView.surfaceProvider
-                )
-            }
+                val preview = Preview.Builder().build().also {
+                    it.setSurfaceProvider(
+                        previewView.surfaceProvider
+                    )
+                }
             imageCapture = ImageCapture.Builder().build()
 
             val imageAnalysis = ImageAnalysis.Builder()
@@ -328,7 +331,10 @@ class MainFragment : Fragment() {
         requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (allPermissionsGranted()) {
-                initCamera()
+                try {
+                    initCamera()
+                }
+                catch (e:Exception){}
             } else {
                 Toast.makeText(requireContext(), "카메라 기능을 사용하실 수 없습니다.", Toast.LENGTH_SHORT).show()
             }

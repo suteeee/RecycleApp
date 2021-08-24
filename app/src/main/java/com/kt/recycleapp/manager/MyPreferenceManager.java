@@ -26,7 +26,6 @@ public class MyPreferenceManager {
     private static final String isNeverShowEdtKey = "neverShow";
     private static final String STORED_TIME = "123";
     private static final String FAVORITE_KEY = "F";
-
     private static final String DARKMOD_SWITCH = "onoff";
 
 

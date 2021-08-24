@@ -1,18 +1,20 @@
 package com.kt.recycleapp.kt.activity
 
+import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.Observable
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.kt.recycleapp.java.activity.LoadingActivity
 import com.kt.recycleapp.java.fragment.*
 import com.kt.recycleapp.kt.etc.FavoriteData
 import com.kt.recycleapp.kt.etc.FindBigData
@@ -39,77 +41,78 @@ class MainActivity : AppCompatActivity() {
         var findBigForSearch = ArrayList<FindBigData>()
         var findSmallForSearch = ArrayList<FindSmallData>()
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        supportFragmentManager.beginTransaction().replace(R.id.small_layout1,MainFragment()).commit()
-
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
         viewModel.selectedFragment.value = "main"
         viewModel.fragmentStack.push("main")
 
+        val intent = intent.extras
+        if (intent?.get("darkModeRefresh") != null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.small_layout1, AppSettingFragment()).addToBackStack(null).commit()
+            Log.d("Main", viewModel.fragmentStack.toString())
+        } else supportFragmentManager.beginTransaction().replace(R.id.small_layout1, MainFragment())
+            .commit()
+
+
         binding.toolbarSv.setOnSearchClickListener {
             tempText = viewModel.toolbarText.value!!
-            viewModel.toolbarText.value=""
+            viewModel.toolbarText.value = ""
         }
-        binding.toolbarSv.setOnCloseListener (SearchView.OnCloseListener {
-            if(binding.toolbarSv.query.isNotEmpty() || viewModel.searchFlag.value == "finish") {
+        binding.toolbarSv.setOnCloseListener(SearchView.OnCloseListener {
+            if (binding.toolbarSv.query.isNotEmpty() || viewModel.searchFlag.value == "finish") {
                 viewModel.toolbarText.value = tempText
                 viewModel.searchFlag.value = "reset"
             }
             return@OnCloseListener false
         })
-        viewModel.selectedFragment.observe(this,{
+        viewModel.selectedFragment.observe(this, {
             val sv = binding.toolbarSv
 
-            if(it != "history" && it != "favorite" && it != "find" && it != "findsmall"){
+            if (it != "history" && it != "favorite" && it != "find" && it != "findsmall") {
                 sv.visibility = View.INVISIBLE
-            }
-            else{
+            } else {
                 sv.visibility = View.VISIBLE
             }
 
-            sv.setOnQueryTextListener(object:SearchView.OnQueryTextListener{
+            sv.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
-                    Log.d("query","summit")
-                    sv.setQuery("",false)
+                    Log.d("query", "summit")
+                    sv.setQuery("", false)
                     viewModel.searchFlag.value = "selected"
-                    if(it =="history"){
+                    if (it == "history") {
                         val temp = ArrayList<HistoryData>()
-                        historyItemsForSearch.forEach {res->
-                            if(res.barcode!!.lowercase().contains(query!!.lowercase())){
+                        historyItemsForSearch.forEach { res ->
+                            if (res.barcode!!.lowercase().contains(query!!.lowercase())) {
                                 temp.add(res)
                             }
                         }
                         historyItemsForSearch = temp
-                    }
-                    else  if(it =="favorite"){
+                    } else if (it == "favorite") {
                         val temp = ArrayList<FavoriteData>()
-                        favoriteItemForSearch.forEach {res->
-                            if(res.name!!.lowercase().contains(query!!.lowercase())){
+                        favoriteItemForSearch.forEach { res ->
+                            if (res.name!!.lowercase().contains(query!!.lowercase())) {
                                 temp.add(res)
                             }
                         }
                         favoriteItemForSearch = temp
-                    }
-
-                    else  if(it =="find"){
+                    } else if (it == "find") {
                         val temp = ArrayList<FindBigData>()
-                        findBigForSearch.forEach {res->
-                            if(res.str.lowercase().contains(query!!.lowercase())){
+                        findBigForSearch.forEach { res ->
+                            if (res.str.lowercase().contains(query!!.lowercase())) {
                                 temp.add(res)
                             }
                         }
                         findBigForSearch = temp
-                    }
-                    else  if(it =="findsmall"){
+                    } else if (it == "findsmall") {
                         val temp = ArrayList<FindSmallData>()
-                        findSmallForSearch.forEach {res->
-                            if(res.str.lowercase().contains(query!!.lowercase())){
+                        findSmallForSearch.forEach { res ->
+                            if (res.str.lowercase().contains(query!!.lowercase())) {
                                 temp.add(res)
                             }
                         }
@@ -122,7 +125,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    Log.d("query","change")
+                    Log.d("query", "change")
                     return false
                 }
             })
@@ -132,12 +135,14 @@ class MainActivity : AppCompatActivity() {
 
         //팝업창 추가
         val popup = PopupFragmentStartpage.getInstance()
-        popup.show(supportFragmentManager,
-            PopupFragmentStartpage.TAG_EVENT_DIALOG)
+        popup.show(
+            supportFragmentManager,
+            PopupFragmentStartpage.TAG_EVENT_DIALOG
+        )
 
         //앱 테마를 noactionbar 로 설정했고 툴바를 사용할것이므로 actionbar를 우리가 만든 toolbar로 설정하는 코드
         setSupportActionBar(mainToolBar_tb1)
-        val actionBar =supportActionBar
+        val actionBar = supportActionBar
 
         //왼쪽에 메뉴버튼
         actionBar?.setDisplayHomeAsUpEnabled(true)
@@ -147,24 +152,15 @@ class MainActivity : AppCompatActivity() {
         actionBar?.setDisplayShowTitleEnabled(false)
 
 
-
         //메뉴 세팅하는 함수
         naviSet()
 
         val header = navi_nv.getHeaderView(0)
 
-        header.drawerClose_btn.setOnClickListener{
+        header.drawerClose_btn.setOnClickListener {
             drawer_layout.closeDrawer(GravityCompat.START)
         }
 
-    }
-
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.selectedFragment.observe(this,{
-            Log.d("fff",viewModel.fragmentStack.toString())
-        })
     }
 
     fun naviSet() {
@@ -175,6 +171,7 @@ class MainActivity : AppCompatActivity() {
 
             menuItem.isChecked = true
             drawer_layout.closeDrawers()
+            binding.viewModel!!.isDrawerOpen.value = false
 
             //선택한 메뉴의 id
             val id = menuItem.itemId
@@ -221,6 +218,7 @@ class MainActivity : AppCompatActivity() {
                      t.add(layout,fragment).addToBackStack(null).commit()
                  }
             }
+
             true
         }
     }
@@ -248,7 +246,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
+        Log.d("Main",viewModel.fragmentStack.toString())
         if(!binding.toolbarSv.isIconified){
+            Log.d("Main","0")
             viewModel.toolbarText.value = tempText
             Log.d(binding.toolbarSv.query.length.toString(),"query")
             if(binding.toolbarSv.query.isNotEmpty() || viewModel.searchFlag.value == "finish"){
@@ -257,16 +257,20 @@ class MainActivity : AppCompatActivity() {
             binding.toolbarSv.isIconified = true
         }
         else if(binding.viewModel!!.isDrawerOpen.value == true){
+            Log.d("Main","1")
             drawer_layout.closeDrawer(GravityCompat.START)
             binding.viewModel!!.isDrawerOpen.value = false
         }
         else if(viewModel.selectedFragment.value != "main"){
+            Log.d("Main","2")
             super.onBackPressed()
         }
         else if(mBackPressListener != null){
+            Log.d("Main","3")
             mBackPressListener!!.onBack()
         }
         else{
+            Log.d("Main","4")
             if (pressedTime == 0L) {
                 Toast.makeText(this, "한번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
                 pressedTime = System.currentTimeMillis()

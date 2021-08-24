@@ -34,23 +34,10 @@ public class LoadingActivity extends AppCompatActivity {
         else if(prefs.getDarkmodSwitch()==true){
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }
-        imageLoad();
         loadingStart();
 
     }
 
-    private void imageLoad() {
-        DatabaseReadModel databaseReadModel = new DatabaseReadModel();
-        RoomHelper helper = Room.databaseBuilder(getApplicationContext(),RoomHelper.class,"Database").allowMainThreadQueries().build();
-        List<MyRoomDatabase> data = helper.databaseDao().getAll();
-
-       for(int i = 0; i < data.size(); i++){
-           String image = data.get(i).getImage();
-           databaseReadModel.decode(this,image);
-       }
-
-
-    }
 
     private void loadingStart(){
         Handler handler=new Handler();
