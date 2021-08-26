@@ -1,6 +1,7 @@
 package com.kt.recycleapp.java.announce;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import androidx.databinding.ObservableArrayList;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.kt.recycleapp.model.DatabaseReadModel;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -50,6 +52,8 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceViewHoler> {
 class AnnounceViewHoler extends RecyclerView.ViewHolder{
     AnnounceLayoutUnitBinding binding;
     Context context;
+    public DatabaseReadModel model = new DatabaseReadModel();
+
     public AnnounceViewHoler(AnnounceLayoutUnitBinding binding, Context context) {
         super(binding.getRoot());
         this.binding = binding;
@@ -59,6 +63,8 @@ class AnnounceViewHoler extends RecyclerView.ViewHolder{
     public void bind(AnnounceData data ,int position) {
         binding.whatisTv2.setText(data.itemName);
         binding.howtorecycleTv1.setText(data.resultInfo);
-        Glide.with(context).load(R.drawable.defaultavatar).override(500).into(binding.announceIv);
+        model.setDefaultImage(context,binding.announceIv,binding.imageLoadingPb);
+
+
     }
 }

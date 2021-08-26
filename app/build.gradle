@@ -49,6 +49,9 @@ dependencies {
     kapt 'com.github.bumptech.glide:compiler:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
+
+    implementation 'com.google.firebase:firebase-storage'
+
     implementation 'com.kyleduo.switchbutton:library:2.0.0' //스위치 사용위해 추가
     implementation 'com.google.firebase:firebase-firestore-ktx:23.0.3'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'

@@ -1,30 +1,26 @@
 package com.kt.recycleapp.model
 
-import android.app.Activity
+import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.net.Uri
 import android.util.Log
+import android.view.View
+import android.widget.ImageView
+import android.widget.ProgressBar
 import androidx.databinding.ObservableArrayList
 import androidx.lifecycle.MutableLiveData
+import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import com.kt.recycleapp.java.announce.AnnounceData
 import com.kt.recycleapp.kotlin.viewmodel.FindViewModel
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class DatabaseReadModel {
     val db = FirebaseFirestore.getInstance()
     companion object {
         var name = HashMap<String, String>()
         var decodeImageList = ArrayList<Bitmap>()
-    }
-
-    fun decode(activity: Activity?,image : String) {
-        GlobalScope.launch {
-            val path ="${activity?.externalMediaDirs?.get(0)}/수거했어 오늘도!/${image}"
-            val bm = BitmapFactory.decodeFile(path)
-            decodeImageList.add(bm)
-         }
     }
 
     fun findBig(findBigProgress: MutableLiveData<String>):ArrayList<String>{
@@ -147,4 +143,17 @@ class DatabaseReadModel {
 
         }
     }
+
+    fun setDefaultImage(context: Context, imageView: ImageView,progressBar: ProgressBar) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val storage = FirebaseStorage.getInstance("gs://recycleapp-e6ed9.appspot.com").reference
+            storage.child("default_images/default_nothing.png")
+                .downloadUrl.addOnSuccessListener {
+                    Log.d(it.toString(),"sub")
+                    progressBar.visibility = View.INVISIBLE
+                    Glide.with(context).load(it).override(500).into(imageView)
+                }
+        }
+    }
+
 }

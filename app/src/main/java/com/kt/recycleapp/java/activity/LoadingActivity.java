@@ -9,16 +9,18 @@ import android.os.Handler;
 
 import com.kt.recycleapp.kotlin.activity.MainActivity;
 import com.kt.recycleapp.manager.MyPreferenceManager;
+import com.kt.recycleapp.model.DatabaseReadModel;
 
 import java.recycleapp.R;
 
 public class LoadingActivity extends AppCompatActivity {
-
+    DatabaseReadModel model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
+        model = new DatabaseReadModel();
         MyPreferenceManager prefs = new MyPreferenceManager(getApplicationContext()); //만들었던 preferenceManager를 쓸수있게 생성
 
         if(prefs.getDarkmodSwitch()==false){
@@ -27,6 +29,8 @@ public class LoadingActivity extends AppCompatActivity {
         else if(prefs.getDarkmodSwitch()==true){
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }
+
+
         loadingStart();
 
     }
@@ -36,6 +40,7 @@ public class LoadingActivity extends AppCompatActivity {
         Handler handler=new Handler();
         handler.postDelayed(new Runnable(){
             public void run(){
+
                 //startActivity(new Intent(현재Activity.this, 불러올Activity.class));
                 //overridePendingTransition(R.anim.현재(사라질)Activity애니메이션, R.anim.현재(사라질)Activity애니메이션);
 
