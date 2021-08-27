@@ -13,11 +13,16 @@ import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.kt.recycleapp.java.announce.AnnounceData
+import com.kt.recycleapp.kotlin.viewmodel.AddViewModel
 import com.kt.recycleapp.kotlin.viewmodel.FindViewModel
 import kotlinx.coroutines.*
+import java.io.File
 
 class DatabaseReadModel {
+    val STORAGE_URL = "gs://recycleapp-e6ed9.appspot.com"
+
     val db = FirebaseFirestore.getInstance()
+    val storage = FirebaseStorage.getInstance(STORAGE_URL).reference
     companion object {
         var name = HashMap<String, String>()
         var decodeImageList = ArrayList<Bitmap>()
@@ -146,13 +151,40 @@ class DatabaseReadModel {
 
     fun setDefaultImage(context: Context, imageView: ImageView,progressBar: ProgressBar) {
         CoroutineScope(Dispatchers.IO).launch {
-            val storage = FirebaseStorage.getInstance("gs://recycleapp-e6ed9.appspot.com").reference
             storage.child("default_images/default_nothing.png")
                 .downloadUrl.addOnSuccessListener {
                     Log.d(it.toString(),"sub")
                     progressBar.visibility = View.INVISIBLE
                     Glide.with(context).load(it).override(500).into(imageView)
                 }
+        }
+    }
+
+    fun uploadAll(multyPb: ProgressBar, photoUri: Uri?) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val list = AddViewModel.addItems
+            for(i in 0 until list.size){
+                if(i == 0){
+                    db.collection("products").document(AddViewModel.products[i])
+                        .update(list[i])
+                }
+                else{
+                    db.collection("products").document("복합물품").collection("sublist").document(
+                        AddViewModel.products[i])
+                        .update(list[i])
+                }
+            }
+
+            if(photoUri != null) {
+                val fileName = "IMAGE_${list[0][AddViewModel.barcode]}"
+                //val fileRef = storage.child("$fileName.png")
+                val imgRef = storage.child("products_image/$fileName.png")
+
+
+                imgRef.putFile(photoUri)
+            }
+
+            AddViewModel.addItems.clear()
         }
     }
 

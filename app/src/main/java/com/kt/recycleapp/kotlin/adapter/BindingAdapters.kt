@@ -85,17 +85,5 @@ object BindingAdapters {
         recyclerView.adapter?.notifyDataSetChanged()
     }
 
-    /*@BindingAdapter("announce")
-    @JvmStatic
-    fun set(recyclerView: RecyclerView, item: ObservableArrayList<AnnounceData>) {
-        val adt = AnnounceAdapter()
-        val lm = LinearLayoutManager(recyclerView.context)
-        lm.orientation = RecyclerView.HORIZONTAL
-
-        recyclerView.layoutManager = lm
-        recyclerView.adapter = adt
-        (recyclerView.adapter as AnnounceAdapter).setItems(item)
-        recyclerView.adapter?.notifyDataSetChanged()
-    }*/
 
 }

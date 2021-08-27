@@ -14,16 +14,16 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/addpage_item_layout"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:clickable="true">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/white"
             app:cardCornerRadius="3dp"
             app:cardElevation="5dp"
             app:cardUseCompatPadding="true"
-            android:background="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -37,7 +37,7 @@
                     android:id="@+id/products_sp2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toTopOf="@+id/name_et"
+                    app:layout_constraintBottom_toTopOf="@+id/productDevide_gl"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/products_tv"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -48,11 +48,10 @@
                     android:layout_height="wrap_content"
                     android:text="물품 분류"
                     android:textSize="18sp"
-                    app:layout_constraintBottom_toTopOf="@+id/name_tv"
+                    app:layout_constraintBottom_toTopOf="@+id/productDevide_gl"
                     app:layout_constraintEnd_toStartOf="@+id/products_sp2"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.5" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/name_tv"
@@ -60,10 +59,10 @@
                     android:layout_height="wrap_content"
                     android:text="물품명"
                     android:textSize="18sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/productDevide_gl2"
                     app:layout_constraintEnd_toStartOf="@+id/name_et"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/products_tv" />
+                    app:layout_constraintTop_toTopOf="@+id/productDevide_gl" />
 
                 <EditText
                     android:id="@+id/name_et"
@@ -71,10 +70,10 @@
                     android:layout_height="wrap_content"
                     android:ems="8"
                     android:inputType="textPersonName"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/summit_btn"
+                    app:layout_constraintBottom_toTopOf="@+id/productDevide_gl2"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/name_tv"
-                    app:layout_constraintTop_toBottomOf="@+id/products_sp2" />
+                    app:layout_constraintTop_toTopOf="@+id/productDevide_gl" />
 
                 <Button
                     android:id="@+id/summit_btn"
@@ -84,8 +83,62 @@
                     android:text="저장"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/name_et"
-                    app:layout_constraintTop_toBottomOf="@+id/products_sp2" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/guideline6" />
+
+                <EditText
+                    android:id="@+id/productExplain_et"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="8"
+                    android:gravity="top|start"
+                    android:inputType="textMultiLine"
+                    android:lines="3"
+                    android:maxWidth="5.0dip"
+                    android:minWidth="10.0dip"
+                    app:layout_constraintBottom_toTopOf="@+id/guideline4"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/productExplain_tv"
+                    app:layout_constraintTop_toTopOf="@+id/productDevide_gl2" />
+
+                <TextView
+                    android:id="@+id/productExplain_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="상세설명"
+                    app:layout_constraintBottom_toTopOf="@+id/guideline4"
+                    app:layout_constraintEnd_toStartOf="@+id/productExplain_et"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/productDevide_gl2" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/productDevide_gl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_begin="50dp" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/productDevide_gl2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_begin="150dp" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_begin="250dp" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_begin="260dp" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>

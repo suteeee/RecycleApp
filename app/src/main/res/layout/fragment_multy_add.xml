@@ -21,22 +21,23 @@
             android:id="@+id/itemadd_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="105dp"
             android:src="@drawable/ic_add"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/addAll_btn"
             app:layout_constraintTop_toBottomOf="@+id/multy_rv" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/multy_rv"
+            add="@{viewmodel.itemList}"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@+id/itemadd_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            add="@{viewmodel.itemList}"
-            >
+            app:layout_constraintTop_toTopOf="@+id/guideline2">
 
         </androidx.recyclerview.widget.RecyclerView>
 
@@ -46,11 +47,10 @@
             android:layout_height="wrap_content"
             android:text="등록"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/itemadd_btn"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/multy_rv"
-            app:layout_constraintVertical_bias="0.5" />
+            app:layout_constraintVertical_bias="0.0" />
 
         <ProgressBar
             android:id="@+id/multy_pb"
@@ -61,6 +61,40 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/multy_rv" />
+
+        <Button
+            android:id="@+id/imageUpload_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="이미지 업로드"
+            app:layout_constraintBottom_toTopOf="@+id/multy_rv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/productImage_iv"
+            app:layout_constraintTop_toTopOf="@+id/guideline3" />
+
+        <ImageView
+            android:id="@+id/productImage_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/guideline2"
+            app:layout_constraintEnd_toStartOf="@+id/imageUpload_btn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline3"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="100dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="10dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
