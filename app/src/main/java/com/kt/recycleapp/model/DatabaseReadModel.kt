@@ -149,14 +149,25 @@ class DatabaseReadModel {
         }
     }
 
-    fun setDefaultImage(context: Context, imageView: ImageView,progressBar: ProgressBar) {
+    fun setImage(
+        context: Context,
+        imageView: ImageView,
+        progressBar: ProgressBar,
+        itemName: String
+    ) {
         CoroutineScope(Dispatchers.IO).launch {
-            storage.child("default_images/default_nothing.png")
+            Log.d(itemName,"sub")
+            storage.child("products_image/IMAGE_${itemName.replace(" ", "")}.png")
                 .downloadUrl.addOnSuccessListener {
-                    Log.d(it.toString(),"sub")
-                    progressBar.visibility = View.INVISIBLE
                     Glide.with(context).load(it).override(500).into(imageView)
                 }
+                .addOnFailureListener {
+                    storage.child("default_images/default_nothing.png")
+                        .downloadUrl.addOnSuccessListener {uri->
+                            Glide.with(context).load(uri).override(500).into(imageView)
+                    }
+                }
+            progressBar.visibility = View.INVISIBLE
         }
     }
 
