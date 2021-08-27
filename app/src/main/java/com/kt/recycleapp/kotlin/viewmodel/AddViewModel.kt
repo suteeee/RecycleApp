@@ -19,8 +19,8 @@ class AddViewModel:ViewModel() {
     var itemList = ObservableArrayList<Int>()
     val model = DatabaseReadModel()
 
-    fun uploadAll(multyPb: ProgressBar) {
-        model.uploadAll(multyPb,photoUri)
+    fun uploadAll() {
+        model.uploadAll(photoUri)
     }
 
 }

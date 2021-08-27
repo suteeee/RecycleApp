@@ -160,18 +160,20 @@ class DatabaseReadModel {
             storage.child("products_image/IMAGE_${itemName.replace(" ", "")}.png")
                 .downloadUrl.addOnSuccessListener {
                     Glide.with(context).load(it).override(500).into(imageView)
+                    progressBar.visibility = View.INVISIBLE
                 }
                 .addOnFailureListener {
                     storage.child("default_images/default_nothing.png")
                         .downloadUrl.addOnSuccessListener {uri->
                             Glide.with(context).load(uri).override(500).into(imageView)
+                            progressBar.visibility = View.INVISIBLE
                     }
                 }
-            progressBar.visibility = View.INVISIBLE
+
         }
     }
 
-    fun uploadAll(multyPb: ProgressBar, photoUri: Uri?) {
+    fun uploadAll(photoUri: Uri?) {
         CoroutineScope(Dispatchers.IO).launch {
             val list = AddViewModel.addItems
             for(i in 0 until list.size){
@@ -188,10 +190,7 @@ class DatabaseReadModel {
 
             if(photoUri != null) {
                 val fileName = "IMAGE_${list[0][AddViewModel.barcode]}"
-                //val fileRef = storage.child("$fileName.png")
                 val imgRef = storage.child("products_image/$fileName.png")
-
-
                 imgRef.putFile(photoUri)
             }
 

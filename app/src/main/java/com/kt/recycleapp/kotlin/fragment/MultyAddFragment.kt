@@ -26,10 +26,6 @@ class MultyAddFragment : Fragment(), OnBackPressListener {
     var ld = MutableLiveData<String>()
     var data = DatabaseReadModel()
 
-
-
-
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
  
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_multy_add, container, false)
@@ -68,7 +64,7 @@ class MultyAddFragment : Fragment(), OnBackPressListener {
         })
 
         binding.addAllBtn.setOnClickListener {
-            viewModel.uploadAll(binding.multyPb)
+            viewModel.uploadAll()
             Toast.makeText(context,"상품 등록이 완료되었습니다.",Toast.LENGTH_SHORT).show()
             viewModel.photoUri = null
         }
