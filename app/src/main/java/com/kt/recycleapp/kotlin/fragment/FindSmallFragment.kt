@@ -44,13 +44,7 @@ class FindSmallFragment : Fragment() {
         viewModel.findSmallProgress.observe(viewLifecycleOwner,{
             if(it == "finish"){
                 binding.findSmallPb.visibility = View.INVISIBLE
-                var idx = 0
-                when(FindViewModel.selectDoc){
-                    "종이"->idx = 0
-                    "플라스틱"->idx = 1
-                }
-
-                viewModel.addSmallItem(idx)
+                viewModel.addSmallItem()
                 MainActivity.findSmallForSearch = viewModel.smallItemList
             }
         })

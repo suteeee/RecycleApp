@@ -6,6 +6,7 @@ import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableArrayList
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestBuilder
 import com.kt.recycleapp.kotlin.etc.FavoriteData
 import com.kt.recycleapp.kotlin.etc.FindBigData
@@ -28,7 +29,8 @@ object BindingAdapters {
     @BindingAdapter("imgRes")
     @JvmStatic
     fun imgLoad(img:ImageView, id:Int) {
-        img.setImageResource(id)
+        //img.setImageResource(id)
+        Glide.with(img).load(id).override(500).into(img)
     }
 
     @BindingAdapter("imgBitmap")

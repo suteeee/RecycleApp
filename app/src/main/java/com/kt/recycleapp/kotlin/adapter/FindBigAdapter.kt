@@ -1,18 +1,21 @@
 package com.kt.recycleapp.kotlin.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.kt.recycleapp.kotlin.etc.FindBigData
 import com.kt.recycleapp.kotlin.fragment.FindFragment
 import com.kt.recycleapp.kotlin.viewmodel.FindViewModel
+import java.recycleapp.R
 import java.recycleapp.databinding.FindBigLayoutUnitBinding
 
 class FindBigAdapter : RecyclerView.Adapter<FindBigAdapter.MyViewHolder>() {
     var items = ArrayList<FindBigData>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val binding = FindBigLayoutUnitBinding.inflate(LayoutInflater.from(parent.context),parent,false)
-        val holder = MyViewHolder(binding)
+        val holder = MyViewHolder(binding,parent.context)
         return holder
     }
 
@@ -25,7 +28,7 @@ class FindBigAdapter : RecyclerView.Adapter<FindBigAdapter.MyViewHolder>() {
     }
 
     inner class MyViewHolder(
-        private val binding: FindBigLayoutUnitBinding) : RecyclerView.ViewHolder(binding.root){
+        private val binding: FindBigLayoutUnitBinding, val context: Context) : RecyclerView.ViewHolder(binding.root){
         fun bind(data:FindBigData){
             binding.big = data
             binding.findBigTv.setOnClickListener {

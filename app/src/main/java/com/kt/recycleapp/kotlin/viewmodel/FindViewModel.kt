@@ -24,25 +24,33 @@ class FindViewModel: ViewModel() {
     var bigTempList = ObservableArrayList<FindBigData>()
     var smallTempList = ObservableArrayList<FindSmallData>()
 
-    val imgArr = arrayOf(R.drawable.paper, R.drawable.plastic, R.drawable.vinyl, R.drawable.iron, R.drawable.delivery, R.drawable.constore, R.drawable.baterry, R.drawable.trash, R.drawable.pet)
-    val paperPng = arrayOf(R.drawable.paperwrap,R.drawable.paperbox,R.drawable.papebag)
-    val platicPng = arrayOf(R.drawable.plasticlego,R.drawable.plasticpettop,R.drawable.strrow,R.drawable.plasticpringlestop)
+    val imgArr = arrayOf(R.drawable.ic_baterry_default, R.drawable.ic_iron_default, R.drawable.ic_mix_default, R.drawable.ic_vinyl_default,
+        R.drawable.ic_glass_default, R.drawable.ic_trash_default, R.drawable.ic_paper_default, R.drawable.ic_can_default, R.drawable.ic_pet_default,R.drawable.ic_plastic_default)
 
     fun addItem(index:Int){
-        itemList.add(FindBigData(imgArr[0],itemData[index]))
+        itemList.add(FindBigData(imgArr[index],itemData[index]))
     }
 
-    fun addSmallItem(idx: Int){
-        var temp = paperPng
-        when(idx){
-            0->temp = paperPng
-            1->temp = platicPng
+    fun addSmallItem(){
+        var idx = 0
+        when(selectDoc){
+            "건전지"-> idx = 0
+            "고철" -> idx = 1
+            "복합물품"-> idx = 2
+            "비닐" -> idx = 3
+            "유리"-> idx = 4
+            "일반쓰레기" -> idx = 5
+            "종이"-> idx = 6
+            "캔" -> idx = 7
+            "페트병"-> idx = 8
+            "플라스틱" -> idx = 9
         }
 
+        val temp =  imgArr[idx]
         var cnt = 0
 
         itemDataSmall.forEach {
-            smallItemList.add(FindSmallData(temp[idx],itemDataSmall[cnt].values.elementAt(0)))
+            smallItemList.add(FindSmallData(temp,itemDataSmall[cnt].values.elementAt(0)))
             cnt++
         }
     }
