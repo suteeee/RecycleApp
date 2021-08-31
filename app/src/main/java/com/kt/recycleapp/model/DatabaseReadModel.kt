@@ -176,16 +176,20 @@ class DatabaseReadModel {
     fun uploadAll(photoUri: Uri?) {
         CoroutineScope(Dispatchers.IO).launch {
             val list = AddViewModel.addItems
-            for(i in 0 until list.size){
-                if(i == 0){
-                    db.collection("products").document(AddViewModel.products[i])
-                        .update(list[i])
+            try {
+                for (i in 0 until list.size) {
+                    if (i == 0) {
+                        db.collection("products").document(AddViewModel.products[i])
+                            .update(list[i])
+                    } else {
+                        db.collection("products").document("복합물품").collection("sublist").document(
+                            AddViewModel.products[i]
+                        )
+                            .update(list[i])
+                    }
                 }
-                else{
-                    db.collection("products").document("복합물품").collection("sublist").document(
-                        AddViewModel.products[i])
-                        .update(list[i])
-                }
+            }catch (e:Exception){
+
             }
 
             if(photoUri != null) {

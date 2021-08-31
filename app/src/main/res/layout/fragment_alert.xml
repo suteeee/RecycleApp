@@ -1,0 +1,43 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewmodel"
+            type="com.kt.recycleapp.kotlin.viewmodel.AlertViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/alert_layout"
+        android:layout_width="250dp"
+        android:layout_height="150dp"
+        tools:context="com.kt.recycleapp.kotlin.fragment.AlertFragment">
+
+        <TextView
+            android:id="@+id/alert_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/font1"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:text="@{viewmodel.str}"
+            app:layout_constraintBottom_toTopOf="@+id/Alert_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/Alert_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/common_buttom_design"
+            android:text="확인"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/alert_tv" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

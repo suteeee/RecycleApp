@@ -1,7 +1,9 @@
 package com.kt.recycleapp.kotlin.fragment
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -65,13 +67,18 @@ class MultyAddFragment : Fragment(), OnBackPressListener {
 
         binding.addAllBtn.setOnClickListener {
             viewModel.uploadAll()
-            Toast.makeText(context,"상품 등록이 완료되었습니다.",Toast.LENGTH_SHORT).show()
+            var frg = AlertFragment()
+            val bundle = Bundle()
+            bundle.putString("AlertType","AddSuccess")
+            frg.arguments = bundle
+            frg.show(requireActivity().supportFragmentManager,null)
             viewModel.photoUri = null
         }
 
         binding.imageUploadBtn.setOnClickListener {
+            val uri: Uri = Uri.parse("${MainFragment.outputDirectory}")
             var photoPickerIntent = Intent(Intent.ACTION_PICK)
-            photoPickerIntent.type = "image/*"
+            photoPickerIntent.setDataAndType(uri, "image/*")
             startActivityForResult(photoPickerIntent,0)
         }
         return binding.root

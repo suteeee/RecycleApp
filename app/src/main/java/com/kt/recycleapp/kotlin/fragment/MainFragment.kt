@@ -3,6 +3,7 @@ package com.kt.recycleapp.kotlin.fragment
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -48,6 +49,10 @@ import kotlin.math.sqrt
 typealias BarcodeListener = (barcode: String) -> Unit
 
 class MainFragment : Fragment() {
+    companion object{
+        lateinit var outputDirectory:File
+    }
+
     private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE)
     private val REQUEST_CODE_PERMISSIONS = 10
     private lateinit var cameraExecutor: ExecutorService
@@ -60,8 +65,6 @@ class MainFragment : Fragment() {
     private var cameraInfo :CameraInfo? = null
 
     private var imageCapture :ImageCapture?= null
-
-    private lateinit var outputDirectory:File
     var helper :RoomHelper? = null
 
     var captureIsFinish = MutableLiveData<String>()
@@ -167,6 +170,7 @@ class MainFragment : Fragment() {
                 val path ="$outputDirectory/$name"
                 val bm = BitmapFactory.decodeFile(path)
                 DatabaseReadModel.decodeImageList.add(bm)
+                context?.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,Uri.fromFile(outputDirectory)))
                 captureIsFinish.value="yes"
             }
 
@@ -206,8 +210,8 @@ class MainFragment : Fragment() {
                             val fineName = takePhoto()
                             Toast.makeText(activity?.baseContext,barcode,Toast.LENGTH_SHORT).show()
 
-                            captureIsFinish.observe(viewLifecycleOwner,{
-                                if(it=="yes"){
+                            captureIsFinish.observe(viewLifecycleOwner,{fin->
+                                if(fin=="yes"){
                                     writeDB(barcode,fineName)
                                     captureIsFinish.value="no"
                                     val bundle = Bundle()
