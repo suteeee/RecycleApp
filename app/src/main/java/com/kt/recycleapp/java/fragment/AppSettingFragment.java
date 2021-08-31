@@ -28,7 +28,7 @@ public class AppSettingFragment extends Fragment{
     private Button seeAnnounceButton;
     //private Switch darkmodSwitch;
     private Button darkmodButton;
-
+    private Button uploadButton;
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,7 +40,7 @@ public class AppSettingFragment extends Fragment{
         seeAnnounceButton = (Button) rootView.findViewById(R.id.announce_bt1);
         //darkmodSwitch = (Switch) rootView.findViewById(R.id.darkmod_sch1);
         darkmodButton = (Button) rootView.findViewById(R.id.darkmodonoff_bt1);
-
+        uploadButton = rootView.findViewById(R.id.imageUpload_btn1);
 
         MyPreferenceManager prefs = new MyPreferenceManager(requireContext()); //만들었던 preferenceManager를 쓸수있게 생성
 
@@ -75,6 +75,13 @@ public class AppSettingFragment extends Fragment{
                 }
             }
         });
+
+        uploadButton.setOnClickListener(v -> {
+            /*
+            * 여기에 코드 추가
+            * */
+        });
+
 
         return rootView;
     }

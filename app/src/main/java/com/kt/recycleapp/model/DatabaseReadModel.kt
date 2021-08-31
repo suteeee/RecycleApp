@@ -16,16 +16,19 @@ import com.kt.recycleapp.java.announce.AnnounceData
 import com.kt.recycleapp.kotlin.viewmodel.AddViewModel
 import com.kt.recycleapp.kotlin.viewmodel.FindViewModel
 import kotlinx.coroutines.*
-import java.io.File
+import java.recycleapp.R
 
 class DatabaseReadModel {
     val STORAGE_URL = "gs://recycleapp-e6ed9.appspot.com"
 
     val db = FirebaseFirestore.getInstance()
     val storage = FirebaseStorage.getInstance(STORAGE_URL).reference
+    var kind :String = ""
+
     companion object {
         var name = HashMap<String, String>()
         var decodeImageList = ArrayList<Bitmap>()
+        var nameForSetImage = ""
     }
 
     fun findBig(findBigProgress: MutableLiveData<String>):ArrayList<String>{
@@ -104,41 +107,64 @@ class DatabaseReadModel {
         return list
     }
 
-    fun findProductKind(finding:MutableLiveData<String>, product : String, kind: MutableLiveData<String>) {
+    fun findProductKind(finding: MutableLiveData<String>, product: String, kind: MutableLiveData<String>, imgCode: MutableLiveData<Int>) {
         finding.value = "start"
         var res = ""
         db.collection("products").get().addOnCompleteListener {
-                (it.result.documents).forEach { doc->
-                    if(doc.data?.values?.contains(product) == true){
-                        res = doc.id
-                        return@forEach
-                    }
+            (it.result.documents).forEach { doc ->
+                // 물품 명으로 탐색
+                if (doc.data?.values?.contains(product) == true) {
+                    res = doc.id
+                    return@forEach
                 }
-            Log.d("fff",res.toString())
-            kind.value = res
-            finding.value = "finish"
+                kind.value = res
+                this.kind = res
             }
+            when(res) {
+                "건전지" -> R.drawable.ic_baterry_default
+                "고철" -> R.drawable.ic_iron_default
+                "비닐" -> R.drawable.ic_vinyl_default
+                "유리" -> R.drawable.ic_glass_default
+                "일반쓰레기" -> R.drawable.ic_trash_default
+                "종이" -> R.drawable.ic_paper_default
+                "캔" -> R.drawable.ic_can_default
+                "페트병" -> R.drawable.ic_paper_default
+                "플라스틱" -> R.drawable.ic_plastic_default
+            }
+            finding.value = "finish"
+        }
     }
 
-    fun settingResult(setting:MutableLiveData<String>,kind: String,product: ObservableArrayList<AnnounceData>,name:String){
+    fun settingResult(setting:MutableLiveData<String>,kind: String,product: ObservableArrayList<AnnounceData>,barcode:String){
         setting.value = "start"
         val infoMap = HashMap<String,String>()
+        var name = barcode
         var info = ""
+        var pKind = kind
+        db.collection("products").get().addOnCompleteListener {
+            (it.result.documents).forEach{doc ->
+                if (doc.data?.keys?.contains(barcode) == true) { //db에 존재할때
+                    name = doc.data?.get(barcode).toString()
+                    pKind = doc.id
+                    return@forEach
+                }
+            }
+        }
         db.collection("resultInfo").get().addOnCompleteListener {
             (it.result.documents).forEach { doc ->
                 doc.data?.forEach {
                     infoMap[it.key] = it.value.toString()
                 }
             }
-            info = infoMap.get(kind).toString()
-            product.add(AnnounceData(name, info))//첫번째 페이지(주 물품)
+            info = infoMap.get(pKind).toString()
+            product.add(AnnounceData(name, info ,pKind))//첫번째 페이지(주 물품)
 
             db.collection("products").document("복합물품").collection("sublist").get().addOnCompleteListener {
                 (it.result.documents).forEach { doc->
                     val d = doc.data
                     d?.forEach { map->
                         if(map.key.contains(name)){
-                            product.add(AnnounceData(map.value.toString(),infoMap[doc.id]))
+                            product.add(AnnounceData(map.value.toString(),infoMap[doc.id], doc.id))
                         }
                     }
 
@@ -149,28 +175,55 @@ class DatabaseReadModel {
         }
     }
 
-    fun setImage(
-        context: Context,
-        imageView: ImageView,
-        progressBar: ProgressBar,
-        itemName: String
-    ) {
-        CoroutineScope(Dispatchers.IO).launch {
-            Log.d(itemName,"sub")
+    fun setImage(context: Context, imageView: ImageView, progressBar: ProgressBar, itemName: String) {
+       // CoroutineScope(Dispatchers.IO).launch {
+            var k = ""
             storage.child("products_image/IMAGE_${itemName.replace(" ", "")}.png")
                 .downloadUrl.addOnSuccessListener {
                     Glide.with(context).load(it).override(500).into(imageView)
                     progressBar.visibility = View.INVISIBLE
                 }
                 .addOnFailureListener {
-                    storage.child("default_images/default_nothing.png")
-                        .downloadUrl.addOnSuccessListener {uri->
-                            Glide.with(context).load(uri).override(500).into(imageView)
-                            progressBar.visibility = View.INVISIBLE
+                    var id = 0
+                    Log.d("kind", itemName)
+                    db.collection("products").get().addOnCompleteListener {
+                        (it.result.documents).forEach { doc ->
+                            // 물품 명으로 탐색
+                            if (doc.data?.values?.contains(itemName) == true) {
+                                k = doc.id
+                                return@forEach
+                            }
+                        }
+                        db.collection("products").document("복합물품").collection("sublist").get()
+                            .addOnCompleteListener {
+                                (it.result.documents).forEach { doc ->
+                                    // 물품 명으로 탐색
+                                    if (doc.data?.values?.contains(itemName) == true) {
+                                        Log.d("kind", "find")
+                                        k = doc.id
+                                        return@forEach
+                                    }
+                                }
+
+                                when (k) {
+                                    "건전지" -> id = R.drawable.ic_baterry_default
+                                    "고철" -> id = R.drawable.ic_iron_default
+                                    "비닐" -> id = R.drawable.ic_vinyl_default
+                                    "유리" -> id = R.drawable.ic_glass_default
+                                    "일반쓰레기" -> id = R.drawable.ic_trash_default
+                                    "종이" -> id = R.drawable.ic_paper_default
+                                    "캔" -> id = R.drawable.ic_can_default
+                                    "페트병" -> id = R.drawable.ic_pet_default
+                                    "플라스틱" -> id = R.drawable.ic_plastic_default
+                                }
+                                Log.d("kind", "$id $k")
+
+                                Glide.with(context).load(id).override(500).into(imageView)
+                                progressBar.visibility = View.INVISIBLE
+                            }
                     }
                 }
-
-        }
+       // }
     }
 
     fun uploadAll(photoUri: Uri?) {

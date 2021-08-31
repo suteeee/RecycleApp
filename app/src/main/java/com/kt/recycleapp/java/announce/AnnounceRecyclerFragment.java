@@ -50,6 +50,7 @@ public class AnnounceRecyclerFragment extends Fragment implements OnBackPressLis
         bundle = getArguments();
         barcode = bundle.getString("barcode");
         binding.setViewmodel(mViewModel);
+        mViewModel.itemName.setValue(barcode);
 
         mViewModel.itemName.observe(getViewLifecycleOwner(), s -> {
             if(!s.isEmpty()){
@@ -66,15 +67,6 @@ public class AnnounceRecyclerFragment extends Fragment implements OnBackPressLis
                 mViewModel.finding.setValue("waiting");
             }
         });
-
-        mViewModel.setting.observe(getViewLifecycleOwner(), s->{
-            if(s.equals("finish")){
-
-            }
-        });
-
-        mViewModel.itemName.setValue(barcode);
-
 
         return binding.getRoot();
     }

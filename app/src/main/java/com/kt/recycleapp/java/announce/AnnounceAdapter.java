@@ -58,6 +58,9 @@ class AnnounceViewHoler extends RecyclerView.ViewHolder{
     public void bind(AnnounceData data ,int position) {
         binding.whatisTv2.setText(data.itemName);
         binding.howtorecycleTv1.setText(data.resultInfo);
+        binding.productClassisicationTv2.setText(data.kind);
+        if(position == 0) DatabaseReadModel.Companion.setNameForSetImage(data.itemName);
+
         model.setImage(context,binding.announceIv,binding.imageLoadingPb,data.itemName);
 
     }
