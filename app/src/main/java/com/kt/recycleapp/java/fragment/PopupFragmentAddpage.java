@@ -23,8 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-//물건이 등록되지 않은 물품일 떄 실행 된다.
-//내 기억으로 이건 코틀린 영역에서 이 창이 뜨게해야하므로 주광님 화이팅!
+
 
 
 public class PopupFragmentAddpage extends DialogFragment implements  OnBackPressListener{
@@ -48,16 +47,6 @@ public class PopupFragmentAddpage extends DialogFragment implements  OnBackPress
         View rootView = inflater.inflate(R.layout.fragment_popup_addpage, container, false);
         MyPreferenceManager prefs = new MyPreferenceManager(requireContext()); //만들었던 preferenceManager를 쓸수있게 생성
 
-       // Bundle bundle = getArguments();
-
-       /* if(bundle != null){
-            sendBarcode = bundle.getString("barcode");
-            Log.d(sendBarcode,"준");
-            AddViewModel.Companion.setBarcode(sendBarcode);
-        }
-        else{
-            Log.d("null","준");
-        }*/
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
