@@ -30,13 +30,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline14"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintGuide_begin="600dp" />
-
                 <EditText
                     android:id="@+id/upload_info_et"
                     android:layout_width="wrap_content"
@@ -63,7 +56,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_begin="300dp" />
+                    app:layout_constraintGuide_begin="150dp" />
 
                 <EditText
                     android:id="@+id/upload_barcode_et"
@@ -81,7 +74,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_begin="100dp" />
+                    app:layout_constraintGuide_begin="50dp" />
 
                 <TextView
                     android:id="@+id/productBarcode_tv"
@@ -108,7 +101,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_begin="200dp" />
+                    app:layout_constraintGuide_begin="100dp" />
 
                 <Spinner
                     android:id="@+id/upload_kind_sp"
@@ -142,7 +135,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_begin="500dp" />
+                    app:layout_constraintGuide_begin="300dp" />
 
                 <TextView
                     android:id="@+id/productName_tv"
@@ -163,6 +156,13 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/guideline12" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_begin="370dp" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
