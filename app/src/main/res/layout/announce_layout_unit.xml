@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="30dp"
-        android:background="@color/main_backg_color"
+        android:background="@color/sub_backg_color"
         android:clickable="true"
         android:focusable="true">
 

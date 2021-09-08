@@ -26,7 +26,7 @@
             app:cardUseCompatPadding="true"
             app:cardElevation="5dp"
             app:cardCornerRadius="3dp"
-            android:background="@color/white"
+            android:background="@color/sub_backg_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -36,7 +36,7 @@
                 android:id="@+id/histiryItem_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white">
+                android:background="@color/sub_backg_color">
 
                 <ImageView
                     android:id="@+id/favorite_iv"
