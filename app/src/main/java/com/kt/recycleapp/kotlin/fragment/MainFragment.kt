@@ -118,9 +118,14 @@ class MainFragment : Fragment() {
 
 
         viewModel.zoomCnt.observe(viewLifecycleOwner,{
+            binding.zoonShowTv.visibility = View.VISIBLE
             val f = it.substring(0..2).toFloat()
             cameraController?.setZoomRatio(f)
             binding.invalidateAll()
+            var handler = Handler(Looper.getMainLooper())
+            handler.postDelayed({
+                binding.zoonShowTv.visibility = View.INVISIBLE
+            },1000)
         })
 
         return rootView
@@ -263,7 +268,6 @@ class MainFragment : Fragment() {
                                         viewModel.zoomCnt.value = "1.0x"
                                     }
                                 }
-                                Log.d("touch", viewModel.zoomCnt.value!!)
                                 dist = newDist
                                 iv.visibility = View.INVISIBLE
                             }

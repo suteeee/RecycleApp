@@ -19,7 +19,7 @@ import kotlinx.coroutines.*
 import java.recycleapp.R
 
 class DatabaseReadModel {
-    val STORAGE_URL = "gs://recycleapp-e6ed9.appspot.com"
+    private val STORAGE_URL = "gs://recycleapp-e6ed9.appspot.com"
 
     val db = FirebaseFirestore.getInstance()
     val storage = FirebaseStorage.getInstance(STORAGE_URL).reference
@@ -254,5 +254,29 @@ class DatabaseReadModel {
             AddViewModel.addItems.clear()
         }
     }
+
+    fun uploadData(barcode: String, names: ArrayList<String>, kinds: ArrayList<String>, subnames: ArrayList<String>, uploadFinish: MutableLiveData<String>,photoUri: Uri?) {
+
+        CoroutineScope(Dispatchers.IO).launch{
+            uploadFinish.postValue("start")
+            val col = db.collection("products")
+            val sub = col.document("복합물품").collection("sublist")
+
+            col.document(kinds[0]).update(barcode, names[0])
+
+
+            for(i in 1 until names.size){
+                sub.document(kinds[i]).update(names[i], subnames[i])
+            }
+
+            if(photoUri != null) {
+                val fileName = "IMAGE_${names[0]}"
+                val imgRef = storage.child("products_image/$fileName.png")
+                imgRef.putFile(photoUri)
+            }
+
+            uploadFinish.postValue("finish")
+        }
+   }
 
 }

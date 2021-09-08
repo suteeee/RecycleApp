@@ -107,6 +107,7 @@
                     android:text="@{viewmodel.zoomCnt}"
                     android:textColor="@color/white"
                     android:textSize="24sp"
+                    android:visibility="invisible"
                     app:layout_constraintBottom_toTopOf="@id/focus_iv"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

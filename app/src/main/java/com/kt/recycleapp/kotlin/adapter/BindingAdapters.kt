@@ -12,6 +12,7 @@ import com.kt.recycleapp.kotlin.etc.FavoriteData
 import com.kt.recycleapp.kotlin.etc.FindBigData
 import com.kt.recycleapp.kotlin.etc.FindSmallData
 import com.kt.recycleapp.kotlin.etc.HistoryData
+import com.kt.recycleapp.kotlin.fragment.DataUploadViewModel
 
 object BindingAdapters {
     @BindingAdapter("bind:item")
@@ -87,5 +88,23 @@ object BindingAdapters {
         recyclerView.adapter?.notifyDataSetChanged()
     }
 
+    @BindingAdapter("upload")
+    @JvmStatic
+    fun uploadItem(recyclerView: RecyclerView,item:ObservableArrayList<Int>) {
+       // val adt = UploadAdapter()
+        val lm = LinearLayoutManager(recyclerView.context)
+        lm.orientation = RecyclerView.HORIZONTAL
+
+        recyclerView.layoutManager = lm
+        //recyclerView.adapter = adt
+        (recyclerView.adapter as UploadAdapter).items = item
+        recyclerView.adapter?.notifyDataSetChanged()
+    }
+
+    @BindingAdapter("viewmodelConnect")
+    @JvmStatic
+    fun connect(recyclerView: RecyclerView, viewModel: DataUploadViewModel){
+        //(recyclerView.adapter as UploadAdapter).viewmodel = viewModel
+    }
 
 }

@@ -51,6 +51,11 @@
                 android:icon="@drawable/ic_launcher_foreground"
                 android:title="유저가이드"
                 />
+            <item
+                android:id="@+id/dataUpload"
+                android:icon="@drawable/ic_launcher_foreground"
+                android:title="데이터 업로드"
+                />
         </menu>
     </item>
 </menu>

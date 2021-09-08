@@ -204,6 +204,10 @@ class MainActivity : AppCompatActivity() {
                 viewModel.selectedFragment.value = "userGuide"
                 fragment = UserGuideMainFragment()
             }
+            else if (id == R.id.dataUpload) {
+                viewModel.selectedFragment.value = "dataUpload"
+                fragment = DataUploadFragment()
+            }
 
             if (fragment != null) {
                 //프래그먼트 트랜잭션(프래그먼트 전환)
