@@ -5,6 +5,11 @@
         <item android:title="@string/additionFunction">
             <menu>
                 <item
+                    android:id="@+id/main"
+                    android:icon="@drawable/ic_search"
+                    android:title="메인화면"
+                    />
+                <item
                     android:id="@+id/find"
                     android:icon="@drawable/ic_search"
                     android:title="@string/findModeTitle"

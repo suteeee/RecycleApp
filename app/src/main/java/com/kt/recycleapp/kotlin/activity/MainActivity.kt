@@ -164,7 +164,7 @@ class MainActivity : AppCompatActivity() {
         //메뉴 선택 리스너
         navi_nv.setNavigationItemSelectedListener { menuItem ->
             var fragment : Fragment? = null
-
+            val t =supportFragmentManager.beginTransaction()
             menuItem.isChecked = true
             drawer_layout.closeDrawers()
             binding.viewModel!!.isDrawerOpen.value = false
@@ -178,14 +178,26 @@ class MainActivity : AppCompatActivity() {
             //메뉴마다 액션 지정
             if (id == R.id.find) {
                 fragment = FindFragment()
-            } else if (id == R.id.advancedSearch) {
+            }
+            else if (id == R.id.main) {
+                viewModel.selectedFragment.value = "main"
+                fragment = MainFragment()
+                while (supportFragmentManager.backStackEntryCount != 0){
+                    supportFragmentManager.popBackStackImmediate()
+                }
+                viewModel.fragmentStack.clear()
+                viewModel.fragmentStack.add("main")
+            }
+            else if (id == R.id.advancedSearch) {
                 viewModel.selectedFragment.value = "adv"
                 fragment = AdvancedSearchFragment()
             }
             else if (id == R.id.favoriteItem) {
+                viewModel.selectedFragment.value = "favorite"
                 fragment = FavoriteItemFragment()
             }
             else if (id == R.id.history) {
+                viewModel.selectedFragment.value = "history"
                 fragment = HistoryFragment()
             }
             else if (id == R.id.recycleDayInfo) {
@@ -209,9 +221,8 @@ class MainActivity : AppCompatActivity() {
                 fragment = DataUploadFragment()
             }
 
-            if (fragment != null) {
+            if (fragment != null && id != R.id.main) {
                 //프래그먼트 트랜잭션(프래그먼트 전환)
-                    val t =    supportFragmentManager.beginTransaction()
                  if(viewModel.selectedFragment.value == "main"){
                      t.replace(layout,fragment).addToBackStack(null).commit()
                  }else{
