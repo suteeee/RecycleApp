@@ -1,59 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     package = "com.kt.recycleapp.kotlin.activity">
-    <group android:checkableBehavior="single">
+
         <item android:title="@string/additionFunction">
             <menu>
                 <item
                     android:id="@+id/find"
-                    android:icon="@drawable/ic_launcher_foreground"
+                    android:icon="@drawable/ic_search"
                     android:title="@string/findModeTitle"
                     />
                 <item
                     android:id="@+id/advancedSearch"
-                    android:icon="@drawable/ic_launcher_foreground"
+                    android:icon="@drawable/ic_search"
                     android:title="@string/advancedSearchTitle"
                     />
 
                 <item
                     android:id="@+id/favoriteItem"
-                    android:icon="@drawable/ic_launcher_foreground"
+                    android:icon="@drawable/ic_star"
                     android:title="@string/favoriteItemTitle"
                     />
                 <item
                     android:id="@+id/history"
-                    android:icon="@drawable/ic_launcher_foreground"
+                    android:icon="@drawable/ic_history"
                     android:title="@string/historyTitle"
                     />
                 <item
                     android:id="@+id/recycleDayInfo"
-                    android:icon="@drawable/ic_launcher_foreground"
+                    android:icon="@drawable/ic_recycle_info"
                     android:title="@string/recycleDayInfo"
                     />
                 <item
                     android:id="@+id/dailyTip"
-                    android:icon="@drawable/ic_launcher_foreground"
+                    android:icon="@drawable/ic_tip"
                     android:title="@string/dailyTipTitle"
                     />
             </menu>
         </item>
-    </group>
 
     <item android:title="설정">
         <menu>
             <item
                 android:id="@+id/AppSetting"
-                android:icon="@drawable/ic_launcher_foreground"
+                android:icon="@drawable/ic_setting"
                 android:title="@string/appSettingTitle"
                 />
             <item
                 android:id="@+id/userGuide"
-                android:icon="@drawable/ic_launcher_foreground"
+                android:icon="@drawable/ic_guide"
                 android:title="유저가이드"
                 />
             <item
                 android:id="@+id/dataUpload"
-                android:icon="@drawable/ic_launcher_foreground"
+                android:icon="@drawable/ic_upload"
                 android:title="데이터 업로드"
                 />
         </menu>

@@ -32,14 +32,14 @@ class UploadAdapter(val viewmodel: DataUploadViewModel) :RecyclerView.Adapter<Up
         return items.size
     }
 
-    fun saveData() {
-        holder.save(itemCount)
-    }
-
     inner class UploadViewHoler(val binding:DataUploadUnitBinding, val context: Context):RecyclerView.ViewHolder(binding.root){
         var selected = ""
         fun onBind(pos: Int) {
             binding.uploadInfoEt.setText(pos.toString())
+            if(pos != 0){
+                binding.uploadBarcodeEt.isEnabled = false
+                binding.uploadBarcodeEt.isClickable = false
+            }
 
             val adt = ArrayAdapter(context, R.layout.simple_spinner_dropdown_item, viewmodel.productList)
             binding.uploadKindSp.adapter = adt
