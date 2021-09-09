@@ -15,7 +15,7 @@
     </style>
 
     <style name="MenuFont" parent="android:Widget.TextView">
-        <item name="android:fontFamily">@font/font3</item>
+        <item name="android:fontFamily">@font/font1</item>
     </style>
 
 </resources>

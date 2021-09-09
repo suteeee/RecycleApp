@@ -91,7 +91,7 @@
             app:headerLayout="@layout/navi_header"
             app:itemTextColor="@color/main_text_color"
             app:itemTextAppearance="@style/MenuFont"
-            app:itemIconTint="@color/black"
+            app:itemIconTint="@color/ic_color"
             app:menu="@menu/navi_menu">
 
         </com.google.android.material.navigation.NavigationView>
