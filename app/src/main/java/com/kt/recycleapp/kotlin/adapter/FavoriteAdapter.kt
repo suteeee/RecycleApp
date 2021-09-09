@@ -47,7 +47,7 @@ class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHoler>(
             val handler = android.os.Handler(Looper.getMainLooper())
 
             handler.postDelayed({
-                Glide.with(context).load(path).into(binding.favoriteIv)
+                Glide.with(context).load(path).into(binding.historyIv)
                 binding.favoriteBtn.setOnClickListener {
                     GlobalScope.launch {
                         helper?.databaseDao()?.updateFavorite(position+1,"false")
@@ -59,7 +59,7 @@ class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHoler>(
             binding.favoriteBtn.setColorFilter(Color.parseColor("#ff0000"), PorterDuff.Mode.SRC_ATOP)
 
             binding.favoriteunitLayout.setOnClickListener {
-                FavoriteViewModel.selected.value = position
+                FavoriteViewModel.selected.value = data.pos
             }
 
         }

@@ -55,6 +55,20 @@ class MainActivity : AppCompatActivity() {
         } else supportFragmentManager.beginTransaction().replace(R.id.small_layout1, MainFragment())
             .commit()
 
+        MainViewModel.isPopupClose.observe(this,{
+            if(it == "close"){
+                Log.d("Main","Mclose")
+                mBackPressListener = null
+                MainViewModel.isPopupClose.value = "open"
+                viewModel.selectedFragment.value = "main"
+                while (supportFragmentManager.backStackEntryCount != 0){
+                    supportFragmentManager.popBackStackImmediate()
+                }
+                viewModel.fragmentStack.clear()
+                viewModel.fragmentStack.add("main")
+                supportFragmentManager.beginTransaction().replace(R.id.small_layout1,MainFragment()).commit()
+            }
+        })
 
         binding.toolbarSv.setOnSearchClickListener {
             tempText = viewModel.toolbarText.value!!
@@ -274,10 +288,11 @@ class MainActivity : AppCompatActivity() {
         }
         else if(viewModel.selectedFragment.value != "main"){
             Log.d("Main","2")
+            mBackPressListener = null
             super.onBackPressed()
         }
         else if(mBackPressListener != null){
-            Log.d("Main","3")
+            Log.d("Main","3 ${mBackPressListener.toString()}")
             mBackPressListener!!.onBack()
         }
         else{

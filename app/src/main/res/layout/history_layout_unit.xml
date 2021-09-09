@@ -39,7 +39,7 @@
                 android:background="@color/white">
 
                 <ImageView
-                    android:id="@+id/favorite_iv"
+                    android:id="@+id/history_iv"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -49,7 +49,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/favoriteName_tv"
+                    android:id="@+id/historyName_tv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/font1"
@@ -59,7 +59,7 @@
                     android:textSize="20sp"
                     app:layout_constraintBottom_toTopOf="@+id/historyDate_tv"
                     app:layout_constraintEnd_toStartOf="@+id/history_btn"
-                    app:layout_constraintStart_toEndOf="@+id/favorite_iv"
+                    app:layout_constraintStart_toEndOf="@+id/history_iv"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
@@ -77,8 +77,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_weight="3"
-                    app:layout_constraintStart_toEndOf="@+id/favorite_iv"
-                    app:layout_constraintTop_toBottomOf="@+id/favoriteName_tv" />
+                    app:layout_constraintStart_toEndOf="@+id/history_iv"
+                    app:layout_constraintTop_toBottomOf="@+id/historyName_tv" />
 
                 <ImageView
                     android:id="@+id/history_btn"
@@ -87,7 +87,7 @@
                     android:background="#00ff0000"
                     app:layout_constraintBottom_toTopOf="@+id/historyDate_tv"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/favoriteName_tv"
+                    app:layout_constraintStart_toEndOf="@+id/historyName_tv"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_star" />
             </androidx.constraintlayout.widget.ConstraintLayout>

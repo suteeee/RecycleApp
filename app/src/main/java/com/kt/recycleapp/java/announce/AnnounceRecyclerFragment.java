@@ -26,6 +26,7 @@ import com.kt.recycleapp.java.fragment.PopupFragmentStartpage;
 import com.kt.recycleapp.kotlin.activity.MainActivity;
 import com.kt.recycleapp.kotlin.activity.OnBackPressListener;
 import com.kt.recycleapp.kotlin.fragment.MainFragment;
+import com.kt.recycleapp.kotlin.viewmodel.MainViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -98,34 +99,23 @@ public class AnnounceRecyclerFragment extends Fragment implements OnBackPressLis
             }
         });
 
-        Boolean check = ((MainActivity) getActivity()).viewModel.isPopup().getValue();
 
-        Log.d(check.toString(),"ffff");
-        if(act.viewModel.getSelectedFragment().getValue().equals("main") && check){
-            Log.d("dd","ffff");
-            bundle.putString("barcode", barcode);
-            DialogFragment frg = new PopupFragmentAddpage();
-            frg.setArguments(bundle);
-            frg.show(act.getSupportFragmentManager(), PopupFragmentStartpage.TAG_EVENT_DIALOG);
-            ((MainActivity)getActivity()).viewModel.isPopup().setValue(false);
-        }
-        else{
-            act.setOnBackPressListener(null);
-            ((MainActivity)getActivity()).viewModel.isPopup().setValue(true);
-            FragmentTransaction t = act.getSupportFragmentManager().beginTransaction();
-            if(act.viewModel.getSelectedFragment().getValue().equals("main")){
-                t.remove(this).commit();
-                t.add(R.id.small_layout1,new MainFragment());
+            Boolean check = act.viewModel.isPopup().getValue();
+
+            if(act.viewModel.getSelectedFragment().getValue().equals("main") && check){
+                bundle.putString("barcode", barcode);
+                DialogFragment frg = new PopupFragmentAddpage();
+                frg.setArguments(bundle);
+                frg.show(act.getSupportFragmentManager(), PopupFragmentStartpage.TAG_EVENT_DIALOG);
+                act.viewModel.isPopup().setValue(false);
             }
-            else {
-                ((MainActivity)getActivity()).viewModel.isPopup().setValue(true);
-                t.remove(this).commit();
-            }
-        }
+
     }
 
     public void onAttach(Context context) {
         super.onAttach(context);
         ((MainActivity)context).setOnBackPressListener(this);
     }
+
+
 }

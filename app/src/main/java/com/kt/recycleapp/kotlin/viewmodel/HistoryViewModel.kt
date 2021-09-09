@@ -16,12 +16,11 @@ import com.kt.recycleapp.model.RoomHelper
 class HistoryViewModel : ViewModel() {
     companion object{
         var selected = MutableLiveData<Int>(-1)
-        var image : RequestBuilder<Drawable>? = null
     }
 
     var getProductName = MutableLiveData<String>()
     var decodeState = MutableLiveData<String>()
-
+    var cnt = 0
     var itemList = ObservableArrayList<HistoryData>()
     var tempList = ObservableArrayList<HistoryData>()
     var myRoomDbList :List<MyRoomDatabase>? = null
@@ -33,6 +32,7 @@ class HistoryViewModel : ViewModel() {
     }
 
     fun getData(helper: RoomHelper?, prefs: MyPreferenceManager, activity: MainActivity) {
+
         myRoomDbList = helper?.databaseDao()?.getAll()
         myRoomDbList?.forEach {
             var date1:String? = ""
@@ -59,7 +59,7 @@ class HistoryViewModel : ViewModel() {
             else{
                 barcode = "제품명 : ${DatabaseReadModel.name[it.barcode]}"
             }
-            itemList.add(HistoryData(date,image,barcode))
+            itemList.add(HistoryData(date,image,barcode,cnt++))
         }
 
         MainActivity.historyItemsForSearch = itemList

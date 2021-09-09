@@ -28,7 +28,7 @@ public class UserGuideMainFragment extends Fragment {
         ViewPager pager = rootView.findViewById(R.id.pager);
         pager.setOffscreenPageLimit(6); //3개까지 caching
 
-        UserGuidePagerAdapter adapter = new UserGuidePagerAdapter(getActivity().getSupportFragmentManager(), 1);
+        UserGuidePagerAdapter adapter = new UserGuidePagerAdapter(getChildFragmentManager(), 1);
 
         UserGuideFragment1 fragment1 = new UserGuideFragment1();
         adapter.addItem(fragment1);

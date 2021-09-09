@@ -68,7 +68,7 @@ class HistoryFragment : Fragment(){
 
                 frg.arguments = bundle
                 HistoryViewModel.selected.value = -1
-                activity?.supportFragmentManager?.beginTransaction()?.add(R.id.small_layout1,frg)?.addToBackStack(null)?.commit()
+                activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.small_layout1,frg)?.addToBackStack(null)?.commit()
             }
         })
 

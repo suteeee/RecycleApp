@@ -17,6 +17,7 @@ class FavoriteViewModel: ViewModel() {
     var tempList = ObservableArrayList<FavoriteData>()
     val model = DatabaseReadModel()
     var getProductName = MutableLiveData<String>()
+    var idx = 0
 
     fun setData(helper: RoomHelper) {
       helper.databaseDao().getFavoriteAll().forEach {
@@ -48,7 +49,7 @@ class FavoriteViewModel: ViewModel() {
           }
 
 
-          itemList.add(FavoriteData(image,barcode,newDate))
+          itemList.add(FavoriteData(image,barcode,newDate,idx++))
       }
         MainActivity.favoriteItemForSearch = itemList
     }

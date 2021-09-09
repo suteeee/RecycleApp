@@ -17,6 +17,8 @@ import com.kt.recycleapp.kotlin.viewmodel.HistoryViewModel
 import com.kt.recycleapp.manager.MyPreferenceManager
 import com.kt.recycleapp.model.MyRoomDatabase
 import com.kt.recycleapp.model.RoomHelper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.recycleapp.databinding.HistoryLayoutUnitBinding
@@ -49,14 +51,14 @@ class HistoryAdapter: RecyclerView.Adapter<HistoryAdapter.MyHolder>() {
 
     inner class MyHolder(private val binding: HistoryLayoutUnitBinding, val context: Context) : RecyclerView.ViewHolder(binding.root){
         fun bind(data: HistoryData, position: Int) {
-            GlobalScope.launch {
+            CoroutineScope(Dispatchers.Main).launch {
 
                 binding.history = data
                 val path ="${context.externalMediaDirs?.get(0)}/수거했어 오늘도!/${data.bm}"
 
                 val handler = android.os.Handler(Looper.getMainLooper())
                 handler.postDelayed({
-                    Glide.with(context).load(path).into(binding.favoriteIv)
+                    Glide.with(context).load(path).into(binding.historyIv)
                     binding.historyBtn.setOnClickListener {
                         var colorString = "#000000"
                         var state = "false"
@@ -84,7 +86,7 @@ class HistoryAdapter: RecyclerView.Adapter<HistoryAdapter.MyHolder>() {
                 }
 
                 binding.historyUnitLayout.setOnClickListener{
-                    HistoryViewModel.selected.value = position
+                    HistoryViewModel.selected.value = data.pos
                 }
             }
         }

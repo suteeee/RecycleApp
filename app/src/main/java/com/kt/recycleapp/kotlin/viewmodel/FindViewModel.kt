@@ -23,12 +23,14 @@ class FindViewModel: ViewModel() {
     var findSmallProgress = MutableLiveData<String>()
     var bigTempList = ObservableArrayList<FindBigData>()
     var smallTempList = ObservableArrayList<FindSmallData>()
+    var bigidx = 0
+    var smallidx = 0
 
     val imgArr = arrayOf(R.drawable.ic_baterry_default, R.drawable.ic_iron_default, R.drawable.ic_mix_default, R.drawable.ic_vinyl_default,
         R.drawable.ic_glass_default, R.drawable.ic_trash_default, R.drawable.ic_paper_default, R.drawable.ic_can_default, R.drawable.ic_pet_default,R.drawable.ic_plastic_default)
 
     fun addItem(index:Int){
-        itemList.add(FindBigData(imgArr[index],itemData[index]))
+        itemList.add(FindBigData(imgArr[index],itemData[index],bigidx++))
     }
 
     fun addSmallItem(){
@@ -50,7 +52,7 @@ class FindViewModel: ViewModel() {
         var cnt = 0
 
         itemDataSmall.forEach {
-            smallItemList.add(FindSmallData(temp,itemDataSmall[cnt].values.elementAt(0)))
+            smallItemList.add(FindSmallData(temp,itemDataSmall[cnt].values.elementAt(0),smallidx++))
             cnt++
         }
     }

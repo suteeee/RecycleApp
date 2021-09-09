@@ -15,6 +15,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.kt.recycleapp.kotlin.activity.OnBackPressListener;
 import com.kt.recycleapp.kotlin.fragment.MultyAddFragment;
 import com.kt.recycleapp.kotlin.viewmodel.AddViewModel;
+import com.kt.recycleapp.kotlin.viewmodel.MainViewModel;
 import com.kt.recycleapp.manager.MyPreferenceManager;
 import com.kt.recycleapp.model.DatabaseReadModel;
 
@@ -150,6 +151,7 @@ public class PopupFragmentAddpage extends DialogFragment implements  OnBackPress
         cancleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                MainViewModel.Companion.isPopupClose().setValue("close");
                 dismiss();
             }
         });
