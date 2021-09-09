@@ -8,6 +8,7 @@
                     android:id="@+id/main"
                     android:icon="@drawable/ic_search"
                     android:title="메인화면"
+                    android:iconTint="@color/black"
                     />
                 <item
                     android:id="@+id/find"

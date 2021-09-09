@@ -23,6 +23,7 @@ class DatabaseReadModel {
 
     val db = FirebaseFirestore.getInstance()
     val storage = FirebaseStorage.getInstance(STORAGE_URL).reference
+    var products = db.collection("products")
     var kind :String = ""
 
     companion object {
@@ -33,7 +34,7 @@ class DatabaseReadModel {
 
     fun findBig(findBigProgress: MutableLiveData<String>):ArrayList<String>{
         findBigProgress.value = "start"
-        val collection = db.collection("products")
+        val collection = products
         val arr = ArrayList<String>()
         collection.get().addOnCompleteListener {
             for(document in it.result){
@@ -47,8 +48,8 @@ class DatabaseReadModel {
     fun findSmall(findSmallProgress: MutableLiveData<String>):  ArrayList<HashMap<String,String>>{
         findSmallProgress.value = "start"
         var selected = FindViewModel.selectDoc
-        val collection = db.collection("products")
-        val multi = db.collection("products").document("복합물품").collection("sublist")
+        val collection = products
+        val multi = products.document("복합물품").collection("sublist")
         val arr = ArrayList<HashMap<String,String>>()
         //컬렉션 Arr 안에 문서 arr 안에 값 hashmap 구조
 
@@ -61,6 +62,7 @@ class DatabaseReadModel {
                 variable.forEach { doc->
                     if(selected != "복합물품"){
                         if(doc.id == selected){
+
                             for(i in 0 until doc.data?.keys?.size!!){
                                 val temp = HashMap<String,String>()
                                 temp[doc.data!!.keys.elementAt(i)] = doc.data!!.values.elementAt(i).toString()
@@ -83,7 +85,7 @@ class DatabaseReadModel {
     fun getProduct(getProductName: MutableLiveData<String>){
         getProductName.value = "start"
 
-        var collection = db.collection("products")
+        var collection = products
         collection.get().addOnCompleteListener {
             for(doc in it.result.documents) {
                 if(doc.id != "복합물품"){
@@ -96,7 +98,7 @@ class DatabaseReadModel {
 
     fun getProductsList(arr:MutableLiveData<String>) : ArrayList<String>{
         arr.value = "start"
-        var collection = db.collection("products")
+        var collection = products
         var list = ArrayList<String>()
         collection.get().addOnCompleteListener {
             (it.result.documents).forEach {
@@ -110,7 +112,7 @@ class DatabaseReadModel {
     fun findProductKind(finding: MutableLiveData<String>, product: String, kind: MutableLiveData<String>, imgCode: MutableLiveData<Int>) {
         finding.value = "start"
         var res = ""
-        db.collection("products").get().addOnCompleteListener {
+        products.get().addOnCompleteListener {
             (it.result.documents).forEach { doc ->
                 // 물품 명으로 탐색
                 if (doc.data?.values?.contains(product) == true) {
@@ -141,8 +143,12 @@ class DatabaseReadModel {
         var name = barcode
         var info = ""
         var pKind = kind
-        db.collection("products").get().addOnCompleteListener {
+        products.get().addOnCompleteListener {
             (it.result.documents).forEach{doc ->
+                if(doc.data?.get(barcode) != null){
+                    name = doc.data?.get(barcode).toString()
+                    pKind = doc.id
+                }
                 if (doc.data?.keys?.contains(barcode) == true) { //db에 존재할때
                     name = doc.data?.get(barcode).toString()
                     pKind = doc.id
@@ -159,7 +165,7 @@ class DatabaseReadModel {
             info = infoMap.get(pKind).toString()
             product.add(AnnounceData(name, info ,pKind))//첫번째 페이지(주 물품)
 
-            db.collection("products").document("복합물품").collection("sublist").get().addOnCompleteListener {
+            products.document("복합물품").collection("sublist").get().addOnCompleteListener {
                 (it.result.documents).forEach { doc->
                     val d = doc.data
                     d?.forEach { map->
@@ -186,7 +192,7 @@ class DatabaseReadModel {
                 .addOnFailureListener {
                     var id = 0
                     Log.d("kind", itemName)
-                    db.collection("products").get().addOnCompleteListener {
+                    products.get().addOnCompleteListener {
                         (it.result.documents).forEach { doc ->
                             // 물품 명으로 탐색
                             if (doc.data?.values?.contains(itemName) == true) {
@@ -194,7 +200,7 @@ class DatabaseReadModel {
                                 return@forEach
                             }
                         }
-                        db.collection("products").document("복합물품").collection("sublist").get()
+                        products.document("복합물품").collection("sublist").get()
                             .addOnCompleteListener {
                                 (it.result.documents).forEach { doc ->
                                     // 물품 명으로 탐색
@@ -232,10 +238,10 @@ class DatabaseReadModel {
             try {
                 for (i in 0 until list.size) {
                     if (i == 0) {
-                        db.collection("products").document(AddViewModel.products[i])
+                        products.document(AddViewModel.products[i])
                             .update(list[i])
                     } else {
-                        db.collection("products").document("복합물품").collection("sublist").document(
+                        products.document("복합물품").collection("sublist").document(
                             AddViewModel.products[i]
                         )
                             .update(list[i])
@@ -259,7 +265,7 @@ class DatabaseReadModel {
 
         CoroutineScope(Dispatchers.IO).launch{
             uploadFinish.postValue("start")
-            val col = db.collection("products")
+            val col = products
             val sub = col.document("복합물품").collection("sublist")
 
             col.document(kinds[0]).update(barcode, names[0])

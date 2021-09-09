@@ -1,5 +1,6 @@
 package com.kt.recycleapp.kotlin.activity
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -11,6 +12,7 @@ import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.kt.recycleapp.java.fragment.*
 import com.kt.recycleapp.kotlin.etc.FavoriteData
 import com.kt.recycleapp.kotlin.etc.FindBigData
@@ -170,6 +172,8 @@ class MainActivity : AppCompatActivity() {
         header.drawerClose_btn.setOnClickListener {
             drawer_layout.closeDrawer(GravityCompat.START)
         }
+
+        Glide.with(applicationContext).load(R.drawable.app_icon).override(400).into(header.header_Iv)
 
     }
 
