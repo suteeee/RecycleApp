@@ -168,11 +168,6 @@ class MainActivity : AppCompatActivity() {
         naviSet()
 
         val header = navi_nv.getHeaderView(0)
-
-        header.drawerClose_btn.setOnClickListener {
-            drawer_layout.closeDrawer(GravityCompat.START)
-        }
-
         Glide.with(applicationContext).load(R.drawable.app_icon).override(400).into(header.header_Iv)
 
     }
