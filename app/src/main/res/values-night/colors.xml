@@ -2,6 +2,7 @@
 <resources>
     <color name="main_color">#000000</color>
     <color name="main_backg_color">#2E2E2E</color>
+    <color name="sub_backg_color">#585858</color>
     <color name="main_text_color">#FFFFFF</color>
     <color name="comon_button_background">#00FF00</color>
     <color name="love_star">#FFFF00</color>
