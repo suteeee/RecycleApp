@@ -90,6 +90,8 @@
             android:fitsSystemWindows="true"
             app:headerLayout="@layout/navi_header"
             app:itemTextColor="@color/main_text_color"
+            app:itemTextAppearance="@style/MenuFont"
+            app:itemIconTint="@color/black"
             app:menu="@menu/navi_menu">
 
         </com.google.android.material.navigation.NavigationView>
