@@ -1,9 +1,15 @@
 package com.kt.recycleapp.java.activity;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -11,17 +17,24 @@ import com.kt.recycleapp.kotlin.activity.MainActivity;
 import com.kt.recycleapp.manager.MyPreferenceManager;
 import com.kt.recycleapp.model.DatabaseReadModel;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.recycleapp.R;
 
 public class LoadingActivity extends AppCompatActivity {
     DatabaseReadModel model;
+    private  String[] REQUIRED_PERMISSIONS = {Manifest.permission.CAMERA,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    private int REQUEST_CODE_PERMISSIONS = 10;
+    MyPreferenceManager prefs;
+    int delay = 0;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
         model = new DatabaseReadModel(getApplicationContext());
-        MyPreferenceManager prefs = new MyPreferenceManager(getApplicationContext()); //만들었던 preferenceManager를 쓸수있게 생성
+        prefs = new MyPreferenceManager(getApplicationContext()); //만들었던 preferenceManager를 쓸수있게 생성
 
         if(prefs.getDarkmodSwitch()==false){
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
@@ -30,11 +43,56 @@ public class LoadingActivity extends AppCompatActivity {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }
 
+        if(prefs.getCameraPermission().equals("DENIED")){
+            permissionCheck();
+        }else {
+            delay = 2000;
+            loadingStart();
+        }
 
-        loadingStart();
+
+
+        //
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void permissionCheck() {
+        if (allPermissionsGranted()) {
+            prefs.setCameraPermission("GRANTED");
+        } else {
+            requestPermissions(REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS);
+        }
+    }
+
+    private boolean allPermissionsGranted()  {
+        boolean result = true;
+        for(String it : REQUIRED_PERMISSIONS){
+            if(ContextCompat.checkSelfPermission(getApplicationContext(), it) != PackageManager.PERMISSION_GRANTED){
+                result = false;
+                break;
+            }
+        }
+        return result;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull @NotNull String[] permissions, @NonNull @NotNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CODE_PERMISSIONS) {
+            if (allPermissionsGranted()) {
+                try {
+                    prefs.setCameraPermission("GRANTED");
+                    loadingStart();
+                }
+                catch (Exception e){}
+            } else {
+                loadingStart();
+                //requestPermissions(permissions, requestCode);
+            }
+        }
+    }
 
     private void loadingStart(){
         Handler handler=new Handler();
@@ -52,6 +110,6 @@ public class LoadingActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.anim_slide_in_left,R.anim.anim_slide_out_right);
                 finish();
             }
-        }, 2000);
+        }, delay);
     }
 }

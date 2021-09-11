@@ -8,7 +8,6 @@ class MainViewModel:ViewModel() {
 
         companion object {
                 var isPopupClose = MutableLiveData<String>()
-
         }
         var toolbarText = MutableLiveData<String>()
         var selectedFragment = MutableLiveData<String>()

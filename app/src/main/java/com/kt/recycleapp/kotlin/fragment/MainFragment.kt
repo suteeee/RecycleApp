@@ -21,11 +21,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager
 import androidx.room.Room
 import com.kt.recycleapp.java.announce.AnnounceRecyclerFragment
 import com.kt.recycleapp.kotlin.activity.MainActivity
 import com.kt.recycleapp.kotlin.camera.MyImageAnalyzer
 import com.kt.recycleapp.kotlin.viewmodel.CameraSettingViewModel
+import com.kt.recycleapp.manager.MyPreferenceManager
 import com.kt.recycleapp.model.DatabaseReadModel
 import com.kt.recycleapp.model.MyRoomDatabase
 import com.kt.recycleapp.model.RoomHelper
@@ -53,8 +55,8 @@ class MainFragment : Fragment() {
         lateinit var outputDirectory:File
     }
 
-    private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    private val REQUEST_CODE_PERMISSIONS = 10
+    //private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    //private val REQUEST_CODE_PERMISSIONS = 10
     private lateinit var cameraExecutor: ExecutorService
     var processingBarcode = AtomicBoolean(false)
     lateinit var binding: FragmentMainBinding
@@ -66,6 +68,8 @@ class MainFragment : Fragment() {
 
     private var imageCapture :ImageCapture?= null
     var helper :RoomHelper? = null
+    lateinit var prefs :MyPreferenceManager
+
 
     var captureIsFinish = MutableLiveData<String>()
 
@@ -74,9 +78,9 @@ class MainFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        prefs = MyPreferenceManager(requireContext())
         outputDirectory = getOutputDirectory()
         cameraExecutor = Executors.newSingleThreadExecutor()
-
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -128,6 +132,12 @@ class MainFragment : Fragment() {
             },1000)
         })
 
+        if(prefs.cameraPermission == "GRANTED"){
+            initCamera()
+        }else{
+            Toast.makeText(requireContext(),"카메라 기능을 이용하실수 없습니다. 권한을 허용해주세요.",Toast.LENGTH_SHORT).show()
+        }
+
         return rootView
     }
 
@@ -151,14 +161,14 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (allPermissionsGranted()) {
+        /*if (allPermissionsGranted()) {
             try {
                 initCamera()
             }
             catch (e:Exception){}
         } else {
             requestPermissions(REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
-        }
+        }*/
 
     }
 
@@ -331,11 +341,11 @@ class MainFragment : Fragment() {
         return sqrt((x * x + y * y).toDouble()).toFloat()
     }
 
-    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
+   /* private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(requireContext(), it) == PackageManager.PERMISSION_GRANTED
-    }
+    }*/
 
-    override fun onRequestPermissionsResult(
+    /*override fun onRequestPermissionsResult(
         requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (allPermissionsGranted()) {
@@ -348,7 +358,7 @@ class MainFragment : Fragment() {
                 Toast.makeText(requireContext(), "카메라 기능을 사용하실 수 없습니다.", Toast.LENGTH_SHORT).show()
             }
         }
-    }
+    }*/
 
     private fun getOutputDirectory():File{
         val mediaDir = activity?.externalMediaDirs?.firstOrNull()?.let {

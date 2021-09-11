@@ -27,6 +27,7 @@ public class MyPreferenceManager {
     private static final String STORED_TIME = "123";
     private static final String FAVORITE_KEY = "F";
     private static final String DARKMOD_SWITCH = "onoff";
+    private static final String CAMERA_PERMISSION = "CP";
 
 
     public String getStoredTime(){
@@ -50,6 +51,9 @@ public class MyPreferenceManager {
     public void setDarkmodSwitch(Boolean b){
         prefs.edit().putBoolean(DARKMOD_SWITCH, b).apply();
     }
+
+    public String getCameraPermission() {return prefs.getString(CAMERA_PERMISSION,"DENIED");}
+    public void setCameraPermission(String permission) {prefs.edit().putString(CAMERA_PERMISSION,permission).apply();}
 
 
     public ArrayList<String> getFavoriteList() throws JSONException {
