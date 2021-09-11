@@ -9,6 +9,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
+import androidx.room.Room;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,8 +18,10 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.kt.recycleapp.kotlin.activity.MainActivity;
+import com.kt.recycleapp.kotlin.fragment.ImageUploadFragment;
 import com.kt.recycleapp.kotlin.fragment.MainFragment;
 import com.kt.recycleapp.manager.MyPreferenceManager;
+import com.kt.recycleapp.model.RoomHelper;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -29,7 +32,7 @@ public class AppSettingFragment extends Fragment{
     //private Switch darkmodSwitch;
     private Button darkmodButton;
     private Button uploadButton;
-
+    private Button historyDeleteBtn;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -41,6 +44,7 @@ public class AppSettingFragment extends Fragment{
         //darkmodSwitch = (Switch) rootView.findViewById(R.id.darkmod_sch1);
         darkmodButton = (Button) rootView.findViewById(R.id.darkmodonoff_bt1);
         uploadButton = rootView.findViewById(R.id.imageUpload_btn1);
+        historyDeleteBtn = rootView.findViewById(R.id.historyDelete_btn);
 
         MyPreferenceManager prefs = new MyPreferenceManager(requireContext()); //만들었던 preferenceManager를 쓸수있게 생성
 
@@ -76,16 +80,27 @@ public class AppSettingFragment extends Fragment{
             }
         });
 
+
+        //이미지업로드
         uploadButton.setOnClickListener(v -> {
-            /*
-            * 여기에 코드 추가
-            * */
+            ImageUploadFragment imageUploadFragment = new ImageUploadFragment();
+            imageUploadFragment.show(requireActivity().getSupportFragmentManager(),null);
+        });
+
+
+        //히스토리 초기화
+        historyDeleteBtn.setOnClickListener( v-> {
+            historyClean();
         });
 
 
         return rootView;
     }
 
+    public void historyClean() {
+        RoomHelper helper = Room.databaseBuilder(requireContext(),RoomHelper.class,"Database").allowMainThreadQueries().build();
+        helper.databaseDao().deteteAll();
+    }
 
     /*
     * 여기 보시면 됩니다여기 보시면 됩니다여기 보시면 됩니다여기 보시면 됩니다여기 보시면 됩니다여기 보시면 됩니다

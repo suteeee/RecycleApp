@@ -25,4 +25,7 @@ interface RoomDAO {
 
     @Query("select * from `Database` WHERE favorite = 'true'")
     fun getFavoriteAll() : List<MyRoomDatabase>
+
+    @Query("DELETE FROM `Database`")
+    fun deteteAll()
 }

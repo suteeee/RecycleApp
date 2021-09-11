@@ -62,14 +62,9 @@ class MainActivity : AppCompatActivity() {
                 Log.d("Main","Mclose")
                 mBackPressListener = null
                 MainViewModel.isPopupClose.value = "open"
-                viewModel.selectedFragment.value = "main"
-                while (supportFragmentManager.backStackEntryCount != 0){
-                    supportFragmentManager.popBackStackImmediate()
-                }
-                viewModel.fragmentStack.clear()
-                viewModel.fragmentStack.add("main")
-                supportFragmentManager.beginTransaction().replace(R.id.small_layout1,MainFragment()).commit()
+                goToMainFragment()
             }
+
         })
 
         binding.toolbarSv.setOnSearchClickListener {
@@ -168,7 +163,7 @@ class MainActivity : AppCompatActivity() {
         naviSet()
 
         val header = navi_nv.getHeaderView(0)
-        Glide.with(applicationContext).load(R.drawable.app_icon).override(400).into(header.header_Iv)
+        Glide.with(applicationContext).load(R.drawable.header_image).override(400).into(header.header_Iv)
 
     }
 
@@ -269,6 +264,16 @@ class MainActivity : AppCompatActivity() {
             mBackPressListener = listener
     }
 
+    fun goToMainFragment() {
+        viewModel.selectedFragment.value = "main"
+        while (supportFragmentManager.backStackEntryCount != 0){
+            supportFragmentManager.popBackStackImmediate()
+        }
+        viewModel.fragmentStack.clear()
+        viewModel.fragmentStack.add("main")
+        supportFragmentManager.beginTransaction().replace(R.id.small_layout1,MainFragment()).commit()
+    }
+
     override fun onBackPressed() {
         Log.d("Main",viewModel.fragmentStack.toString())
         if(!binding.toolbarSv.isIconified){
@@ -294,6 +299,11 @@ class MainActivity : AppCompatActivity() {
             Log.d("Main","3 ${mBackPressListener.toString()}")
             mBackPressListener!!.onBack()
         }
+        /*else if(viewModel.isPopup.value == false){
+            mBackPressListener = null
+            viewModel.isPopup.value = true
+            goToMainFragment()
+        }*/
         else{
             Log.d("Main","4")
             if (pressedTime == 0L) {

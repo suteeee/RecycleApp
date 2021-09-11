@@ -64,12 +64,13 @@
         android:id="@+id/imageUpload_tv1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/font3"
         android:text="이미지 업로드"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="@color/main_text_color"
+        app:layout_constraintBottom_toTopOf="@+id/historyDelete_tv"
         app:layout_constraintEnd_toStartOf="@+id/imageUpload_btn1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/announce_tv1"
-        app:layout_constraintVertical_bias="0.501" />
+        app:layout_constraintTop_toBottomOf="@+id/announce_tv1" />
 
     <Button
         android:id="@+id/imageUpload_btn1"
@@ -78,10 +79,34 @@
         android:background="@drawable/common_buttom_design"
         android:fontFamily="@font/font3"
         android:text="선택"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/historyDelete_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageUpload_tv1"
         app:layout_constraintTop_toBottomOf="@+id/announce_bt1" />
+
+    <TextView
+        android:id="@+id/historyDelete_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/font3"
+        android:text="히스토리 기록 삭제"
+        android:textColor="@color/main_text_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/historyDelete_btn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageUpload_tv1" />
+
+    <Button
+        android:id="@+id/historyDelete_btn"
+        android:layout_width="80dp"
+        android:layout_height="35dp"
+        android:background="@drawable/common_buttom_design"
+        android:fontFamily="@font/font3"
+        android:text="삭제"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/historyDelete_tv"
+        app:layout_constraintTop_toBottomOf="@+id/imageUpload_btn1" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

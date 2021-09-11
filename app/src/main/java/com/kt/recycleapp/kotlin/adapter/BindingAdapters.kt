@@ -31,7 +31,7 @@ object BindingAdapters {
     @JvmStatic
     fun imgLoad(img:ImageView, id:Int) {
         //img.setImageResource(id)
-        Glide.with(img).load(id).override(500).into(img)
+        Glide.with(img).load(id).override(250).into(img)
     }
 
     @BindingAdapter("imgBitmap")

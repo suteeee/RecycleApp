@@ -1,7 +1,9 @@
 package com.kt.recycleapp.java.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
@@ -12,12 +14,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.kt.recycleapp.kotlin.activity.MainActivity;
 import com.kt.recycleapp.kotlin.activity.OnBackPressListener;
+import com.kt.recycleapp.kotlin.fragment.MainFragment;
 import com.kt.recycleapp.kotlin.fragment.MultyAddFragment;
 import com.kt.recycleapp.kotlin.viewmodel.AddViewModel;
 import com.kt.recycleapp.kotlin.viewmodel.MainViewModel;
 import com.kt.recycleapp.manager.MyPreferenceManager;
 import com.kt.recycleapp.model.DatabaseReadModel;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.recycleapp.R;
 import java.util.ArrayList;
@@ -160,5 +166,14 @@ public class PopupFragmentAddpage extends DialogFragment implements  OnBackPress
     }
 
     @Override
-    public void onBack() {}
+    public void onBack() {
+        MainViewModel.Companion.isPopupClose().setValue("close");
+        dismiss();
+    }
+
+    @Override
+    public void onAttach(@NonNull @NotNull Context context) {
+        super.onAttach(context);
+        ((MainActivity)context).setOnBackPressListener(this);
+    }
 }

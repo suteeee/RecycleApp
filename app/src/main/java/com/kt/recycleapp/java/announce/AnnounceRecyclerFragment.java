@@ -103,11 +103,14 @@ public class AnnounceRecyclerFragment extends Fragment implements OnBackPressLis
             Boolean check = act.viewModel.isPopup().getValue();
 
             if(act.viewModel.getSelectedFragment().getValue().equals("main") && check){
+                Log.d("Main1",check.toString());
                 bundle.putString("barcode", barcode);
                 DialogFragment frg = new PopupFragmentAddpage();
                 frg.setArguments(bundle);
                 frg.show(act.getSupportFragmentManager(), PopupFragmentStartpage.TAG_EVENT_DIALOG);
                 act.viewModel.isPopup().setValue(false);
+            }else{
+                act.getSupportFragmentManager().beginTransaction().remove(this).commit();
             }
 
     }

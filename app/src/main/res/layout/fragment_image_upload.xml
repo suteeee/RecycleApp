@@ -1,0 +1,70 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/imageUpload_layout"
+        android:layout_width="400dp"
+        android:layout_height="300dp"
+        android:background="@color/main_backg_color"
+        tools:context="com.kt.recycleapp.kotlin.fragment.ImageUploadFragment">
+
+        <ImageView
+            android:id="@+id/imageUpload_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/imageUploadFrg_name"
+            app:layout_constraintEnd_toStartOf="@+id/imageUploadFrg_btn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@tools:sample/avatars" />
+
+        <Button
+            android:id="@+id/imageUploadFrg_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/common_buttom_design"
+            android:fontFamily="@font/font1"
+            android:text="이미지 선택"
+            app:layout_constraintBottom_toTopOf="@+id/imageUploadFrg_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageUpload_iv"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/imageUploadFrg_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:fontFamily="@font/font1"
+            android:inputType="textPersonName"
+            app:layout_constraintBottom_toTopOf="@+id/imageUploadFrg_cancel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageUpload_iv" />
+
+        <Button
+            android:id="@+id/imageUploadFrg_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/common_buttom_design"
+            android:fontFamily="@font/font1"
+            android:text="취소"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/imageUploadFrg_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/common_buttom_design"
+            android:fontFamily="@font/font1"
+            android:text="확인"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

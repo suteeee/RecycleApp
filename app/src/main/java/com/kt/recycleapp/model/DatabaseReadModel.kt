@@ -1,5 +1,6 @@
 package com.kt.recycleapp.model
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
@@ -7,18 +8,25 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.databinding.ObservableArrayList
 import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.kt.recycleapp.java.announce.AnnounceData
+import com.kt.recycleapp.kotlin.activity.MainActivity
 import com.kt.recycleapp.kotlin.viewmodel.AddViewModel
 import com.kt.recycleapp.kotlin.viewmodel.FindViewModel
 import kotlinx.coroutines.*
 import java.recycleapp.R
 
-class DatabaseReadModel {
+class DatabaseReadModel() {
+    var context:Context? = null
+    constructor(context: Context) : this() {
+        this.context = context
+    }
+
     private val STORAGE_URL = "gs://recycleapp-e6ed9.appspot.com"
 
     val db = FirebaseFirestore.getInstance()
@@ -122,7 +130,7 @@ class DatabaseReadModel {
                 kind.value = res
                 this.kind = res
             }
-            when(res) {
+           /* when(res) {
                 "건전지" -> R.drawable.ic_baterry_default
                 "고철" -> R.drawable.ic_iron_default
                 "비닐" -> R.drawable.ic_vinyl_default
@@ -132,7 +140,7 @@ class DatabaseReadModel {
                 "캔" -> R.drawable.ic_can_default
                 "페트병" -> R.drawable.ic_paper_default
                 "플라스틱" -> R.drawable.ic_plastic_default
-            }
+            }*/
             finding.value = "finish"
         }
     }
@@ -149,20 +157,25 @@ class DatabaseReadModel {
                     name = doc.data?.get(barcode).toString()
                     pKind = doc.id
                 }
-                if (doc.data?.keys?.contains(barcode) == true) { //db에 존재할때
+                /*if (doc.data?.keys?.contains(barcode) == true) { //db에 존재할때
                     name = doc.data?.get(barcode).toString()
                     pKind = doc.id
                     return@forEach
-                }
+                }*/
             }
         }
         db.collection("resultInfo").get().addOnCompleteListener {
+            var document :Map<String,Any>?= null
             (it.result.documents).forEach { doc ->
-                doc.data?.forEach {
+                document = doc.data
+                /*doc.data?.forEach {
                     infoMap[it.key] = it.value.toString()
-                }
+                }*/
+                info = document?.get(pKind).toString()
+                if(info.isEmpty()) info = "정보를 등록해주세요!"
             }
-            info = infoMap.get(pKind).toString()
+            Log.d("doc",info)
+            //info = infoMap.get(pKind).toString()
             product.add(AnnounceData(name, info ,pKind))//첫번째 페이지(주 물품)
 
             products.document("복합물품").collection("sublist").get().addOnCompleteListener {
@@ -170,7 +183,9 @@ class DatabaseReadModel {
                     val d = doc.data
                     d?.forEach { map->
                         if(map.key.contains(name)){
-                            product.add(AnnounceData(map.value.toString(),infoMap[doc.id], doc.id))
+                            var str = document?.get(doc.id).toString()
+                            if(str.isEmpty()) str = "정보를 등록해주세요!"
+                            product.add(AnnounceData(map.value.toString(),str, doc.id))
                         }
                     }
 
@@ -276,13 +291,24 @@ class DatabaseReadModel {
             }
 
             if(photoUri != null) {
-                val fileName = "IMAGE_${names[0]}"
-                val imgRef = storage.child("products_image/$fileName.png")
-                imgRef.putFile(photoUri)
+                imageUpload(names[0],photoUri)
             }
 
             uploadFinish.postValue("finish")
         }
    }
+
+    fun imageUpload(name:String, photoUri:Uri) {
+        val fileName = "IMAGE_${name}"
+        val imgRef = storage.child("products_image/$fileName.png")
+        imgRef.putFile(photoUri).addOnCompleteListener {
+            if(it.isSuccessful){
+                Toast.makeText(context,"이미지 업로드 완료",Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(context,"이미지 업로드 실패",Toast.LENGTH_SHORT).show()
+            }
+
+        }
+    }
 
 }

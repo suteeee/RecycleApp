@@ -28,6 +28,11 @@ class HistoryFragment : Fragment(){
     var helper:RoomHelper? = null
     var model = DatabaseReadModel()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+    }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater,R.layout.history_fragment, container, false)
@@ -46,6 +51,8 @@ class HistoryFragment : Fragment(){
 
         viewModel = ViewModelProvider(this).get(HistoryViewModel::class.java)
         binding.model = viewModel
+        viewModel.itemList.clear()
+
         viewModel.getFireData()
 
         viewModel.getProductName.observe(viewLifecycleOwner,{

@@ -20,7 +20,7 @@ public class LoadingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
-        model = new DatabaseReadModel();
+        model = new DatabaseReadModel(getApplicationContext());
         MyPreferenceManager prefs = new MyPreferenceManager(getApplicationContext()); //만들었던 preferenceManager를 쓸수있게 생성
 
         if(prefs.getDarkmodSwitch()==false){

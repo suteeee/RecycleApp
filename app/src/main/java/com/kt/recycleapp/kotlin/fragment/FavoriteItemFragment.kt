@@ -35,6 +35,7 @@ class FavoriteItemFragment : Fragment() {
 
         val act = activity as MainActivity
         act.viewModel.toolbarText.value = "즐겨찾기"
+        viewModel.itemList.clear()
 
         helper = Room.databaseBuilder(requireContext(), RoomHelper::class.java,"Database").allowMainThreadQueries().build()
 

@@ -30,6 +30,8 @@ class FindFragment : Fragment(){
 
         viewModel = ViewModelProvider(this).get(FindViewModel::class.java)
         binding.bigItem =viewModel
+        viewModel.itemList.clear()
+        viewModel.smallItemList.clear()
 
         mAdapter = FindBigAdapter()
         binding.findBigRv.adapter = mAdapter

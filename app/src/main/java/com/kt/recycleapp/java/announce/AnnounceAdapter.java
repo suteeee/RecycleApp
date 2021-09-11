@@ -47,12 +47,13 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceViewHoler> {
 class AnnounceViewHoler extends RecyclerView.ViewHolder{
     AnnounceLayoutUnitBinding binding;
     Context context;
-    public DatabaseReadModel model = new DatabaseReadModel();
+    public DatabaseReadModel model;
 
     public AnnounceViewHoler(AnnounceLayoutUnitBinding binding, Context context) {
         super(binding.getRoot());
         this.binding = binding;
         this.context = context;
+        this.model = new DatabaseReadModel(context);
     }
 
     public void bind(AnnounceData data ,int position) {

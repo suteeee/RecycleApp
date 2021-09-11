@@ -81,9 +81,14 @@ class HistoryAdapter: RecyclerView.Adapter<HistoryAdapter.MyHolder>() {
                     }
                 },0)
 
-                if(list?.get(position)?.favorite == "true"){
-                    binding.historyBtn.setColorFilter(Color.parseColor("#ff0000"), PorterDuff.Mode.SRC_ATOP)
-                }
+                try {
+                    if (list?.get(position)?.favorite == "true") {
+                        binding.historyBtn.setColorFilter(
+                            Color.parseColor("#ff0000"),
+                            PorterDuff.Mode.SRC_ATOP
+                        )
+                    }
+                }catch (e:Exception){}
 
                 binding.historyUnitLayout.setOnClickListener{
                     HistoryViewModel.selected.value = data.pos
