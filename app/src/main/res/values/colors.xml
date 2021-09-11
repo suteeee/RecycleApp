@@ -5,6 +5,7 @@
     <color name="sub_backg_color">#FFFFFF</color>
     <color name="main_text_color">#424242</color>
     <color name="main_text_focus_color">#FE9A2E</color>
+    <color name="ic_color">#610B21</color>
     <color name="comon_button_background">#FE2EF7</color>
     <color name="love_star">#FF0000</color>
     <color name="target">#FFFF00</color>

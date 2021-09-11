@@ -1,29 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     package = "com.kt.recycleapp.kotlin.activity">
 
-        <item android:title="@string/additionFunction">
-            <menu>
+
                 <item
                     android:id="@+id/main"
                     android:icon="@drawable/ic_search"
+                    android:fontFamily="@font/font3"
+                    android:textColor="@color/main_text_color"
                     android:title="메인화면"
                     android:iconTint="@color/black"
                     />
                 <item
                     android:id="@+id/find"
                     android:icon="@drawable/ic_search"
+                    android:fontFamily="@font/font3"
+                    android:textColor="@color/main_text_color"
                     android:title="@string/findModeTitle"
                     />
                 <item
                     android:id="@+id/advancedSearch"
                     android:icon="@drawable/ic_search"
+                    android:fontFamily="@font/font3"
+                    android:textColor="@color/main_text_color"
                     android:title="@string/advancedSearchTitle"
                     />
 
                 <item
                     android:id="@+id/favoriteItem"
                     android:icon="@drawable/ic_star"
+                    android:fontFamily="@font/font3"
+                    android:textColor="@color/main_text_color"
                     android:title="@string/favoriteItemTitle"
                     />
                 <item
@@ -41,11 +50,9 @@
                     android:icon="@drawable/ic_tip"
                     android:title="@string/dailyTipTitle"
                     />
-            </menu>
-        </item>
 
-    <item android:title="설정">
-        <menu>
+
+
             <item
                 android:id="@+id/AppSetting"
                 android:icon="@drawable/ic_setting"
@@ -61,6 +68,5 @@
                 android:icon="@drawable/ic_upload"
                 android:title="데이터 업로드"
                 />
-        </menu>
-    </item>
+
 </menu>
