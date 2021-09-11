@@ -130,19 +130,18 @@
             android:id="@+id/cameraBottom_layout"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@color/main_color"
+            android:background="@color/main_backg_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/l2"
-            >
+            app:layout_constraintTop_toBottomOf="@+id/l2">
 
             <ImageButton
                 android:id="@+id/History_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:background="@color/main_color"
+                android:background="@color/main_backg_color"
                 android:src="@drawable/ic_history"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

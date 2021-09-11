@@ -13,7 +13,7 @@
         android:id="@+id/Upload_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FFFFFF"
+        android:background="@color/main_backg_color"
         android:clickable="true"
         tools:context="com.kt.recycleapp.kotlin.fragment.DataUploadFragment">
 
@@ -21,14 +21,19 @@
             android:id="@+id/addProduct_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/common_buttom_design"
             android:src="@drawable/ic_add"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/data_upload_btn"
+            app:layout_constraintTop_toBottomOf="@+id/upload_rv" />
 
         <Button
             android:id="@+id/data_upload_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/common_buttom_design"
+            android:fontFamily="@font/font3"
             android:text="업로드"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -69,6 +74,8 @@
             android:id="@+id/upload_Image_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/common_buttom_design"
+            android:fontFamily="@font/font3"
             android:text="이미지 선택"
             app:layout_constraintBottom_toTopOf="@+id/upload_rv"
             app:layout_constraintEnd_toEndOf="parent"

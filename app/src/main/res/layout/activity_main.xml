@@ -36,7 +36,7 @@
                     android:id="@+id/mainToolBar_tb1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/main_color"
+                    android:background="@color/main_backg_color"
                     android:gravity="center"
                     android:minHeight="?attr/actionBarSize"
                     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
@@ -59,6 +59,7 @@
                     android:id="@+id/title_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/font3"
                     android:text="@{viewModel.toolbarText}"
                     android:textColor="@color/main_text_color"
                     android:textSize="24sp"
@@ -86,12 +87,12 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            android:background="@color/main_color"
+            android:background="@color/main_backg_color"
             android:fitsSystemWindows="true"
             app:headerLayout="@layout/navi_header"
-            app:itemTextColor="@color/main_text_color"
-            app:itemTextAppearance="@style/MenuFont"
             app:itemIconTint="@color/ic_color"
+            app:itemTextAppearance="@style/MenuFont"
+            app:itemTextColor="@color/main_text_color"
             app:menu="@menu/navi_menu">
 
         </com.google.android.material.navigation.NavigationView>
