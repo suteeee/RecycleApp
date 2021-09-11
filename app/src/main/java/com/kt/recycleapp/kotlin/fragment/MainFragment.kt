@@ -344,6 +344,7 @@ class MainFragment : Fragment() {
                 }
                 catch (e:Exception){}
             } else {
+                requestPermissions(permissions, requestCode)
                 Toast.makeText(requireContext(), "카메라 기능을 사용하실 수 없습니다.", Toast.LENGTH_SHORT).show()
             }
         }
