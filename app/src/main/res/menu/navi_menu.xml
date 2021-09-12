@@ -4,15 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package = "com.kt.recycleapp.kotlin.activity">
 
-
-                <item
-                    android:id="@+id/main"
-                    android:icon="@drawable/ic_search"
-                    android:fontFamily="@font/font3"
-                    android:textColor="@color/main_text_color"
-                    android:title="메인화면"
-                    android:iconTint="@color/black"
-                    />
                 <item
                     android:id="@+id/find"
                     android:icon="@drawable/ic_search"

@@ -299,7 +299,7 @@ class DatabaseReadModel() {
    }
 
     fun imageUpload(name:String, photoUri:Uri) {
-        val fileName = "IMAGE_${name}"
+        val fileName = "IMAGE_${name.replace(" ","")}"
         val imgRef = storage.child("products_image/$fileName.png")
         imgRef.putFile(photoUri).addOnCompleteListener {
             if(it.isSuccessful){

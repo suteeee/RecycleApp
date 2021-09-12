@@ -129,7 +129,7 @@ class MainFragment : Fragment() {
             var handler = Handler(Looper.getMainLooper())
             handler.postDelayed({
                 binding.zoonShowTv.visibility = View.INVISIBLE
-            },1000)
+            },2000)
         })
 
         if(prefs.cameraPermission == "GRANTED"){

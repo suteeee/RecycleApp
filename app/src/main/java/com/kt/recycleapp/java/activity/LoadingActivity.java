@@ -5,6 +5,8 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
 import android.content.Intent;
@@ -13,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.kt.recycleapp.java.viewmodel.LodingViewModel;
 import com.kt.recycleapp.kotlin.activity.MainActivity;
 import com.kt.recycleapp.manager.MyPreferenceManager;
 import com.kt.recycleapp.model.DatabaseReadModel;
@@ -27,6 +30,7 @@ public class LoadingActivity extends AppCompatActivity {
     private int REQUEST_CODE_PERMISSIONS = 10;
     MyPreferenceManager prefs;
     int delay = 0;
+    LodingViewModel viewModel;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -35,6 +39,7 @@ public class LoadingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_loading);
         model = new DatabaseReadModel(getApplicationContext());
         prefs = new MyPreferenceManager(getApplicationContext()); //만들었던 preferenceManager를 쓸수있게 생성
+        viewModel = new ViewModelProvider(this).get(LodingViewModel.class);
 
         if(prefs.getDarkmodSwitch()==false){
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
@@ -43,16 +48,16 @@ public class LoadingActivity extends AppCompatActivity {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }
 
-        if(prefs.getCameraPermission().equals("DENIED")){
+        if(!prefs.getCameraPermission().equals("GRANTED")){
             permissionCheck();
         }else {
             delay = 2000;
             loadingStart();
         }
 
-
-
-        //
+        viewModel.getPermission().observe(this, it -> {
+            loadingStart();
+        });
 
     }
 
@@ -60,6 +65,7 @@ public class LoadingActivity extends AppCompatActivity {
     public void permissionCheck() {
         if (allPermissionsGranted()) {
             prefs.setCameraPermission("GRANTED");
+            viewModel.getPermission().setValue("GRANTED");
         } else {
             requestPermissions(REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS);
         }
@@ -83,13 +89,13 @@ public class LoadingActivity extends AppCompatActivity {
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (allPermissionsGranted()) {
                 try {
+                    viewModel.getPermission().setValue("GRANTED");
                     prefs.setCameraPermission("GRANTED");
-                    loadingStart();
                 }
                 catch (Exception e){}
             } else {
-                loadingStart();
-                //requestPermissions(permissions, requestCode);
+                viewModel.getPermission().setValue("DENIED");
+                prefs.setCameraPermission("DENIED");
             }
         }
     }

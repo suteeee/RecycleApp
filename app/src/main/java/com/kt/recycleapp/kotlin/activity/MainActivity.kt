@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
                 Log.d("Main","Mclose")
                 mBackPressListener = null
                 MainViewModel.isPopupClose.value = "open"
-                goToMainFragment()
+                goToMainFragment("back")
             }
 
         })
@@ -140,6 +140,10 @@ class MainActivity : AppCompatActivity() {
 
         })
 
+        binding.homeBtn2.setOnClickListener {
+            goToMainFragment("home")
+        }
+
         //팝업창 추가
         val popup = PopupFragmentStartpage.getInstance()
         popup.show(
@@ -187,15 +191,6 @@ class MainActivity : AppCompatActivity() {
             if (id == R.id.find) {
                 fragment = FindFragment()
             }
-            else if (id == R.id.main) {
-                viewModel.selectedFragment.value = "main"
-                fragment = MainFragment()
-                while (supportFragmentManager.backStackEntryCount != 0){
-                    supportFragmentManager.popBackStackImmediate()
-                }
-                viewModel.fragmentStack.clear()
-                viewModel.fragmentStack.add("main")
-            }
             else if (id == R.id.advancedSearch) {
                 viewModel.selectedFragment.value = "adv"
                 fragment = AdvancedSearchFragment()
@@ -229,7 +224,7 @@ class MainActivity : AppCompatActivity() {
                 fragment = DataUploadFragment()
             }
 
-            if (fragment != null && id != R.id.main) {
+            if (fragment != null) {
                 //프래그먼트 트랜잭션(프래그먼트 전환)
                  if(viewModel.selectedFragment.value == "main"){
                      t.replace(layout,fragment).addToBackStack(null).commit()
@@ -264,14 +259,20 @@ class MainActivity : AppCompatActivity() {
             mBackPressListener = listener
     }
 
-    fun goToMainFragment() {
+    fun goToMainFragment(flag:String) {
         viewModel.selectedFragment.value = "main"
         while (supportFragmentManager.backStackEntryCount != 0){
             supportFragmentManager.popBackStackImmediate()
         }
         viewModel.fragmentStack.clear()
         viewModel.fragmentStack.add("main")
-        supportFragmentManager.beginTransaction().replace(R.id.small_layout1,MainFragment()).commit()
+        val transaction =  supportFragmentManager.beginTransaction()
+
+        when(flag){
+            "back" -> transaction.replace(R.id.small_layout1,MainFragment()).commit()
+            "home" -> transaction.add(R.id.small_layout1,MainFragment()).commit()
+        }
+
     }
 
     override fun onBackPressed() {
