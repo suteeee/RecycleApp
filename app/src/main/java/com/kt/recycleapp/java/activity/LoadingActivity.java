@@ -77,6 +77,7 @@ public class LoadingActivity extends AppCompatActivity {
             prefs.setCameraPermission("GRANTED");
             loadingStart();
         } else {
+            delay = 0;
             requestPermissions(REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS);
             //loadingStart();
         }
@@ -87,26 +88,20 @@ public class LoadingActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull @NotNull String[] permissions, @NonNull @NotNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
-            Log.d("permissionSize",Integer.toString(grantResults.length));
-            if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                delay = 0;
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 prefs.setCameraPermission("GRANTED");
-            }
-            else{
-                delay = 2000;
+            } else {
                 prefs.setCameraPermission("DENIED");
             }
 
-            if(grantResults[1] == PackageManager.PERMISSION_GRANTED || grantResults[2] == PackageManager.PERMISSION_GRANTED) {
-                if(grantResults[0] == PackageManager.PERMISSION_GRANTED) delay = 0;
+            if (grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) delay = 0;
                 prefs.setStoragePermission("GRANTED");
-            }
-            else {
-                delay = 2000;
+            } else {
                 prefs.setStoragePermission("DENIED");
             }
-            loadingStart();
 
+            loadingStart();
         }
     }
 
