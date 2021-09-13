@@ -222,12 +222,18 @@ class MainFragment : Fragment() {
                 .also {
                     it.setAnalyzer(cameraExecutor, MyImageAnalyzer { barcode ->
                         if (processingBarcode.compareAndSet(false, true)) {
-                            val fineName = takePhoto()
+                            val fineName = if(prefs.storagePermission == "GRANTED") {
+                                takePhoto()
+                            }
+                            else {"null"}
+
+                            if(prefs.storagePermission == "DENIED") captureIsFinish.value = "yes"
                             Toast.makeText(activity?.baseContext,barcode,Toast.LENGTH_SHORT).show()
 
                             captureIsFinish.observe(viewLifecycleOwner,{fin->
                                 if(fin=="yes"){
-                                    writeDB(barcode,fineName)
+                                    Log.d("prefs",prefs.storagePermission)
+                                    if(prefs.storagePermission == "GRANTED") writeDB(barcode,fineName)
                                     captureIsFinish.value="no"
                                     val bundle = Bundle()
                                     bundle.putString("barcode",barcode)

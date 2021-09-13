@@ -28,6 +28,7 @@ public class MyPreferenceManager {
     private static final String FAVORITE_KEY = "F";
     private static final String DARKMOD_SWITCH = "onoff";
     private static final String CAMERA_PERMISSION = "CP";
+    private static final String STORAGE_PERMISSION = "SP";
 
 
     public String getStoredTime(){
@@ -54,6 +55,9 @@ public class MyPreferenceManager {
 
     public String getCameraPermission() {return prefs.getString(CAMERA_PERMISSION,"DENIED");}
     public void setCameraPermission(String permission) {prefs.edit().putString(CAMERA_PERMISSION,permission).apply();}
+
+    public String getStoragePermission() {return prefs.getString(STORAGE_PERMISSION,"DENIED");}
+    public void setStoragePermission(String permission) {prefs.edit().putString(STORAGE_PERMISSION,permission).apply();}
 
 
     public ArrayList<String> getFavoriteList() throws JSONException {

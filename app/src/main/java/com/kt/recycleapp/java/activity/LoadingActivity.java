@@ -5,8 +5,6 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
 import android.content.Intent;
@@ -14,13 +12,12 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 
-import com.kt.recycleapp.java.viewmodel.LodingViewModel;
+import com.google.firebase.database.annotations.NotNull;
 import com.kt.recycleapp.kotlin.activity.MainActivity;
 import com.kt.recycleapp.manager.MyPreferenceManager;
 import com.kt.recycleapp.model.DatabaseReadModel;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.recycleapp.R;
 
@@ -29,8 +26,7 @@ public class LoadingActivity extends AppCompatActivity {
     private  String[] REQUIRED_PERMISSIONS = {Manifest.permission.CAMERA,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private int REQUEST_CODE_PERMISSIONS = 10;
     MyPreferenceManager prefs;
-    int delay = 0;
-    LodingViewModel viewModel;
+    int delay = 2000;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -39,7 +35,6 @@ public class LoadingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_loading);
         model = new DatabaseReadModel(getApplicationContext());
         prefs = new MyPreferenceManager(getApplicationContext()); //만들었던 preferenceManager를 쓸수있게 생성
-        viewModel = new ViewModelProvider(this).get(LodingViewModel.class);
 
         if(prefs.getDarkmodSwitch()==false){
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
@@ -48,38 +43,43 @@ public class LoadingActivity extends AppCompatActivity {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }
 
-        if(!prefs.getCameraPermission().equals("GRANTED")){
-            permissionCheck();
-        }else {
-            delay = 2000;
-            loadingStart();
-        }
+        permissionCheck();
+        //loadingStart();
 
-        viewModel.getPermission().observe(this, it -> {
-            loadingStart();
-        });
-
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    public void permissionCheck() {
-        if (allPermissionsGranted()) {
-            prefs.setCameraPermission("GRANTED");
-            viewModel.getPermission().setValue("GRANTED");
-        } else {
-            requestPermissions(REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS);
-        }
     }
 
     private boolean allPermissionsGranted()  {
         boolean result = true;
         for(String it : REQUIRED_PERMISSIONS){
             if(ContextCompat.checkSelfPermission(getApplicationContext(), it) != PackageManager.PERMISSION_GRANTED){
+                if(it.equals(Manifest.permission.CAMERA)) {
+                    prefs.setCameraPermission("DENIED");
+                }else {
+                    prefs.setStoragePermission("DENIED");
+                }
                 result = false;
-                break;
+            }
+            else {
+
+                if(it.equals(Manifest.permission.CAMERA)) {
+                    prefs.setCameraPermission("GRANTED");
+                }else {
+                    prefs.setStoragePermission("GRANTED");
+                }
             }
         }
         return result;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void permissionCheck() {
+        if (allPermissionsGranted()) {
+            prefs.setCameraPermission("GRANTED");
+            loadingStart();
+        } else {
+            requestPermissions(REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS);
+            //loadingStart();
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -87,18 +87,29 @@ public class LoadingActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull @NotNull String[] permissions, @NonNull @NotNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
-            if (allPermissionsGranted()) {
-                try {
-                    viewModel.getPermission().setValue("GRANTED");
-                    prefs.setCameraPermission("GRANTED");
-                }
-                catch (Exception e){}
-            } else {
-                viewModel.getPermission().setValue("DENIED");
+            Log.d("permissionSize",Integer.toString(grantResults.length));
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                delay = 0;
+                prefs.setCameraPermission("GRANTED");
+            }
+            else{
+                delay = 2000;
                 prefs.setCameraPermission("DENIED");
             }
+
+            if(grantResults[1] == PackageManager.PERMISSION_GRANTED || grantResults[2] == PackageManager.PERMISSION_GRANTED) {
+                if(grantResults[0] == PackageManager.PERMISSION_GRANTED) delay = 0;
+                prefs.setStoragePermission("GRANTED");
+            }
+            else {
+                delay = 2000;
+                prefs.setStoragePermission("DENIED");
+            }
+            loadingStart();
+
         }
     }
+
 
     private void loadingStart(){
         Handler handler=new Handler();
