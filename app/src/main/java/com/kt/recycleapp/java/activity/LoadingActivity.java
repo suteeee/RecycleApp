@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.MutableLiveData;
 
 import android.Manifest;
 import android.content.Intent;
@@ -27,6 +28,7 @@ public class LoadingActivity extends AppCompatActivity {
     private int REQUEST_CODE_PERMISSIONS = 10;
     MyPreferenceManager prefs;
     int delay = 2000;
+    MutableLiveData<Boolean> startFlag = new MutableLiveData<>(false);
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -43,9 +45,14 @@ public class LoadingActivity extends AppCompatActivity {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }
 
-        permissionCheck();
-        //loadingStart();
+        startFlag.observe(this, flag -> {
+            if(flag) {
+                startFlag.setValue(false);
+                loadingStart();
+            }
+        });
 
+        permissionCheck();
     }
 
     private boolean allPermissionsGranted()  {
@@ -75,9 +82,10 @@ public class LoadingActivity extends AppCompatActivity {
     public void permissionCheck() {
         if (allPermissionsGranted()) {
             prefs.setCameraPermission("GRANTED");
-            loadingStart();
+
+            startFlag.setValue(true);
+            //loadingStart();
         } else {
-            delay = 0;
             requestPermissions(REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS);
             //loadingStart();
         }
@@ -90,7 +98,9 @@ public class LoadingActivity extends AppCompatActivity {
         try {
             prefsPermissionSetAndLoading(requestCode, grantResults);
         }catch (Exception e) {
-           loadingStart();
+            delay = 2000;
+            startFlag.setValue(true);
+           //loadingStart();
         }
     }
 
@@ -108,7 +118,6 @@ public class LoadingActivity extends AppCompatActivity {
             } else {
                 prefs.setStoragePermission("DENIED");
             }
-
             loadingStart();
         }
     }
