@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 import java.recycleapp.databinding.AddpageItemUnitBinding
 import java.util.HashMap
 
-class AddAdapter : RecyclerView.Adapter<AddAdapter.AddViewHoler>() {
+class AddAdapter(val viewModel: AddViewModel) : RecyclerView.Adapter<AddAdapter.AddViewHoler>() {
     var items = ArrayList<Int>()
     lateinit var holder :AddViewHoler
 
@@ -43,7 +43,7 @@ class AddAdapter : RecyclerView.Adapter<AddAdapter.AddViewHoler>() {
 
         fun bind(pos: Int) {
             val tmpProduct= HashMap<String,Any>()
-            val adt = ArrayAdapter(context, R.layout.simple_spinner_dropdown_item,AddViewModel.productList);
+            val adt = ArrayAdapter(context, R.layout.simple_spinner_dropdown_item,viewModel.productList);
             binding.productsSp2.adapter = adt
             adt.notifyDataSetChanged()
             binding.productsSp2.onItemSelectedListener = (object : AdapterView.OnItemSelectedListener{

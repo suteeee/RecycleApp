@@ -9,18 +9,23 @@ import com.kt.recycleapp.model.DatabaseReadModel
 
 class AddViewModel:ViewModel() {
    companion object{
-       var productList =ArrayList<String>()
        var barcode = ""
        var summit = MutableLiveData<String>()
        var products = ArrayList<String>()
        var addItems = ArrayList<HashMap<String,Any>>()
    }
+    var productList =ArrayList<String>()
+    val listLoadFinish = MutableLiveData<String>()
     var photoUri: Uri? = null
     var itemList = ObservableArrayList<Int>()
     val model = DatabaseReadModel()
 
     fun uploadAll() {
         model.uploadAll(photoUri)
+    }
+
+    fun loadingList() {
+        productList = model.getProductsList(listLoadFinish)
     }
 
 }

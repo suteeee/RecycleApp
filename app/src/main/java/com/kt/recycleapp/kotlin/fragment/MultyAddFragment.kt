@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FirebaseFirestore
 import com.kt.recycleapp.kotlin.activity.MainActivity
 import com.kt.recycleapp.kotlin.activity.OnBackPressListener
+import com.kt.recycleapp.kotlin.adapter.AddAdapter
 import com.kt.recycleapp.kotlin.viewmodel.AddViewModel
 import com.kt.recycleapp.model.DatabaseReadModel
 import java.recycleapp.R
@@ -28,6 +29,7 @@ class MultyAddFragment : Fragment(), OnBackPressListener {
     var ld = MutableLiveData<String>()
     var data = DatabaseReadModel()
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
  
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_multy_add, container, false)
@@ -37,24 +39,31 @@ class MultyAddFragment : Fragment(), OnBackPressListener {
         binding.viewmodel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         Glide.with(requireContext()).load(R.drawable.default_nothing).override(300).into(binding.productImageIv)
+        var adapter = AddAdapter(viewModel)
 
-        viewModel.itemList.add(cnt++)
-        AddViewModel.products.add("")
-        AddViewModel.addItems.add(HashMap())
-        AddViewModel.productList = arr
+        binding.multyRv.adapter = adapter
 
-        ld.observe(viewLifecycleOwner, {
-            if(it.equals("finish")){
-                binding.multyPb.visibility = View.INVISIBLE
-                binding.itemaddBtn.setOnClickListener {
-                    viewModel.itemList.add(cnt++)
-                    AddViewModel.products.add("")
-                    AddViewModel.addItems.add(HashMap())
-                }
+        viewModel.loadingList()
+        viewModel.listLoadFinish.observe(viewLifecycleOwner, {
+            if(it == "finish") {
+                viewModel.itemList.add(cnt++)
+                AddViewModel.products.add("")
+                AddViewModel.addItems.add(HashMap())
 
-                AddViewModel.productList = arr
+                ld.observe(viewLifecycleOwner, {
+                    if (it.equals("finish")) {
+                        binding.multyPb.visibility = View.INVISIBLE
+                        binding.itemaddBtn.setOnClickListener {
+                            viewModel.itemList.add(cnt++)
+                            AddViewModel.products.add("")
+                            AddViewModel.addItems.add(HashMap())
+                        }
+                    }
+                })
             }
         })
+
+
 
         AddViewModel.summit.observe(viewLifecycleOwner,{
             if(it == "click"){

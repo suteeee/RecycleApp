@@ -88,7 +88,6 @@ public class LoadingActivity extends AppCompatActivity {
             //loadingStart();
         } else {
             Log.d("per","1");
-            delay = 0;
             requestPermissions(REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS);
             //loadingStart();
         }
@@ -100,10 +99,10 @@ public class LoadingActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         try {
             Log.d("per","2");
+
             prefsPermissionSetAndLoading(requestCode, grantResults);
         }catch (Exception e) {
             Log.d("per","3");
-            delay = 2000;
             startFlag.setValue(false);
            //loadingStart();
         }
@@ -120,7 +119,6 @@ public class LoadingActivity extends AppCompatActivity {
             }
 
             if (grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) delay = 0;
                 Log.d("per","6");
                 prefs.setStoragePermission("GRANTED");
             } else {
