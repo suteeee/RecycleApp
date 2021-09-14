@@ -1,0 +1,286 @@
+Index: app/src/main/java/com/kt/recycleapp/java/fragment/GpsTracker.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.kt.recycleapp.java.fragment;\r\n\r\nimport android.Manifest;\r\nimport android.app.Service;\r\nimport android.content.Context;\r\nimport android.content.Intent;\r\nimport android.content.pm.PackageManager;\r\nimport android.location.Location;\r\nimport android.location.LocationListener;\r\nimport android.location.LocationManager;\r\nimport android.os.Bundle;\r\nimport android.os.IBinder;\r\nimport android.util.Log;\r\nimport androidx.core.content.ContextCompat;\r\n\r\npublic class GpsTracker extends Service implements LocationListener {\r\n    private final Context mContext;\r\n    Location location;\r\n    double latitude;\r\n    double longitude;\r\n    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10;\r\n    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1;\r\n    protected LocationManager locationManager;\r\n    public GpsTracker(Context context) {\r\n        this.mContext = context;\r\n        getLocation();\r\n    }\r\n    public Location getLocation() {\r\n        try {\r\n            locationManager = (LocationManager) mContext.getSystemService(LOCATION_SERVICE);\r\n            boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);\r\n            boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);\r\n            if (!isGPSEnabled && !isNetworkEnabled) {\r\n\r\n            }\r\n            else {\r\n                int hasFineLocationPermission = ContextCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION);\r\n                int hasCoarseLocationPermission = ContextCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION);\r\n\r\n                if (hasFineLocationPermission == PackageManager.PERMISSION_GRANTED && hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED) {\r\n\r\n                }\r\n                else\r\n                    return null;\r\n\r\n                if (isNetworkEnabled) {\r\n                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, this);\r\n\r\n                    if (locationManager != null) {\r\n                        location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);\r\n\r\n                        if (location != null) {\r\n                        latitude = location.getLatitude();\r\n                        longitude = location.getLongitude();\r\n                        }\r\n                    }\r\n                }\r\n\r\n                if (isGPSEnabled) {\r\n                    if (location == null) {\r\n                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, this);\r\n                        if (locationManager != null) {\r\n                            location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);\r\n                            if (location != null) {\r\n                                latitude = location.getLatitude();\r\n                                longitude = location.getLongitude();\r\n                             }\r\n                        }\r\n                    }\r\n                }\r\n            }\r\n        }\r\n        catch (Exception e) {\r\n            Log.d(\"@@@\", \"\"+e.toString());\r\n        }\r\n\r\n        return location;\r\n    }\r\n\r\n    public double getLatitude() {\r\n        if(location != null) {\r\n            latitude = location.getLatitude();\r\n        }\r\n        return latitude;\r\n    }\r\n\r\n    public double getLongitude() {\r\n        if(location != null) {\r\n            longitude = location.getLongitude();\r\n        } return longitude;\r\n    }\r\n\r\n    @Override public void onLocationChanged(Location location) {\r\n\r\n    }\r\n\r\n    @Override public void onProviderDisabled(String provider) {\r\n\r\n    }\r\n\r\n    @Override public void onProviderEnabled(String provider) {\r\n\r\n    }\r\n\r\n    @Override public void onStatusChanged(String provider, int status, Bundle extras) {\r\n\r\n    }\r\n\r\n    @Override public IBinder onBind(Intent arg0) {\r\n        return null;\r\n    }\r\n\r\n    public void stopUsingGPS() {\r\n        if(locationManager != null) {\r\n            locationManager.removeUpdates(GpsTracker.this);\r\n        }\r\n    }\r\n}\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/kt/recycleapp/java/fragment/GpsTracker.java b/app/src/main/java/com/kt/recycleapp/java/fragment/GpsTracker.java
+--- a/app/src/main/java/com/kt/recycleapp/java/fragment/GpsTracker.java	(revision 794e0da12b9b488ad46477b0d7b4cfbab1310306)
++++ b/app/src/main/java/com/kt/recycleapp/java/fragment/GpsTracker.java	(date 1631628824276)
+@@ -109,8 +109,8 @@
+     @Override public IBinder onBind(Intent arg0) {
+         return null;
+     }
+-
+     public void stopUsingGPS() {
++
+         if(locationManager != null) {
+             locationManager.removeUpdates(GpsTracker.this);
+         }
+Index: app/src/main/res/layout/fragment_popup_startpage.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><androidx.constraintlayout.widget.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"450dp\"\r\n    android:layout_height=\"700dp\"\r\n    android:layout_gravity=\"center\"\r\n    android:background=\"@color/main_backg_color\"\r\n    tools:context=\"com.kt.recycleapp.java.fragment.PopupFragmentStartpage\">\r\n\r\n\r\n    <Button\r\n        android:id=\"@+id/onedaynotsee_bt1\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:background=\"@drawable/common_buttom_design\"\r\n        android:fontFamily=\"@font/font3\"\r\n        android:textSize=\"12sp\"\r\n        android:text=\"하루동안 보지않기\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toStartOf=\"@+id/neversee_bt1\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/textView\" />\r\n\r\n    <Button\r\n        android:id=\"@+id/neversee_bt1\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:background=\"@drawable/common_buttom_design\"\r\n        android:fontFamily=\"@font/font3\"\r\n        android:textSize=\"12sp\"\r\n        android:text=\"다시 보지않기\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toStartOf=\"@+id/close_bt1\"\r\n        app:layout_constraintStart_toEndOf=\"@+id/onedaynotsee_bt1\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/textView\" />\r\n\r\n    <Button\r\n        android:id=\"@+id/close_bt1\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:background=\"@drawable/common_buttom_design\"\r\n        android:fontFamily=\"@font/font3\"\r\n        android:textSize=\"12sp\"\r\n        android:text=\"닫기\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.83\"\r\n        app:layout_constraintStart_toEndOf=\"@+id/neversee_bt1\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/textView\" />\r\n\r\n    <TextView\r\n        android:id=\"@+id/textView\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:background=\"@color/main_backg_color\"\r\n        android:fontFamily=\"@font/font3\"\r\n        android:text=\"@string/announceMent\"\r\n        android:textAlignment=\"center\"\r\n        android:textColor=\"@color/main_text_color\"\r\n        android:textStyle=\"bold\"\r\n        app:layout_constraintBottom_toTopOf=\"@+id/onedaynotsee_bt1\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\" />\r\n\r\n</androidx.constraintlayout.widget.ConstraintLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/fragment_popup_startpage.xml b/app/src/main/res/layout/fragment_popup_startpage.xml
+--- a/app/src/main/res/layout/fragment_popup_startpage.xml	(revision 794e0da12b9b488ad46477b0d7b4cfbab1310306)
++++ b/app/src/main/res/layout/fragment_popup_startpage.xml	(date 1631628012173)
+@@ -7,7 +7,6 @@
+     android:background="@color/main_backg_color"
+     tools:context="com.kt.recycleapp.java.fragment.PopupFragmentStartpage">
+ 
+-
+     <Button
+         android:id="@+id/onedaynotsee_bt1"
+         android:layout_width="wrap_content"
+@@ -15,7 +14,7 @@
+         android:background="@drawable/common_buttom_design"
+         android:fontFamily="@font/font3"
+         android:textSize="12sp"
+-        android:text="하루동안 보지않기"
++        android:text="내일보기"
+         app:layout_constraintBottom_toBottomOf="parent"
+         app:layout_constraintEnd_toStartOf="@+id/neversee_bt1"
+         app:layout_constraintStart_toStartOf="parent"
+Index: app/src/main/res/layout/activity_main.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<layout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\">\r\n\r\n    <data>\r\n        <variable\r\n            name=\"viewModel\"\r\n            type=\"com.kt.recycleapp.kotlin.viewmodel.MainViewModel\" />\r\n    </data>\r\n\r\n    <androidx.drawerlayout.widget.DrawerLayout\r\n\r\n        android:id=\"@+id/drawer_layout\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"match_parent\"\r\n        android:background=\"@color/main_backg_color\"\r\n        tools:context=\"com.kt.recycleapp.kotlin.activity.MainActivity\">\r\n\r\n        <androidx.constraintlayout.widget.ConstraintLayout\r\n            android:id=\"@+id/big_layout\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\">\r\n\r\n            <androidx.constraintlayout.widget.ConstraintLayout\r\n                android:id=\"@+id/small_layout2\"\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\"\r\n                app:layout_constraintEnd_toEndOf=\"parent\"\r\n                app:layout_constraintStart_toStartOf=\"parent\"\r\n                app:layout_constraintTop_toTopOf=\"parent\"\r\n                app:layout_constraintVertical_weight=\"1\">\r\n\r\n\r\n                <androidx.appcompat.widget.Toolbar\r\n                    android:id=\"@+id/mainToolBar_tb1\"\r\n                    android:layout_width=\"match_parent\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:background=\"@color/main_backg_color\"\r\n                    android:gravity=\"center\"\r\n                    android:minHeight=\"?attr/actionBarSize\"\r\n                    android:theme=\"@style/ThemeOverlay.AppCompat.Dark.ActionBar\"\r\n                    app:layout_constraintBottom_toBottomOf=\"parent\"\r\n                    app:layout_constraintEnd_toEndOf=\"parent\"\r\n                    app:layout_constraintStart_toStartOf=\"parent\"\r\n                    app:layout_constraintTop_toTopOf=\"parent\"\r\n                    app:popupTheme=\"@style/ThemeOverlay.AppCompat.Dark.ActionBar\"\r\n                    app:titleTextColor=\"#000000\" />\r\n\r\n                <SearchView\r\n                    android:id=\"@+id/toolbar_sv\"\r\n                    android:layout_width=\"wrap_content\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    app:layout_constraintBottom_toBottomOf=\"parent\"\r\n                    app:layout_constraintEnd_toEndOf=\"parent\"\r\n                    app:layout_constraintTop_toTopOf=\"parent\" >\r\n\r\n                </SearchView>\r\n\r\n                <TextView\r\n                    android:id=\"@+id/title_tv\"\r\n                    android:layout_width=\"wrap_content\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:fontFamily=\"@font/font3\"\r\n                    android:text=\"@{viewModel.toolbarText}\"\r\n                    android:textColor=\"@color/main_text_color\"\r\n                    android:textSize=\"24sp\"\r\n                    app:layout_constraintBottom_toBottomOf=\"@+id/mainToolBar_tb1\"\r\n                    app:layout_constraintEnd_toEndOf=\"parent\"\r\n                    app:layout_constraintStart_toStartOf=\"parent\"\r\n                    app:layout_constraintTop_toTopOf=\"parent\" />\r\n\r\n                <ImageView\r\n                    android:id=\"@+id/home_btn2\"\r\n                    android:layout_width=\"wrap_content\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:layout_marginStart=\"60dp\"\r\n                    app:layout_constraintBottom_toBottomOf=\"parent\"\r\n                    app:layout_constraintStart_toStartOf=\"parent\"\r\n                    app:layout_constraintTop_toTopOf=\"parent\"\r\n                    app:srcCompat=\"@drawable/ic_home\" />\r\n\r\n            </androidx.constraintlayout.widget.ConstraintLayout>\r\n\r\n            <androidx.constraintlayout.widget.ConstraintLayout\r\n                android:id=\"@+id/small_layout1\"\r\n                android:layout_width=\"0dp\"\r\n                android:layout_height=\"0dp\"\r\n                app:layout_constraintBottom_toBottomOf=\"parent\"\r\n                app:layout_constraintEnd_toEndOf=\"parent\"\r\n                app:layout_constraintStart_toStartOf=\"parent\"\r\n                app:layout_constraintTop_toBottomOf=\"@+id/small_layout2\"\r\n                app:layout_constraintVertical_weight=\"3\" />\r\n\r\n        </androidx.constraintlayout.widget.ConstraintLayout>\r\n\r\n        <com.google.android.material.navigation.NavigationView\r\n            android:id=\"@+id/navi_nv\"\r\n            android:layout_width=\"wrap_content\"\r\n            android:layout_height=\"match_parent\"\r\n            android:layout_gravity=\"start\"\r\n            android:background=\"@color/main_backg_color\"\r\n            android:fitsSystemWindows=\"true\"\r\n            app:headerLayout=\"@layout/navi_header\"\r\n            app:itemIconTint=\"@color/ic_color\"\r\n            app:itemTextAppearance=\"@style/MenuFont\"\r\n            app:itemTextColor=\"@color/main_text_color\"\r\n            app:menu=\"@menu/navi_menu\">\r\n\r\n        </com.google.android.material.navigation.NavigationView>\r\n    </androidx.drawerlayout.widget.DrawerLayout>\r\n</layout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/activity_main.xml b/app/src/main/res/layout/activity_main.xml
+--- a/app/src/main/res/layout/activity_main.xml	(revision 794e0da12b9b488ad46477b0d7b4cfbab1310306)
++++ b/app/src/main/res/layout/activity_main.xml	(date 1631629103346)
+@@ -74,6 +74,7 @@
+                     android:id="@+id/home_btn2"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
++                    android:textColor="@color/main_text_color"
+                     android:layout_marginStart="60dp"
+                     app:layout_constraintBottom_toBottomOf="parent"
+                     app:layout_constraintStart_toStartOf="parent"
+Index: .idea/codeStyles/codeStyleConfig.xml
+===================================================================
+diff --git a/.idea/codeStyles/codeStyleConfig.xml b/.idea/codeStyles/codeStyleConfig.xml
+deleted file mode 100644
+--- a/.idea/codeStyles/codeStyleConfig.xml	(revision 794e0da12b9b488ad46477b0d7b4cfbab1310306)
++++ /dev/null	(revision 794e0da12b9b488ad46477b0d7b4cfbab1310306)
+@@ -1,5 +0,0 @@
+-<component name="ProjectCodeStyleConfiguration">
+-  <state>
+-    <option name="USE_PER_PROJECT_SETTINGS" value="true" />
+-  </state>
+-</component>
+\ No newline at end of file
+Index: .idea/runConfigurations.xml
+===================================================================
+diff --git a/.idea/runConfigurations.xml b/.idea/runConfigurations.xml
+deleted file mode 100644
+--- a/.idea/runConfigurations.xml	(revision 794e0da12b9b488ad46477b0d7b4cfbab1310306)
++++ /dev/null	(revision 794e0da12b9b488ad46477b0d7b4cfbab1310306)
+@@ -1,10 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="RunConfigurationProducerService">
+-    <option name="ignoredProducers">
+-      <set>
+-        <option value="com.android.tools.idea.compose.preview.runconfiguration.ComposePreviewRunConfigurationProducer" />
+-      </set>
+-    </option>
+-  </component>
+-</project>
+\ No newline at end of file
+Index: .idea/codeStyles/Project.xml
+===================================================================
+diff --git a/.idea/codeStyles/Project.xml b/.idea/codeStyles/Project.xml
+deleted file mode 100644
+--- a/.idea/codeStyles/Project.xml	(revision 794e0da12b9b488ad46477b0d7b4cfbab1310306)
++++ /dev/null	(revision 794e0da12b9b488ad46477b0d7b4cfbab1310306)
+@@ -1,122 +0,0 @@
+-<component name="ProjectCodeStyleConfiguration">
+-  <code_scheme name="Project" version="173">
+-    <JetCodeStyleSettings>
+-      <option name="CODE_STYLE_DEFAULTS" value="KOTLIN_OFFICIAL" />
+-    </JetCodeStyleSettings>
+-    <codeStyleSettings language="XML">
+-      <indentOptions>
+-        <option name="CONTINUATION_INDENT_SIZE" value="4" />
+-      </indentOptions>
+-      <arrangement>
+-        <rules>
+-          <section>
+-            <rule>
+-              <match>
+-                <AND>
+-                  <NAME>xmlns:android</NAME>
+-                  <XML_ATTRIBUTE />
+-                  <XML_NAMESPACE>^$</XML_NAMESPACE>
+-                </AND>
+-              </match>
+-            </rule>
+-          </section>
+-          <section>
+-            <rule>
+-              <match>
+-                <AND>
+-                  <NAME>xmlns:.*</NAME>
+-                  <XML_ATTRIBUTE />
+-                  <XML_NAMESPACE>^$</XML_NAMESPACE>
+-                </AND>
+-              </match>
+-              <order>BY_NAME</order>
+-            </rule>
+-          </section>
+-          <section>
+-            <rule>
+-              <match>
+-                <AND>
+-                  <NAME>.*:id</NAME>
+-                  <XML_ATTRIBUTE />
+-                  <XML_NAMESPACE>http://schemas.android.com/apk/res/android</XML_NAMESPACE>
+-                </AND>
+-              </match>
+-            </rule>
+-          </section>
+-          <section>
+-            <rule>
+-              <match>
+-                <AND>
+-                  <NAME>.*:name</NAME>
+-                  <XML_ATTRIBUTE />
+-                  <XML_NAMESPACE>http://schemas.android.com/apk/res/android</XML_NAMESPACE>
+-                </AND>
+-              </match>
+-            </rule>
+-          </section>
+-          <section>
+-            <rule>
+-              <match>
+-                <AND>
+-                  <NAME>name</NAME>
+-                  <XML_ATTRIBUTE />
+-                  <XML_NAMESPACE>^$</XML_NAMESPACE>
+-                </AND>
+-              </match>
+-            </rule>
+-          </section>
+-          <section>
+-            <rule>
+-              <match>
+-                <AND>
+-                  <NAME>style</NAME>
+-                  <XML_ATTRIBUTE />
+-                  <XML_NAMESPACE>^$</XML_NAMESPACE>
+-                </AND>
+-              </match>
+-            </rule>
+-          </section>
+-          <section>
+-            <rule>
+-              <match>
+-                <AND>
+-                  <NAME>.*</NAME>
+-                  <XML_ATTRIBUTE />
+-                  <XML_NAMESPACE>^$</XML_NAMESPACE>
+-                </AND>
+-              </match>
+-              <order>BY_NAME</order>
+-            </rule>
+-          </section>
+-          <section>
+-            <rule>
+-              <match>
+-                <AND>
+-                  <NAME>.*</NAME>
+-                  <XML_ATTRIBUTE />
+-                  <XML_NAMESPACE>http://schemas.android.com/apk/res/android</XML_NAMESPACE>
+-                </AND>
+-              </match>
+-              <order>ANDROID_ATTRIBUTE_ORDER</order>
+-            </rule>
+-          </section>
+-          <section>
+-            <rule>
+-              <match>
+-                <AND>
+-                  <NAME>.*</NAME>
+-                  <XML_ATTRIBUTE />
+-                  <XML_NAMESPACE>.*</XML_NAMESPACE>
+-                </AND>
+-              </match>
+-              <order>BY_NAME</order>
+-            </rule>
+-          </section>
+-        </rules>
+-      </arrangement>
+-    </codeStyleSettings>
+-    <codeStyleSettings language="kotlin">
+-      <option name="CODE_STYLE_DEFAULTS" value="KOTLIN_OFFICIAL" />
+-    </codeStyleSettings>
+-  </code_scheme>
+-</component>
+\ No newline at end of file
+Index: .idea/.gitignore
+===================================================================
+diff --git a/.idea/.gitignore b/.idea/.gitignore
+deleted file mode 100644
+--- a/.idea/.gitignore	(revision 794e0da12b9b488ad46477b0d7b4cfbab1310306)
++++ /dev/null	(revision 794e0da12b9b488ad46477b0d7b4cfbab1310306)
+@@ -1,3 +0,0 @@
+-# Default ignored files
+-/shelf/
+-/workspace.xml
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_11\" default=\"true\" project-jdk-name=\"1.8\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/build/classes\" />\r\n  </component>\r\n  <component name=\"ProjectType\">\r\n    <option name=\"id\" value=\"Android\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision 794e0da12b9b488ad46477b0d7b4cfbab1310306)
++++ b/.idea/misc.xml	(date 1631629079104)
+@@ -1,9 +1,11 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+-    <output url="file://$PROJECT_DIR$/build/classes" />
++  <component name="DesignSurface">
++    <option name="filePathToZoomLevelMap">
++      <map>
++        <entry key="..\:/Users/user/AndroidStudioProjects/RecycleApp/app/src/main/res/layout/activity_main.xml" value="0.13323201621073963" />
++      </map>
++    </option>
+   </component>
+-  <component name="ProjectType">
+-    <option name="id" value="Android" />
+-  </component>
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
+ </project>
+\ No newline at end of file
+Index: .idea/gradle.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"GradleMigrationSettings\" migrationVersion=\"1\" />\r\n  <component name=\"GradleSettings\">\r\n    <option name=\"linkedExternalProjectsSettings\">\r\n      <GradleProjectSettings>\r\n        <option name=\"testRunner\" value=\"PLATFORM\" />\r\n        <option name=\"distributionType\" value=\"DEFAULT_WRAPPED\" />\r\n        <option name=\"externalProjectPath\" value=\"$PROJECT_DIR$\" />\r\n        <option name=\"modules\">\r\n          <set>\r\n            <option value=\"$PROJECT_DIR$\" />\r\n            <option value=\"$PROJECT_DIR$/app\" />\r\n          </set>\r\n        </option>\r\n        <option name=\"resolveModulePerSourceSet\" value=\"false\" />\r\n      </GradleProjectSettings>\r\n    </option>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/gradle.xml b/.idea/gradle.xml
+--- a/.idea/gradle.xml	(revision 794e0da12b9b488ad46477b0d7b4cfbab1310306)
++++ b/.idea/gradle.xml	(date 1631628012230)
+@@ -4,9 +4,10 @@
+   <component name="GradleSettings">
+     <option name="linkedExternalProjectsSettings">
+       <GradleProjectSettings>
+-        <option name="testRunner" value="PLATFORM" />
++        <option name="testRunner" value="GRADLE" />
+         <option name="distributionType" value="DEFAULT_WRAPPED" />
+         <option name="externalProjectPath" value="$PROJECT_DIR$" />
++        <option name="gradleJvm" value="11" />
+         <option name="modules">
+           <set>
+             <option value="$PROJECT_DIR$" />
