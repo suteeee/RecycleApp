@@ -87,6 +87,14 @@ public class LoadingActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull @NotNull String[] permissions, @NonNull @NotNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        try {
+            prefsPermissionSetAndLoading(requestCode, grantResults);
+        }catch (Exception e) {
+           loadingStart();
+        }
+    }
+
+    private void prefsPermissionSetAndLoading(int requestCode, int[] grantResults) {
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 prefs.setCameraPermission("GRANTED");
