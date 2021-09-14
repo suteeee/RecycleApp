@@ -81,11 +81,14 @@ public class LoadingActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void permissionCheck() {
         if (allPermissionsGranted()) {
+            Log.d("per","0");
             prefs.setCameraPermission("GRANTED");
 
             startFlag.setValue(true);
             //loadingStart();
         } else {
+            Log.d("per","1");
+            delay = 0;
             requestPermissions(REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS);
             //loadingStart();
         }
@@ -96,10 +99,12 @@ public class LoadingActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull @NotNull String[] permissions, @NonNull @NotNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         try {
+            Log.d("per","2");
             prefsPermissionSetAndLoading(requestCode, grantResults);
         }catch (Exception e) {
+            Log.d("per","3");
             delay = 2000;
-            startFlag.setValue(true);
+            startFlag.setValue(false);
            //loadingStart();
         }
     }
@@ -107,17 +112,22 @@ public class LoadingActivity extends AppCompatActivity {
     private void prefsPermissionSetAndLoading(int requestCode, int[] grantResults) {
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.d("per","4");
                 prefs.setCameraPermission("GRANTED");
             } else {
+                Log.d("per","5");
                 prefs.setCameraPermission("DENIED");
             }
 
             if (grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) delay = 0;
+                Log.d("per","6");
                 prefs.setStoragePermission("GRANTED");
             } else {
+                Log.d("per","7");
                 prefs.setStoragePermission("DENIED");
             }
+            Log.d("per","8");
             loadingStart();
         }
     }
