@@ -90,7 +90,8 @@ public class LoadingActivity extends AppCompatActivity {
         try {
             prefsPermissionSetAndLoading(requestCode, grantResults);
         }catch (Exception e) {
-           loadingStart();
+               delay=2000;
+                loadingStart();
         }
     }
 

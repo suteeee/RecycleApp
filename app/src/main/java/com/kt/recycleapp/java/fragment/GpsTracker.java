@@ -109,8 +109,8 @@ public class GpsTracker extends Service implements LocationListener {
     @Override public IBinder onBind(Intent arg0) {
         return null;
     }
-
     public void stopUsingGPS() {
+
         if(locationManager != null) {
             locationManager.removeUpdates(GpsTracker.this);
         }
