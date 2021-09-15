@@ -1,6 +1,5 @@
 package com.kt.recycleapp.model
 
-import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
@@ -15,7 +14,6 @@ import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.kt.recycleapp.java.announce.AnnounceData
-import com.kt.recycleapp.kotlin.activity.MainActivity
 import com.kt.recycleapp.kotlin.viewmodel.AddViewModel
 import com.kt.recycleapp.kotlin.viewmodel.FindViewModel
 import kotlinx.coroutines.*
@@ -162,7 +160,12 @@ class DatabaseReadModel() {
             }
 
             Log.d("Load11","$name $barcode $pKind")
-
+            if(pKind.isEmpty()) {
+                info = "데이터를 등록해주세요!"
+                pKind = "등록되지 않은 물품입니다."
+                product.add(AnnounceData(name, info ,pKind))
+            }
+            else {
                 detailInfo.document(pKind).get().addOnCompleteListener {
                     val res = (it.result.data)?.get(barcode)
                     if(res != null) {
@@ -181,15 +184,15 @@ class DatabaseReadModel() {
                         (it.result.documents).forEach { doc->
                             val d = doc.data
                             d?.forEach { map->
-                                //물품 이름이 해당문서 안에 있으면
+                                //물품 이름이 복합물품 문서 안에 있으면
                                 if(map.key.contains(name)){
-
                                     var str = ""
+                                    //상세설명 찾아보기
                                     detalSubInfo.document(doc.id).get().addOnCompleteListener {
                                         Log.d("Load11",name)
                                         str = it.result.data?.get("${name}_${cnt++}").toString()
                                         Log.d("Load11",str)
-                                        if(str.isBlank()) {
+                                        if(str.isEmpty() || str.isBlank()) {
                                             str = document?.get(doc.id).toString()
                                         }
                                         product.add(AnnounceData(map.value.toString(),str, doc.id))
@@ -200,6 +203,7 @@ class DatabaseReadModel() {
                         setting.value = "finish"
                     }
                 }
+            }
         }
     }
 
@@ -286,7 +290,15 @@ class DatabaseReadModel() {
         }
     }
 
-    fun uploadData(barcode: String, names: ArrayList<String>, kinds: ArrayList<String>, subnames: ArrayList<String>, uploadFinish: MutableLiveData<String>,photoUri: Uri?) {
+    fun uploadData(
+        barcode: String,
+        names: ArrayList<String>,
+        kinds: ArrayList<String>,
+        subnames: ArrayList<String>,
+        uploadFinish: MutableLiveData<String>,
+        photoUri: Uri?,
+        infoText: ArrayList<String>
+    ) {
 
         CoroutineScope(Dispatchers.IO).launch{
             uploadFinish.postValue("start")
@@ -295,9 +307,16 @@ class DatabaseReadModel() {
 
             col.document(kinds[0]).update(barcode, names[0])
 
+            if(infoText[0].isNotBlank() && infoText[0].isNotEmpty()) {
+                detailInfo.document(kinds[0]).update(names[0],infoText[0])
+            }
 
             for(i in 1 until names.size){
                 sub.document(kinds[i]).update(names[i], subnames[i])
+                Log.d("Load11",infoText[i])
+                if(infoText[i].isNotBlank() && infoText[i].isNotEmpty()) {
+                    detailInfo.document("복합물품").collection("subList").document(kinds[i]).update(names[i],infoText[i])
+                }
             }
 
             if(photoUri != null) {

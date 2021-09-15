@@ -35,7 +35,7 @@ class UploadAdapter(val viewmodel: DataUploadViewModel) :RecyclerView.Adapter<Up
     inner class UploadViewHoler(val binding:DataUploadUnitBinding, val context: Context):RecyclerView.ViewHolder(binding.root){
         var selected = ""
         fun onBind(pos: Int) {
-            binding.uploadInfoEt.setText(pos.toString())
+
             if(pos != 0){
                 binding.uploadBarcodeEt.isEnabled = false
                 binding.uploadBarcodeEt.isClickable = false
@@ -63,16 +63,21 @@ class UploadAdapter(val viewmodel: DataUploadViewModel) :RecyclerView.Adapter<Up
         fun save(i: Int) {
             Log.d(i.toString(),"upPos")
             var name = ""
-                viewmodel.kinds[i] = selected
-                if(i == 0) {
-                    name = binding.uploadNameEt.text.toString()
-                    viewmodel.barcodes[i] = binding.uploadBarcodeEt.text.toString()
-                    viewmodel.names[i] = name
-                }
-                else {
-                    viewmodel.subNames[i] = binding.uploadNameEt.text.toString()
-                    viewmodel.names[i] = "${viewmodel.names[0]}_$i"
-                }
+            var info = binding.uploadInfoEt.text.toString()
+            viewmodel.kinds[i] = selected
+            if(i == 0) {
+                name = binding.uploadNameEt.text.toString()
+                viewmodel.barcodes[i] = binding.uploadBarcodeEt.text.toString()
+                viewmodel.names[i] = name
+            }
+            else {
+                viewmodel.subNames[i] = binding.uploadNameEt.text.toString()
+                viewmodel.names[i] = "${viewmodel.names[0]}_$i"
+            }
+            Log.d("Load11",info)
+            if(info.isNotEmpty() && info.isNotBlank()) {
+                viewmodel.infoText[i] = info
+            }
 
         }
 

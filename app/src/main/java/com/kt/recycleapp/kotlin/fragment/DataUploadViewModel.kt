@@ -20,6 +20,7 @@ class DataUploadViewModel : ViewModel() {
     var names = ArrayList<String>()
     var kinds = ArrayList<String>()
     var subNames = ArrayList<String>()
+    var infoText = ArrayList<String>()
 
     var photoUri: Uri? = null
 
@@ -28,6 +29,6 @@ class DataUploadViewModel : ViewModel() {
     }
 
     fun upload() {
-        db.uploadData(barcodes[0], names, kinds, subNames, uploadFinish,photoUri)
+        db.uploadData(barcodes[0], names, kinds, subNames, uploadFinish,photoUri, infoText)
     }
 }

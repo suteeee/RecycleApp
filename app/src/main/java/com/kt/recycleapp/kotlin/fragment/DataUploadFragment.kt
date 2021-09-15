@@ -80,6 +80,7 @@ class DataUploadFragment : Fragment() {
         viewModel.names.add("")
         viewModel.kinds.add("")
         viewModel.subNames.add("")
+        viewModel.infoText.add("")
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
