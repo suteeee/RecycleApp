@@ -1,6 +1,5 @@
 package com.kt.recycleapp.model
 
-import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
@@ -15,7 +14,6 @@ import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.kt.recycleapp.java.announce.AnnounceData
-import com.kt.recycleapp.kotlin.activity.MainActivity
 import com.kt.recycleapp.kotlin.viewmodel.AddViewModel
 import com.kt.recycleapp.kotlin.viewmodel.FindViewModel
 import kotlinx.coroutines.*
@@ -30,8 +28,10 @@ class DatabaseReadModel() {
     private val STORAGE_URL = "gs://recycleapp-e6ed9.appspot.com"
 
     val db = FirebaseFirestore.getInstance()
+    val storage2 = FirebaseStorage.getInstance(STORAGE_URL).reference
     val storage = FirebaseStorage.getInstance(STORAGE_URL).reference
     var products = db.collection("products")
+    var detailInfo = db.collection("detailInfo")
     var kind :String = ""
 
     companion object {
@@ -130,75 +130,90 @@ class DatabaseReadModel() {
                 kind.value = res
                 this.kind = res
             }
-           /* when(res) {
-                "건전지" -> R.drawable.ic_baterry_default
-                "고철" -> R.drawable.ic_iron_default
-                "비닐" -> R.drawable.ic_vinyl_default
-                "유리" -> R.drawable.ic_glass_default
-                "일반쓰레기" -> R.drawable.ic_trash_default
-                "종이" -> R.drawable.ic_paper_default
-                "캔" -> R.drawable.ic_can_default
-                "페트병" -> R.drawable.ic_paper_default
-                "플라스틱" -> R.drawable.ic_plastic_default
-            }*/
             finding.value = "finish"
         }
     }
 
     fun settingResult(setting:MutableLiveData<String>,kind: String,product: ObservableArrayList<AnnounceData>,barcode:String){
         setting.value = "start"
-        val infoMap = HashMap<String,String>()
         var name = barcode
         var info = ""
         var pKind = kind
+        var document: Map<String, Any>? =  null
+        val resultInfo = db.collection("resultInfo").get()
+        val detalSubInfo = detailInfo.document("복합물품").collection("subList")
+
+        resultInfo.addOnCompleteListener {
+            (it.result.documents).forEach { doc ->
+                document = doc.data
+            }
+            Log.d("doc", info)
+        }
+
+
         products.get().addOnCompleteListener {
             (it.result.documents).forEach{doc ->
                 if(doc.data?.get(barcode) != null){
                     name = doc.data?.get(barcode).toString()
                     pKind = doc.id
                 }
-                /*if (doc.data?.keys?.contains(barcode) == true) { //db에 존재할때
-                    name = doc.data?.get(barcode).toString()
-                    pKind = doc.id
-                    return@forEach
-                }*/
             }
-        }
-        db.collection("resultInfo").get().addOnCompleteListener {
-            var document :Map<String,Any>?= null
-            (it.result.documents).forEach { doc ->
-                document = doc.data
-                /*doc.data?.forEach {
-                    infoMap[it.key] = it.value.toString()
-                }*/
-                info = document?.get(pKind).toString()
-                if(info.isEmpty()) info = "정보를 등록해주세요!"
-            }
-            Log.d("doc",info)
-            //info = infoMap.get(pKind).toString()
-            product.add(AnnounceData(name, info ,pKind))//첫번째 페이지(주 물품)
 
-            products.document("복합물품").collection("sublist").get().addOnCompleteListener {
-                (it.result.documents).forEach { doc->
-                    val d = doc.data
-                    d?.forEach { map->
-                        if(map.key.contains(name)){
-                            var str = document?.get(doc.id).toString()
-                            if(str.isEmpty()) str = "정보를 등록해주세요!"
-                            product.add(AnnounceData(map.value.toString(),str, doc.id))
-                        }
+            Log.d("Load11","$name $barcode $pKind")
+            if(pKind.isEmpty()) {
+                info = "데이터를 등록해주세요!"
+                pKind = "등록되지 않은 물품입니다."
+                product.add(AnnounceData(name, info ,pKind))
+            }
+            else {
+                detailInfo.document(pKind).get().addOnCompleteListener {
+                    val res = (it.result.data)?.get(barcode)
+                    if(res != null) {
+                        //세부 설명이 있으면 info를 세부 설명으로
+                        info = res.toString()
+                    }else {
+                        //없으면 기본 설명 탐색
+                        info = document?.get(pKind).toString()
+
                     }
+                    product.add(AnnounceData(name, info ,pKind))//첫번째 페이지(주 물품)
 
+                    //두번째 물품부터
+                    products.document("복합물품").collection("sublist").get().addOnCompleteListener {
+                        var cnt = 1
+                        (it.result.documents).forEach { doc->
+                            val d = doc.data
+                            d?.forEach { map->
+                                //물품 이름이 복합물품 문서 안에 있으면
+                                if(map.key.contains(name)){
+                                    var str = ""
+                                    //상세설명 찾아보기
+                                    detalSubInfo.document(doc.id).get().addOnCompleteListener {
+                                        Log.d("Load11",name)
+                                        str = it.result.data?.get("${name}_${cnt++}").toString()
+                                        Log.d("Load11",str)
+                                        if(str.isEmpty() || str.isBlank()) {
+                                            str = document?.get(doc.id).toString()
+                                        }
+                                        product.add(AnnounceData(map.value.toString(),str, doc.id))
+                                    }
+                                }
+                            }
+                        }
+                        setting.value = "finish"
+                    }
                 }
-                setting.value = "finish"
             }
-
         }
     }
+
+
+
 
     fun setImage(context: Context, imageView: ImageView, progressBar: ProgressBar, itemName: String) {
        // CoroutineScope(Dispatchers.IO).launch {
             var k = ""
+
             storage.child("products_image/IMAGE_${itemName.replace(" ", "")}.png")
                 .downloadUrl.addOnSuccessListener {
                     Glide.with(context).load(it).override(500).into(imageView)
@@ -250,16 +265,15 @@ class DatabaseReadModel() {
     fun uploadAll(photoUri: Uri?) {
         CoroutineScope(Dispatchers.IO).launch {
             val list = AddViewModel.addItems
+            val exList = AddViewModel.infoText
             try {
                 for (i in 0 until list.size) {
                     if (i == 0) {
-                        products.document(AddViewModel.products[i])
-                            .update(list[i])
+                        products.document(AddViewModel.products[i]).update(list[i])
+                        detailInfo.document(AddViewModel.products[i]).update(exList[i])
                     } else {
-                        products.document("복합물품").collection("sublist").document(
-                            AddViewModel.products[i]
-                        )
-                            .update(list[i])
+                        products.document("복합물품").collection("sublist").document(AddViewModel.products[i]).update(list[i])
+                        detailInfo.document("복합물품").collection("subList").document(AddViewModel.products[i]).update(exList[i])
                     }
                 }
             }catch (e:Exception){
@@ -276,7 +290,15 @@ class DatabaseReadModel() {
         }
     }
 
-    fun uploadData(barcode: String, names: ArrayList<String>, kinds: ArrayList<String>, subnames: ArrayList<String>, uploadFinish: MutableLiveData<String>,photoUri: Uri?) {
+    fun uploadData(
+        barcode: String,
+        names: ArrayList<String>,
+        kinds: ArrayList<String>,
+        subnames: ArrayList<String>,
+        uploadFinish: MutableLiveData<String>,
+        photoUri: Uri?,
+        infoText: ArrayList<String>
+    ) {
 
         CoroutineScope(Dispatchers.IO).launch{
             uploadFinish.postValue("start")
@@ -285,9 +307,16 @@ class DatabaseReadModel() {
 
             col.document(kinds[0]).update(barcode, names[0])
 
+            if(infoText[0].isNotBlank() && infoText[0].isNotEmpty()) {
+                detailInfo.document(kinds[0]).update(names[0],infoText[0])
+            }
 
             for(i in 1 until names.size){
                 sub.document(kinds[i]).update(names[i], subnames[i])
+                Log.d("Load11",infoText[i])
+                if(infoText[i].isNotBlank() && infoText[i].isNotEmpty()) {
+                    detailInfo.document("복합물품").collection("subList").document(kinds[i]).update(names[i],infoText[i])
+                }
             }
 
             if(photoUri != null) {
@@ -308,6 +337,23 @@ class DatabaseReadModel() {
                 Toast.makeText(context,"이미지 업로드 실패",Toast.LENGTH_SHORT).show()
             }
 
+        }
+    }
+
+    fun checkBarcode(barcode: String, isHaveBarcode: MutableLiveData<Boolean>, checkBarcodeFinish: MutableLiveData<Boolean>){
+        checkBarcodeFinish.value = false
+        isHaveBarcode.value = false
+        products.get().addOnCompleteListener {
+            var check = false
+            (it.result.documents).forEach { doc->
+                Log.d("Main1",doc.data?.get(barcode).toString())
+                if(doc.data?.get(barcode) != null) {
+                    check = true
+                    return@forEach
+                }
+            }
+            isHaveBarcode.value = check
+            checkBarcodeFinish.value = true
         }
     }
 

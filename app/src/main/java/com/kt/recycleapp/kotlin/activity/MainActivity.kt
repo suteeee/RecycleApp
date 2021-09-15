@@ -278,7 +278,7 @@ class MainActivity : AppCompatActivity() {
     override fun onBackPressed() {
         Log.d("Main",viewModel.fragmentStack.toString())
         if(!binding.toolbarSv.isIconified){
-            Log.d("Main","0")
+            Log.d("MainBack","0")
             viewModel.toolbarText.value = tempText
             Log.d(binding.toolbarSv.query.length.toString(),"query")
             if(binding.toolbarSv.query.isNotEmpty() || viewModel.searchFlag.value == "finish"){
@@ -287,17 +287,19 @@ class MainActivity : AppCompatActivity() {
             binding.toolbarSv.isIconified = true
         }
         else if(binding.viewModel!!.isDrawerOpen.value == true){
-            Log.d("Main","1")
+            Log.d("MainBack","1")
             drawer_layout.closeDrawer(GravityCompat.START)
             binding.viewModel!!.isDrawerOpen.value = false
         }
         else if(viewModel.selectedFragment.value != "main"){
-            Log.d("Main","2")
+            Log.d("MainBack","2")
+            viewModel.isPopup.value = true
             mBackPressListener = null
             super.onBackPressed()
         }
         else if(mBackPressListener != null){
-            Log.d("Main","3 ${mBackPressListener.toString()}")
+            Log.d("MainBack","3 ${mBackPressListener.toString()}")
+            viewModel.isPopup.value = true
             mBackPressListener!!.onBack()
         }
         /*else if(viewModel.isPopup.value == false){
@@ -306,7 +308,7 @@ class MainActivity : AppCompatActivity() {
             goToMainFragment()
         }*/
         else{
-            Log.d("Main","4")
+            Log.d("MainBack","4")
             if (pressedTime == 0L) {
                 Toast.makeText(this, "한번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
                 pressedTime = System.currentTimeMillis()

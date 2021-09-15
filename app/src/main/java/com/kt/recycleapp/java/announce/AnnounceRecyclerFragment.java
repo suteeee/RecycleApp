@@ -75,44 +75,26 @@ public class AnnounceRecyclerFragment extends Fragment implements OnBackPressLis
     @Override
     public void onBack() {
         MainActivity act = (MainActivity)getActivity();
+        mViewModel.checkBarcode(barcode);
+        mViewModel.checkBarcodeFinish.observe(getViewLifecycleOwner(), res-> {
+            if(res){
+                Boolean check = act.viewModel.isPopup().getValue();
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("products").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
-            @Override
-            public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
-                Set<String> key = new HashSet<>();
-                Boolean haveBarcode = false;
-                for(String x : key){
-                    if(barcode.equals(x)){
-                        haveBarcode = true;
-                        break;
-                    }
-                }
-
-                if(!haveBarcode){
-
-                }
-                else{
-
-
+                Log.d("Main1",check.toString() + res.toString());
+                if(act.viewModel.getSelectedFragment().getValue().equals("main") && check && !mViewModel.isHaveBarcode.getValue()){
+                    Log.d("MainBack","5");
+                    bundle.putString("barcode", barcode);
+                    DialogFragment frg = new PopupFragmentAddpage();
+                    frg.setArguments(bundle);
+                    frg.show(act.getSupportFragmentManager(), PopupFragmentStartpage.TAG_EVENT_DIALOG);
+                    act.viewModel.isPopup().setValue(false);
+                }else{
+                    Log.d("MainBack","6");
+                    act.setOnBackPressListener(null);
+                    act.getSupportFragmentManager().beginTransaction().replace(R.id.small_layout1, new MainFragment()).commit();
                 }
             }
         });
-
-
-            Boolean check = act.viewModel.isPopup().getValue();
-
-            if(act.viewModel.getSelectedFragment().getValue().equals("main") && check){
-                Log.d("Main1",check.toString());
-                bundle.putString("barcode", barcode);
-                DialogFragment frg = new PopupFragmentAddpage();
-                frg.setArguments(bundle);
-                frg.show(act.getSupportFragmentManager(), PopupFragmentStartpage.TAG_EVENT_DIALOG);
-                act.viewModel.isPopup().setValue(false);
-            }else{
-                act.getSupportFragmentManager().beginTransaction().remove(this).commit();
-            }
-
     }
 
     public void onAttach(Context context) {
