@@ -42,6 +42,9 @@ public class AnnounceRecyclerFragment extends Fragment implements OnBackPressLis
     private AnnounceAdapter adapter;
     private Bundle bundle;
     String barcode;
+    DialogFragment frg = new PopupFragmentAddpage();
+    MainActivity act;
+    Boolean haveBarcode;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -52,6 +55,15 @@ public class AnnounceRecyclerFragment extends Fragment implements OnBackPressLis
         barcode = bundle.getString("barcode");
         binding.setViewmodel(mViewModel);
         mViewModel.itemName.setValue(barcode);
+        act = (MainActivity)getActivity();
+
+        mViewModel.checkBarcode(barcode);
+        mViewModel.isHaveBarcode.observe(getViewLifecycleOwner(), it -> {
+            haveBarcode = it;
+            if(it) {
+                binding.doUploadBtn.setVisibility(View.INVISIBLE);
+            }
+        });
 
         mViewModel.itemName.observe(getViewLifecycleOwner(), s -> {
             if(!s.isEmpty()){
@@ -66,15 +78,21 @@ public class AnnounceRecyclerFragment extends Fragment implements OnBackPressLis
                 mViewModel.setData(barcode);
                 binding.announcePb.setVisibility(View.INVISIBLE);
                 mViewModel.finding.setValue("waiting");
+                if(!haveBarcode) binding.doUploadBtn.setVisibility(View.VISIBLE);
             }
         });
 
+        binding.doUploadBtn.setOnClickListener( v -> {
+            bundle.putString("barcode", barcode);
+            frg.setArguments(bundle);
+            frg.show(act.getSupportFragmentManager(), PopupFragmentStartpage.TAG_EVENT_DIALOG);
+        });
         return binding.getRoot();
     }
 
     @Override
     public void onBack() {
-        MainActivity act = (MainActivity)getActivity();
+
         mViewModel.checkBarcode(barcode);
         mViewModel.checkBarcodeFinish.observe(getViewLifecycleOwner(), res-> {
             if(res){
@@ -84,7 +102,6 @@ public class AnnounceRecyclerFragment extends Fragment implements OnBackPressLis
                 if(act.viewModel.getSelectedFragment().getValue().equals("main") && check && !mViewModel.isHaveBarcode.getValue()){
                     Log.d("MainBack","5");
                     bundle.putString("barcode", barcode);
-                    DialogFragment frg = new PopupFragmentAddpage();
                     frg.setArguments(bundle);
                     frg.show(act.getSupportFragmentManager(), PopupFragmentStartpage.TAG_EVENT_DIALOG);
                     act.viewModel.isPopup().setValue(false);

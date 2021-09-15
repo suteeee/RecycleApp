@@ -35,7 +35,7 @@ class UploadAdapter(val viewmodel: DataUploadViewModel) :RecyclerView.Adapter<Up
     inner class UploadViewHoler(val binding:DataUploadUnitBinding, val context: Context):RecyclerView.ViewHolder(binding.root){
         var selected = ""
         fun onBind(pos: Int) {
-
+            init()
             if(pos != 0){
                 binding.uploadBarcodeEt.isEnabled = false
                 binding.uploadBarcodeEt.isClickable = false
@@ -58,6 +58,12 @@ class UploadAdapter(val viewmodel: DataUploadViewModel) :RecyclerView.Adapter<Up
                 save(pos)
             }
 
+        }
+
+        fun init() {
+            binding.uploadBarcodeEt.setText("")
+            binding.uploadInfoEt.setText("")
+            binding.uploadNameEt.setText("")
         }
 
         fun save(i: Int) {

@@ -42,6 +42,7 @@ class AddAdapter(val viewModel: AddViewModel) : RecyclerView.Adapter<AddAdapter.
     inner class AddViewHoler (var context: Context, val binding: AddpageItemUnitBinding) : RecyclerView.ViewHolder(binding.root){
 
         fun bind(pos: Int) {
+            init()
             val tmpProduct= HashMap<String,Any>()
             val tmpInfoText = HashMap<String, Any>()
             val adt = ArrayAdapter(context, R.layout.simple_spinner_dropdown_item,viewModel.productList);
@@ -86,6 +87,11 @@ class AddAdapter(val viewModel: AddViewModel) : RecyclerView.Adapter<AddAdapter.
                     else{ Toast.makeText(context,"빈칸으로 저장할 수 없습니다.",Toast.LENGTH_SHORT).show() }
                 }
             }
+        }
+
+        fun init() {
+            binding.productExplainEt.setText("")
+            binding.nameEt.setText("")
         }
     }
 }
