@@ -13,6 +13,7 @@ class AddViewModel:ViewModel() {
        var summit = MutableLiveData<String>()
        var products = ArrayList<String>()
        var addItems = ArrayList<HashMap<String,Any>>()
+       var infoText = ArrayList<HashMap<String,Any>>()
    }
     var productList =ArrayList<String>()
     val listLoadFinish = MutableLiveData<String>()

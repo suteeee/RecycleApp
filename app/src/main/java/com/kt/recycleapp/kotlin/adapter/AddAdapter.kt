@@ -43,6 +43,7 @@ class AddAdapter(val viewModel: AddViewModel) : RecyclerView.Adapter<AddAdapter.
 
         fun bind(pos: Int) {
             val tmpProduct= HashMap<String,Any>()
+            val tmpInfoText = HashMap<String, Any>()
             val adt = ArrayAdapter(context, R.layout.simple_spinner_dropdown_item,viewModel.productList);
             binding.productsSp2.adapter = adt
             adt.notifyDataSetChanged()
@@ -62,6 +63,10 @@ class AddAdapter(val viewModel: AddViewModel) : RecyclerView.Adapter<AddAdapter.
                     if(binding.nameEt.text.isNotBlank()){
                         tmpProduct.put(AddViewModel.barcode,binding.nameEt.text.toString())
                         AddViewModel.addItems[pos] = tmpProduct
+                        if(binding.productExplainEt.text.toString().isNotBlank()){
+                            tmpInfoText.put(binding.nameEt.text.toString(),binding.productExplainEt.text.toString())
+                            AddViewModel.infoText[pos] = tmpInfoText
+                        }
                         Toast.makeText(context,"저장 완료!",Toast.LENGTH_SHORT).show()
                     }
                     else{ Toast.makeText(context,"빈칸으로 저장할 수 없습니다.",Toast.LENGTH_SHORT).show() }
@@ -69,8 +74,13 @@ class AddAdapter(val viewModel: AddViewModel) : RecyclerView.Adapter<AddAdapter.
 
                 else{
                     if(binding.nameEt.text.isNotBlank()){
-                        tmpProduct.put(AddViewModel.addItems[0][AddViewModel.barcode].toString() + "_${pos}",binding.nameEt.text.toString())
+                        val name = AddViewModel.addItems[0][AddViewModel.barcode].toString() + "_${pos}"
+                        tmpProduct.put(name, binding.nameEt.text.toString())
                         AddViewModel.addItems[pos] = tmpProduct
+                        if(binding.productExplainEt.text.toString().isNotBlank()){
+                            tmpInfoText.put(name,binding.productExplainEt.text.toString())
+                            AddViewModel.infoText[pos] = tmpInfoText
+                        }
                         Toast.makeText(context,"저장 완료!",Toast.LENGTH_SHORT).show()
                     }
                     else{ Toast.makeText(context,"빈칸으로 저장할 수 없습니다.",Toast.LENGTH_SHORT).show() }

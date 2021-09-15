@@ -141,7 +141,18 @@ class DatabaseReadModel() {
         var name = barcode
         var info = ""
         var pKind = kind
-        var document: Map<String, Any>? = null
+        var document: Map<String, Any>? =  null
+        val resultInfo = db.collection("resultInfo").get()
+        val detalSubInfo = detailInfo.document("복합물품").collection("subList")
+
+        resultInfo.addOnCompleteListener {
+            (it.result.documents).forEach { doc ->
+                document = doc.data
+            }
+            Log.d("doc", info)
+        }
+
+
         products.get().addOnCompleteListener {
             (it.result.documents).forEach{doc ->
                 if(doc.data?.get(barcode) != null){
@@ -149,48 +160,48 @@ class DatabaseReadModel() {
                     pKind = doc.id
                 }
             }
-            if(pKind == null) {
+
+            Log.d("Load11","$name $barcode $pKind")
+
                 detailInfo.document(pKind).get().addOnCompleteListener {
                     val res = (it.result.data)?.get(barcode)
                     if(res != null) {
+                        //세부 설명이 있으면 info를 세부 설명으로
                         info = res.toString()
                     }else {
-                        db.collection("resultInfo").get().addOnCompleteListener {
-                            (it.result.documents).forEach { doc ->
-                                document = doc.data
-                                info = document?.get(pKind).toString()
-                            }
-                            Log.d("doc", info)
-                        }
+                        //없으면 기본 설명 탐색
+                        info = document?.get(pKind).toString()
+
                     }
                     product.add(AnnounceData(name, info ,pKind))//첫번째 페이지(주 물품)
 
+                    //두번째 물품부터
                     products.document("복합물품").collection("sublist").get().addOnCompleteListener {
+                        var cnt = 1
                         (it.result.documents).forEach { doc->
                             val d = doc.data
                             d?.forEach { map->
+                                //물품 이름이 해당문서 안에 있으면
                                 if(map.key.contains(name)){
-                                    /*detailInfo.document("복합물품").collection("subList").get().addOnCompleteListener {
-                                        (it.result.documents).forEach{ doc2->
-                                            //doc2.data?.get()
-                                    }*/
 
-                                    var str = document?.get(doc.id).toString()
-                                    product.add(AnnounceData(map.value.toString(),str, doc.id))
+                                    var str = ""
+                                    detalSubInfo.document(doc.id).get().addOnCompleteListener {
+                                        Log.d("Load11",name)
+                                        str = it.result.data?.get("${name}_${cnt++}").toString()
+                                        Log.d("Load11",str)
+                                        if(str.isBlank()) {
+                                            str = document?.get(doc.id).toString()
+                                        }
+                                        product.add(AnnounceData(map.value.toString(),str, doc.id))
+                                    }
                                 }
                             }
                         }
                         setting.value = "finish"
                     }
                 }
-            }
-            else {
-
-            }
-
-            }
-
         }
+    }
 
 
 
@@ -250,16 +261,15 @@ class DatabaseReadModel() {
     fun uploadAll(photoUri: Uri?) {
         CoroutineScope(Dispatchers.IO).launch {
             val list = AddViewModel.addItems
+            val exList = AddViewModel.infoText
             try {
                 for (i in 0 until list.size) {
                     if (i == 0) {
-                        products.document(AddViewModel.products[i])
-                            .update(list[i])
+                        products.document(AddViewModel.products[i]).update(list[i])
+                        detailInfo.document(AddViewModel.products[i]).update(exList[i])
                     } else {
-                        products.document("복합물품").collection("sublist").document(
-                            AddViewModel.products[i]
-                        )
-                            .update(list[i])
+                        products.document("복합물품").collection("sublist").document(AddViewModel.products[i]).update(list[i])
+                        detailInfo.document("복합물품").collection("subList").document(AddViewModel.products[i]).update(exList[i])
                     }
                 }
             }catch (e:Exception){

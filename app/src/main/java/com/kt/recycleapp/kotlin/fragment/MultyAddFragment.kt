@@ -48,6 +48,7 @@ class MultyAddFragment : Fragment(), OnBackPressListener {
             if(it == "finish") {
                 viewModel.itemList.add(cnt++)
                 AddViewModel.products.add("")
+                AddViewModel.infoText.add(HashMap())
                 AddViewModel.addItems.add(HashMap())
 
                 ld.observe(viewLifecycleOwner, {
@@ -56,6 +57,7 @@ class MultyAddFragment : Fragment(), OnBackPressListener {
                         binding.itemaddBtn.setOnClickListener {
                             viewModel.itemList.add(cnt++)
                             AddViewModel.products.add("")
+                            AddViewModel.infoText.add(HashMap())
                             AddViewModel.addItems.add(HashMap())
                         }
                     }
