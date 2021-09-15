@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="30dp"
-        android:background="@color/sub_backg_color"
+        android:background="@color/border_color"
         android:clickable="true"
         android:focusable="true">
 
@@ -25,6 +25,7 @@
             android:layout_height="0dp"
             app:cardCornerRadius="3dp"
             app:cardElevation="5dp"
+            android:background="@color/sub_backg_color"
             app:cardUseCompatPadding="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -33,6 +34,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/announce_recycle_layout2"
+                android:background="@color/sub_backg_color"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 

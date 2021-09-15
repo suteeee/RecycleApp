@@ -27,6 +27,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/common_buttom_design"
         android:fontFamily="@font/font1"
+        android:padding="10dp"
         android:text="닫기"
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
