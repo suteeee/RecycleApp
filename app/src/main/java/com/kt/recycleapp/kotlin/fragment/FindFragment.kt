@@ -26,7 +26,7 @@ class FindFragment : Fragment(){
         binding.lifecycleOwner = viewLifecycleOwner
 
         val act = activity as MainActivity
-        act.viewModel.toolbarText.value = "찾아보기"
+        //act.viewModel.toolbarText.value = "찾아보기"
 
         viewModel = ViewModelProvider(this).get(FindViewModel::class.java)
         binding.bigItem =viewModel

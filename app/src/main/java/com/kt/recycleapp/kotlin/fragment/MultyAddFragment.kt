@@ -28,12 +28,12 @@ class MultyAddFragment : Fragment(), OnBackPressListener {
     lateinit var viewModel:AddViewModel
     var ld = MutableLiveData<String>()
     var data = DatabaseReadModel()
-
+    var cnt = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
  
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_multy_add, container, false)
-        var cnt = 0
+
         val arr = data.getProductsList(ld)
         viewModel = ViewModelProvider(this).get(AddViewModel::class.java)
         binding.viewmodel = viewModel
@@ -84,6 +84,7 @@ class MultyAddFragment : Fragment(), OnBackPressListener {
             frg.arguments = bundle
             frg.show(requireActivity().supportFragmentManager,null)
             viewModel.photoUri = null
+            productClear()
         }
 
         binding.imageUploadBtn.setOnClickListener {
@@ -99,6 +100,21 @@ class MultyAddFragment : Fragment(), OnBackPressListener {
         super.onActivityResult(requestCode, resultCode, data)
         viewModel.photoUri = data?.data
         Glide.with(requireContext()).load( viewModel.photoUri).override(300).into(binding.productImageIv)
+    }
+
+    fun addNewProduct(){
+        viewModel.itemList.add(cnt++)
+        AddViewModel.products.add("")
+        AddViewModel.infoText.add(HashMap())
+        AddViewModel.addItems.add(HashMap())
+    }
+
+    fun productClear() {
+        viewModel.itemList.clear()
+        AddViewModel.products.clear()
+        AddViewModel.infoText.clear()
+        AddViewModel.addItems.clear()
+        addNewProduct()
     }
 
     override fun onBack() {

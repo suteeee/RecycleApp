@@ -6,7 +6,7 @@
     <string name="advancedSearchTitle">상세정보검색</string>
     <string name="favoriteItemTitle">즐겨찾기</string>
     <string name="historyTitle">히스토리</string>
-    <string name="recycleDayInfo">분리수거 요일제 안내</string>
+    <string name="recycleDayInfo">분리수거 요일제</string>
     <string name="dailyTipTitle">오늘의 팁</string>
     <string name="cameraSettingTitle">카메라 설정</string>
     <string name="appSettingTitle">환경 설정</string>

@@ -92,7 +92,7 @@ class MainFragment : Fragment() {
             binding.viewmodel = viewModel
             binding.invalidateAll()
         }
-        (activity as MainActivity).viewModel.toolbarText.value = "수거했어 오늘도!"
+        //(activity as MainActivity).viewModel.toolbarText.value = "수거했어 오늘도!"
 
         val rootView = binding.root
 

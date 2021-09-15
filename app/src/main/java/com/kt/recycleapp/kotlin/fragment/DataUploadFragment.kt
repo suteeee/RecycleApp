@@ -1,17 +1,19 @@
 package com.kt.recycleapp.kotlin.fragment
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.kt.recycleapp.kotlin.activity.MainActivity
 import com.kt.recycleapp.kotlin.adapter.UploadAdapter
 import java.recycleapp.R
 import java.recycleapp.databinding.DataUploadFragmentBinding
@@ -30,6 +32,8 @@ class DataUploadFragment : Fragment() {
             viewmodel = viewModel
             lifecycleOwner = viewLifecycleOwner
         }
+        val act = activity as MainActivity
+        //act.viewModel.toolbarText.value = "데이터 업로드"
         val adt = UploadAdapter(viewModel)
 
         binding.uploadRv.adapter = adt
@@ -44,10 +48,6 @@ class DataUploadFragment : Fragment() {
 
                 binding.dataUploadBtn.setOnClickListener {
                     binding.uploadPb.visibility = View.VISIBLE
-                    Log.d(viewModel.barcodes.toString(),"upBarcode")
-                    Log.d(viewModel.names.toString(),"upName")
-                    Log.d(viewModel.kinds.toString(),"upKine")
-                    Log.d(viewModel.subNames.toString(),"upSub")
                     viewModel.upload()
 
                 }
@@ -61,6 +61,7 @@ class DataUploadFragment : Fragment() {
                 viewModel.photoUri = null
                 binding.uploadPb.visibility = View.INVISIBLE
                 Toast.makeText(context,"데이터 업로드 완료",Toast.LENGTH_SHORT).show()
+                productClear()
             }
         })
 
@@ -83,11 +84,34 @@ class DataUploadFragment : Fragment() {
         viewModel.infoText.add("")
     }
 
+    fun productClear() {
+        viewModel.itemList.clear()
+        viewModel.barcodes.clear()
+        viewModel.names.clear()
+        viewModel.kinds.clear()
+        viewModel.subNames.clear()
+        viewModel.infoText.clear()
+        addNewProduct()
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         viewModel.photoUri = data?.data
         Glide.with(requireContext()).load( viewModel.photoUri).override(300).into(binding.imagePreviewIv)
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (activity as MainActivity?)!!.viewModel.selectedFragment.value = "dataUpload"
+        (activity as MainActivity?)!!.viewModel.fragmentStack.push("dataUpload")
+    }
 
+    override fun onDetach() {
+        super.onDetach()
+        val act = activity as MainActivity
+        val v = act.viewModel
+        v.fragmentStack.pop()
+        v.selectedFragment.value = v.fragmentStack.peek()
+        if(v.fragmentStack.peek() == "main") act.supportFragmentManager.beginTransaction().replace(R.id.small_layout1,MainFragment()).commit()
+    }
 }

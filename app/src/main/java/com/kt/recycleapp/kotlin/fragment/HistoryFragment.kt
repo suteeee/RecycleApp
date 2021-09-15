@@ -39,7 +39,7 @@ class HistoryFragment : Fragment(){
         binding.lifecycleOwner = viewLifecycleOwner
 
         val act = activity as MainActivity
-        act.viewModel.toolbarText.value = "히스토리"
+        //act.viewModel.toolbarText.value = "히스토리"
 
         //rootView는 액티비티를 나타냄 (container는 우리끼리 mainactivity레이아웃을 의미하는 것으로 약속)
         //아래 코드는 액티비티 자체를 가져오는 것이다

@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        var title = "수거했어 오늘도!"
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.viewModel = viewModel
@@ -59,7 +59,6 @@ class MainActivity : AppCompatActivity() {
 
         MainViewModel.isPopupClose.observe(this,{
             if(it == "close"){
-                Log.d("Main","Mclose")
                 mBackPressListener = null
                 MainViewModel.isPopupClose.value = "open"
                 goToMainFragment("back")
@@ -89,7 +88,6 @@ class MainActivity : AppCompatActivity() {
 
             sv.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
-                    Log.d("query", "summit")
                     sv.setQuery("", false)
                     viewModel.searchFlag.value = "selected"
                     if (it == "history") {
@@ -132,11 +130,22 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    Log.d("query", "change")
                     return false
                 }
             })
 
+            when(it) {
+                "main" -> {title = "수거했어 오늘도!"}
+                "adv" -> {title = "상세정보검색!"}
+                "favorite" -> {title = "즐겨찾기"}
+                "history" -> {title = "히스토리"}
+                "recycle" -> {title = "분리수거 요일제"}
+                "tip" -> {title = "오늘의 팁"}
+                "setting" -> {title = "환경설정"}
+                "userGuide" -> {title = "유저 가이드"}
+                "dataUpload" -> {title = "데이터 업로드"}
+            }
+            viewModel.toolbarText.value = title
 
         })
 
@@ -146,10 +155,7 @@ class MainActivity : AppCompatActivity() {
 
         //팝업창 추가
         val popup = PopupFragmentStartpage.getInstance()
-        popup.show(
-            supportFragmentManager,
-            PopupFragmentStartpage.TAG_EVENT_DIALOG
-        )
+        popup.show(supportFragmentManager, PopupFragmentStartpage.TAG_EVENT_DIALOG)
 
         //앱 테마를 noactionbar 로 설정했고 툴바를 사용할것이므로 actionbar를 우리가 만든 toolbar로 설정하는 코드
         setSupportActionBar(mainToolBar_tb1)
@@ -240,7 +246,6 @@ class MainActivity : AppCompatActivity() {
 
     //툴바에 있는 버튼 선택시
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        Log.d("search",item.itemId.toString())
         when(item.itemId){
 
             //홈 버튼(메뉴버튼 눌렀을때)
@@ -276,9 +281,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        Log.d("Main",viewModel.fragmentStack.toString())
         if(!binding.toolbarSv.isIconified){
-            Log.d("MainBack","0")
             viewModel.toolbarText.value = tempText
             Log.d(binding.toolbarSv.query.length.toString(),"query")
             if(binding.toolbarSv.query.isNotEmpty() || viewModel.searchFlag.value == "finish"){
@@ -302,11 +305,6 @@ class MainActivity : AppCompatActivity() {
             viewModel.isPopup.value = true
             mBackPressListener!!.onBack()
         }
-        /*else if(viewModel.isPopup.value == false){
-            mBackPressListener = null
-            viewModel.isPopup.value = true
-            goToMainFragment()
-        }*/
         else{
             Log.d("MainBack","4")
             if (pressedTime == 0L) {
