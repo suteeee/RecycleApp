@@ -129,7 +129,7 @@ public class RecycleDayInfoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_recycle_day_info, container, false);
-        ((MainActivity)getActivity()).viewModel.getToolbarText().setValue("분리수거 요일제 안내");
+        //((MainActivity)getActivity()).viewModel.getToolbarText().setValue("분리수거 요일제 안내");
         int ASDFASDF = 1;
 
         if(ContextCompat.checkSelfPermission(

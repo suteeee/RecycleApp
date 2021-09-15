@@ -29,7 +29,7 @@ public class AdvancedSearchFragment extends Fragment{
         //rootView는 액티비티를 나타냄 (container는 우리끼리 mainactivity레이아웃을 의미하는 것으로 약속)
         //아래 코드는 액티비티 자체를 가져오는 것이다
         View rootView = inflater.inflate(R.layout.fragment_advanced_search, container, false);
-        ((MainActivity)getActivity()).viewModel.getToolbarText().setValue("상세정보검색");
+       // ((MainActivity)getActivity()).viewModel.getToolbarText().setValue("상세정보검색");
 
 
 

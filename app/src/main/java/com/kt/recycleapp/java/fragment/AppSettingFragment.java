@@ -38,7 +38,7 @@ public class AppSettingFragment extends Fragment{
         // Inflate the layout for this fragment
         @SuppressLint("ResourceType")
         View rootView = inflater.inflate(R.layout.fragment_app_setting, container, false);
-        ((MainActivity)getActivity()).viewModel.getToolbarText().setValue("환경 설정");
+        //((MainActivity)getActivity()).viewModel.getToolbarText().setValue("환경 설정");
 
         seeAnnounceButton = (Button) rootView.findViewById(R.id.announce_bt1);
         //darkmodSwitch = (Switch) rootView.findViewById(R.id.darkmod_sch1);

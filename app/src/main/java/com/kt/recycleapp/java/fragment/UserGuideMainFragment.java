@@ -25,6 +25,8 @@ public class UserGuideMainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_user_guide_main, container, false);
 
+       // ((MainActivity)getActivity()).viewModel.getToolbarText().setValue("유저 가이드");
+
         ViewPager pager = rootView.findViewById(R.id.pager);
         pager.setOffscreenPageLimit(6); //3개까지 caching
 

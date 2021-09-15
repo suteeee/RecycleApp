@@ -34,7 +34,7 @@ class FavoriteItemFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
 
         val act = activity as MainActivity
-        act.viewModel.toolbarText.value = "즐겨찾기"
+        //act.viewModel.toolbarText.value = "즐겨찾기"
 
 
         helper = Room.databaseBuilder(requireContext(), RoomHelper::class.java,"Database").allowMainThreadQueries().build()
