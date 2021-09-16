@@ -32,10 +32,11 @@ class HistoryAdapter: RecyclerView.Adapter<HistoryAdapter.MyHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyHolder {
         val binding = HistoryLayoutUnitBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         prefs = MyPreferenceManager(parent.context)
-        helper = Room.databaseBuilder(parent.context,RoomHelper::class.java,"Database").allowMainThreadQueries().build()
+        helper = RoomHelper.getInstance(parent.context)
 
-        list = helper?.databaseDao()?.getAll()
-
+        CoroutineScope(Dispatchers.IO).launch {
+            list = helper?.databaseDao()?.getAll()
+        }
 
         val holder = MyHolder(binding,parent.context)
         return holder
@@ -72,7 +73,12 @@ class HistoryAdapter: RecyclerView.Adapter<HistoryAdapter.MyHolder>() {
                         Log.d("check",check.toString())
                         if(check < 10){
                             (it as ImageView).setColorFilter(Color.parseColor(colorString), PorterDuff.Mode.SRC_ATOP)
-                            helper?.databaseDao()?.updateFavorite(position+1,state)
+
+                            CoroutineScope(Dispatchers.IO).launch {
+                                Log.d("${position} ${state}","test")
+                                helper?.databaseDao()?.updateFavorite(position,state)
+                            }
+
                         }
                         else{
                             Toast.makeText(context,"즐겨찾기는 최대 10개까지 등록 가능합니다.",Toast.LENGTH_SHORT).show()

@@ -33,6 +33,7 @@ public class AppSettingFragment extends Fragment{
     private Button darkmodButton;
     private Button uploadButton;
     private Button historyDeleteBtn;
+    MyPreferenceManager prefs;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -46,7 +47,7 @@ public class AppSettingFragment extends Fragment{
         uploadButton = rootView.findViewById(R.id.imageUpload_btn1);
         historyDeleteBtn = rootView.findViewById(R.id.historyDelete_btn);
 
-        MyPreferenceManager prefs = new MyPreferenceManager(requireContext()); //만들었던 preferenceManager를 쓸수있게 생성
+        prefs = new MyPreferenceManager(requireContext()); //만들었던 preferenceManager를 쓸수있게 생성
 
         if(prefs.getDarkmodSwitch()==false){
             darkmodButton.setText("OFF");
@@ -98,8 +99,9 @@ public class AppSettingFragment extends Fragment{
     }
 
     public void historyClean() {
-        RoomHelper helper = Room.databaseBuilder(requireContext(),RoomHelper.class,"Database").allowMainThreadQueries().build();
+        RoomHelper helper = RoomHelper.Companion.getInstance(requireContext());
         helper.databaseDao().deteteAll();
+        prefs.setSQLiteIndex(0);
     }
 
     /*

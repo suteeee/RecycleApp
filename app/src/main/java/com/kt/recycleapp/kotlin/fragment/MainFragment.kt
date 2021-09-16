@@ -96,7 +96,7 @@ class MainFragment : Fragment() {
 
         val rootView = binding.root
 
-        helper = Room.databaseBuilder(requireContext(),RoomHelper::class.java,"Database").allowMainThreadQueries().build()
+        helper = RoomHelper.getInstance(requireContext())
 
 
         binding.captureBtn.setOnClickListener {
@@ -143,7 +143,9 @@ class MainFragment : Fragment() {
 
     fun writeDB(barcode: String, fineName: String) {
         val date = fineName.split("_")[1]
-        val data = MyRoomDatabase(barcode,date,fineName,"false")
+        var index = prefs.sqLiteIndex
+        prefs.sqLiteIndex = index+1
+        val data = MyRoomDatabase(barcode,date,fineName,"false",index)
         helper?.databaseDao()?.insert(data)
     }
 

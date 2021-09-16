@@ -37,7 +37,7 @@ class FavoriteItemFragment : Fragment() {
         //act.viewModel.toolbarText.value = "즐겨찾기"
 
 
-        helper = Room.databaseBuilder(requireContext(), RoomHelper::class.java,"Database").allowMainThreadQueries().build()
+        helper = RoomHelper.getInstance(requireContext())
 
         viewModel = ViewModelProvider(this).get(FavoriteViewModel::class.java)
         binding.favorite = viewModel

@@ -47,7 +47,7 @@ class HistoryFragment : Fragment(){
 
         var prefs = MyPreferenceManager(requireContext())
 
-        helper = Room.databaseBuilder(requireContext(), RoomHelper::class.java,"Database").allowMainThreadQueries().build()
+        helper = RoomHelper.getInstance(requireContext())
 
         viewModel = ViewModelProvider(this).get(HistoryViewModel::class.java)
         binding.model = viewModel

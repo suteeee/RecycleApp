@@ -11,6 +11,9 @@ class MyRoomDatabase {
     var no : Int = 0
 
     @ColumnInfo
+    var index : Int = 0
+
+    @ColumnInfo
     var barcode : String? = ""
 
     @ColumnInfo
@@ -22,10 +25,11 @@ class MyRoomDatabase {
     @ColumnInfo
     var favorite: String? = ""
 
-    constructor(barcode: String?, dateTime: String?,image:String?,favorite:String?){
+    constructor(barcode: String?, dateTime: String?,image:String?,favorite:String?,index:Int){
         this.barcode = barcode
         this.dateTime = dateTime
         this.image = image
         this.favorite = favorite
+        this.index = index
     }
 }
