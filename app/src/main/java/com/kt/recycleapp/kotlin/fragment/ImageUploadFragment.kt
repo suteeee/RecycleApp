@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
@@ -23,6 +24,14 @@ class ImageUploadFragment : DialogFragment() {
     lateinit var viewModel: ImageUploadViewModel
     lateinit var db :DatabaseReadModel
 
+    override fun onResume() {
+        super.onResume()
+        val params :ViewGroup.LayoutParams? = dialog?.window?.attributes
+        val deviceWidth = MainActivity.size.x
+        params?.width = (deviceWidth * 0.9).toInt()
+        dialog?.window?.attributes = params as WindowManager.LayoutParams
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_image_upload, container, false)
         viewModel = ViewModelProvider(this).get(ImageUploadViewModel::class.java)
@@ -35,6 +44,7 @@ class ImageUploadFragment : DialogFragment() {
             }
             else {
                 viewModel.uploadImage(binding.imageUploadFrgName.text.toString(),db)
+                AlertFragment.showAlert(requireActivity() as MainActivity,"ImgLoading",false)
                 dismiss()
             }
 

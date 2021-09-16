@@ -9,11 +9,13 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.kt.recycleapp.kotlin.activity.MainActivity
+import com.kt.recycleapp.kotlin.fragment.AlertFragment
 import com.kt.recycleapp.kotlin.fragment.DataUploadViewModel
 import com.kt.recycleapp.kotlin.viewmodel.AddViewModel
 import java.recycleapp.databinding.DataUploadUnitBinding
 
-class UploadAdapter(val viewmodel: DataUploadViewModel) :RecyclerView.Adapter<UploadAdapter.UploadViewHoler>(){
+class UploadAdapter(val viewmodel: DataUploadViewModel,val act:MainActivity) :RecyclerView.Adapter<UploadAdapter.UploadViewHoler>(){
     lateinit var binding: DataUploadUnitBinding
     var items = ArrayList<Int>()
    // var viewmodel :DataUploadViewModel? = null
@@ -56,6 +58,7 @@ class UploadAdapter(val viewmodel: DataUploadViewModel) :RecyclerView.Adapter<Up
 
             binding.uploadSaveBtn.setOnClickListener {
                 save(pos)
+                AlertFragment.showAlert(act,"SaveSuccess",true)
             }
 
         }

@@ -41,10 +41,9 @@ class DataUploadFragment : Fragment() {
             viewmodel = viewModel
             lifecycleOwner = viewLifecycleOwner
         }
-        //act = activity as MainActivity
         progressBar = binding.uploadPb
 
-        val adt = UploadAdapter(viewModel)
+        val adt = UploadAdapter(viewModel,act)
 
         binding.uploadRv.adapter = adt
         Glide.with(requireContext()).load(R.drawable.default_nothing).override(300).into(binding.imagePreviewIv)
@@ -70,7 +69,7 @@ class DataUploadFragment : Fragment() {
                 viewModel.uploadFinish.value = "done"
                 viewModel.photoUri = null
                 progressBar.visibility = View.INVISIBLE
-                Toast.makeText(context,"데이터 업로드 완료",Toast.LENGTH_SHORT).show()
+                AlertFragment.showAlert(act,"AddSuccess",true)
                 productClear()
             }
         })

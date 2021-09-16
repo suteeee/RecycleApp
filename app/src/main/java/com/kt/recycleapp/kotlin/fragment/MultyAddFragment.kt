@@ -41,7 +41,7 @@ class MultyAddFragment : Fragment(), OnBackPressListener {
         binding.viewmodel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         Glide.with(requireContext()).load(R.drawable.default_nothing).override(300).into(binding.productImageIv)
-        val adapter = AddAdapter(viewModel)
+        val adapter = AddAdapter(viewModel,act)
 
         binding.multyRv.adapter = adapter
 

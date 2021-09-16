@@ -38,6 +38,8 @@ public class LoadingActivity extends AppCompatActivity {
         model = DatabaseReadModel.Companion.getInstance();
         prefs = new MyPreferenceManager(getApplicationContext()); //만들었던 preferenceManager를 쓸수있게 생성
 
+
+
         if(prefs.getDarkmodSwitch()==false){
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }

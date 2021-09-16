@@ -1,10 +1,13 @@
 package com.kt.recycleapp.kotlin.activity
 
+import android.content.Context
 import android.graphics.Color
+import android.graphics.Point
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.SearchView
@@ -38,6 +41,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var frgMng :FragmentManager
     lateinit var searchView: SearchView
     lateinit var homeBtn: ImageView
+
     var tempText = ""
 
     companion object{
@@ -45,6 +49,8 @@ class MainActivity : AppCompatActivity() {
         var favoriteItemForSearch = ArrayList<FavoriteData>()
         var findBigForSearch = ArrayList<FindBigData>()
         var findSmallForSearch = ArrayList<FindSmallData>()
+
+        lateinit var size:Point
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +59,10 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
+        val windowManager = this.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val display = windowManager.defaultDisplay
+        size = Point()
+        display.getSize(size)
 
         searchView = binding.toolbarSv
         homeBtn = binding.homeBtn2

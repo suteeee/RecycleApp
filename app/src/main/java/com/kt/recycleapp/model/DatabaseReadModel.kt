@@ -18,6 +18,7 @@ import com.kt.recycleapp.java.announce.AnnounceData
 import com.kt.recycleapp.kotlin.activity.MainActivity
 import com.kt.recycleapp.kotlin.fragment.AlertFragment
 import com.kt.recycleapp.kotlin.viewmodel.AddViewModel
+import com.kt.recycleapp.kotlin.viewmodel.AlertViewModel
 import com.kt.recycleapp.kotlin.viewmodel.FindViewModel
 import kotlinx.coroutines.*
 import java.recycleapp.R
@@ -324,18 +325,12 @@ class DatabaseReadModel {
         }
    }
 
-    fun imageUpload(name:String, photoUri:Uri,) {
+    fun imageUpload(name:String, photoUri:Uri) {
         val fileName = "IMAGE_${name.replace(" ","")}"
         val imgRef = storage.child("products_image/$fileName.png")
         imgRef.putFile(photoUri).addOnCompleteListener {
-            if(it.isSuccessful){
-                //AlertFragment.showAlert(act,"ImgAddSuccess",false)
-                //Toast.makeText(context,"이미지 업로드 완료",Toast.LENGTH_SHORT).show()
-            }else{
-                //AlertFragment.showAlert(act,"ImgAddSuccess",false)
-                //Toast.makeText(context,"이미지 업로드 실패",Toast.LENGTH_SHORT).show()
-            }
-
+            AlertViewModel.imageUploadResult.value = it.isSuccessful
+            AlertViewModel.imageLoadFinish.value = true
         }
     }
 

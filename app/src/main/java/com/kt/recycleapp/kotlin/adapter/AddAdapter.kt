@@ -14,6 +14,8 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.kt.recycleapp.kotlin.activity.MainActivity
+import com.kt.recycleapp.kotlin.fragment.AlertFragment
 import com.kt.recycleapp.kotlin.viewmodel.AddViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -21,7 +23,7 @@ import kotlinx.coroutines.launch
 import java.recycleapp.databinding.AddpageItemUnitBinding
 import java.util.HashMap
 
-class AddAdapter(val viewModel: AddViewModel) : RecyclerView.Adapter<AddAdapter.AddViewHoler>() {
+class AddAdapter(val viewModel: AddViewModel,val act:MainActivity) : RecyclerView.Adapter<AddAdapter.AddViewHoler>() {
     var items = ArrayList<Int>()
     lateinit var holder :AddViewHoler
 
@@ -68,9 +70,9 @@ class AddAdapter(val viewModel: AddViewModel) : RecyclerView.Adapter<AddAdapter.
                             tmpInfoText.put(binding.nameEt.text.toString(),binding.productExplainEt.text.toString())
                             AddViewModel.infoText[pos] = tmpInfoText
                         }
-                        Toast.makeText(context,"저장 완료!",Toast.LENGTH_SHORT).show()
+                        AlertFragment.showAlert(act,"SaveSuccess",true)
                     }
-                    else{ Toast.makeText(context,"빈칸으로 저장할 수 없습니다.",Toast.LENGTH_SHORT).show() }
+                    else{ AlertFragment.showAlert(act,"NotEmptyEditText",true) }
                 }
 
                 else{
