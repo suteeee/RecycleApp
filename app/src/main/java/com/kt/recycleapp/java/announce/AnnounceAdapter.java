@@ -53,7 +53,7 @@ class AnnounceViewHoler extends RecyclerView.ViewHolder{
         super(binding.getRoot());
         this.binding = binding;
         this.context = context;
-        this.model = new DatabaseReadModel(context);
+        this.model = DatabaseReadModel.Companion.getInstance();
     }
 
     public void bind(AnnounceData data ,int position) {

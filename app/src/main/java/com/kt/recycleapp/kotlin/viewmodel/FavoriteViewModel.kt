@@ -15,7 +15,7 @@ class FavoriteViewModel: ViewModel() {
     }
     val itemList = ObservableArrayList<FavoriteData>()
     var tempList = ObservableArrayList<FavoriteData>()
-    val model = DatabaseReadModel()
+    val model = DatabaseReadModel.instance
     var getProductName = MutableLiveData<String>()
     var idx = 0
 

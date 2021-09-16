@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -17,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.kt.recycleapp.kotlin.activity.MainActivity
 import com.kt.recycleapp.kotlin.adapter.UploadAdapter
+import com.kt.recycleapp.kotlin.viewmodel.MainViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -27,19 +29,21 @@ import java.recycleapp.databinding.DataUploadFragmentBinding
 class DataUploadFragment : Fragment() {
     private lateinit var viewModel: DataUploadViewModel
     lateinit var binding: DataUploadFragmentBinding
+    lateinit var progressBar: ProgressBar
+    lateinit var act: MainActivity
+    lateinit var actViewModel:MainViewModel
     var cnt = 0
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater,R.layout.data_upload_fragment, container, false)
         viewModel = ViewModelProvider(this).get(DataUploadViewModel::class.java)
-
         binding.apply {
             viewmodel = viewModel
             lifecycleOwner = viewLifecycleOwner
         }
-        val act = activity as MainActivity
-        //act.viewModel.toolbarText.value = "데이터 업로드"
+        //act = activity as MainActivity
+        progressBar = binding.uploadPb
+
         val adt = UploadAdapter(viewModel)
 
         binding.uploadRv.adapter = adt
@@ -48,12 +52,12 @@ class DataUploadFragment : Fragment() {
         viewModel.loadingList()
         viewModel.listLoadFinish.observe(viewLifecycleOwner,{
             if(it == "finish"){
-                binding.uploadPb.visibility = View.INVISIBLE
+                progressBar.visibility = View.INVISIBLE
                 addNewProduct()
                 binding.addProductBtn.setOnClickListener { addNewProduct() }
 
                 binding.dataUploadBtn.setOnClickListener {
-                    binding.uploadPb.visibility = View.VISIBLE
+                    progressBar.visibility = View.VISIBLE
                     viewModel.upload()
 
                 }
@@ -65,7 +69,7 @@ class DataUploadFragment : Fragment() {
             if(it == "finish"){
                 viewModel.uploadFinish.value = "done"
                 viewModel.photoUri = null
-                binding.uploadPb.visibility = View.INVISIBLE
+                progressBar.visibility = View.INVISIBLE
                 Toast.makeText(context,"데이터 업로드 완료",Toast.LENGTH_SHORT).show()
                 productClear()
             }
@@ -108,16 +112,18 @@ class DataUploadFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (activity as MainActivity?)!!.viewModel.selectedFragment.value = "dataUpload"
-        (activity as MainActivity?)!!.viewModel.fragmentStack.push("dataUpload")
+        act = activity as MainActivity
+        actViewModel = act.viewModel
+        act.viewModel.selectedFragment.value = "dataUpload"
+        act.viewModel.fragmentStack.push("dataUpload")
     }
 
     override fun onDetach() {
         super.onDetach()
-        val act = activity as MainActivity
-        val v = act.viewModel
-        v.fragmentStack.pop()
-        v.selectedFragment.value = v.fragmentStack.peek()
-        if(v.fragmentStack.peek() == "main") act.supportFragmentManager.beginTransaction().replace(R.id.small_layout1,MainFragment()).commit()
+
+        actViewModel.fragmentStack.pop()
+        actViewModel.selectedFragment.value = actViewModel.fragmentStack.peek()
+        if(actViewModel.fragmentStack.peek() == "main")
+            act.replaceFragment(MainFragment())
     }
 }

@@ -26,7 +26,7 @@ class ImageUploadFragment : DialogFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_image_upload, container, false)
         viewModel = ViewModelProvider(this).get(ImageUploadViewModel::class.java)
-        db = DatabaseReadModel(requireContext())
+        db = DatabaseReadModel.instance
         Glide.with(requireContext()).load(R.drawable.default_nothing).override(300).into(binding.imageUploadIv)
 
         binding.imageUploadFrgOk.setOnClickListener {

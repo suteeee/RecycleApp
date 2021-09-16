@@ -14,6 +14,7 @@ import com.kt.recycleapp.java.announce.AnnounceRecyclerFragment
 import com.kt.recycleapp.kotlin.activity.MainActivity
 import com.kt.recycleapp.kotlin.adapter.HistoryAdapter
 import com.kt.recycleapp.kotlin.viewmodel.HistoryViewModel
+import com.kt.recycleapp.kotlin.viewmodel.MainViewModel
 import com.kt.recycleapp.manager.MyPreferenceManager
 import com.kt.recycleapp.model.DatabaseReadModel
 import com.kt.recycleapp.model.RoomHelper
@@ -26,24 +27,16 @@ class HistoryFragment : Fragment(){
     lateinit var mAdapter:HistoryAdapter
     private lateinit var viewModel: HistoryViewModel
     var helper:RoomHelper? = null
-    var model = DatabaseReadModel()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
+    var model = DatabaseReadModel.instance
+    lateinit var act:MainActivity
+    lateinit var actViewModel: MainViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater,R.layout.history_fragment, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
 
-        val act = activity as MainActivity
-        //act.viewModel.toolbarText.value = "히스토리"
-
         //rootView는 액티비티를 나타냄 (container는 우리끼리 mainactivity레이아웃을 의미하는 것으로 약속)
         //아래 코드는 액티비티 자체를 가져오는 것이다
-        Log.d("historyFragment", (activity as MainActivity?)!!.viewModel.selectedFragment.value!!)
 
         var prefs = MyPreferenceManager(requireContext())
 
@@ -83,7 +76,7 @@ class HistoryFragment : Fragment(){
         mAdapter = HistoryAdapter()
         binding.historyRv.adapter = mAdapter
 
-        (activity as MainActivity).viewModel.searchFlag.observe(viewLifecycleOwner,{
+        actViewModel.searchFlag.observe(viewLifecycleOwner,{
             if(it == "finish"){
                 viewModel.filterList(MainActivity.historyItemsForSearch)
             }
@@ -97,18 +90,18 @@ class HistoryFragment : Fragment(){
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        val act = activity as MainActivity
-        act.viewModel.selectedFragment.value = "history"
-        val v = act.viewModel
-        v.fragmentStack.push("history")
+        act = activity as MainActivity
+        actViewModel = act.viewModel
+        actViewModel.selectedFragment.value = "history"
+        actViewModel.fragmentStack.push("history")
     }
 
     override fun onDetach() {
         super.onDetach()
-        val act = activity as MainActivity
-        val v = act.viewModel
-        v.fragmentStack.pop()
-        v.selectedFragment.value = v.fragmentStack.peek()
-        if(v.fragmentStack.peek() == "main") act.supportFragmentManager.beginTransaction().replace(R.id.small_layout1,MainFragment()).commitAllowingStateLoss()
+        actViewModel.fragmentStack.pop()
+        actViewModel.selectedFragment.value = actViewModel.fragmentStack.peek()
+        if(actViewModel.fragmentStack.peek() == "main")
+            act.replaceFragment(MainFragment())
+            //act.supportFragmentManager.beginTransaction().replace(R.id.small_layout1,MainFragment()).commitAllowingStateLoss()
     }
 }

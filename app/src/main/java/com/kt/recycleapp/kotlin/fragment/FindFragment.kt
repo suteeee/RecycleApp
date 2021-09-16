@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.kt.recycleapp.kotlin.activity.MainActivity
 import com.kt.recycleapp.kotlin.adapter.FindBigAdapter
 import com.kt.recycleapp.kotlin.viewmodel.FindViewModel
+import com.kt.recycleapp.kotlin.viewmodel.MainViewModel
 import java.recycleapp.R
 import java.recycleapp.databinding.FragmentFindBinding
 
@@ -20,13 +21,14 @@ class FindFragment : Fragment(){
     lateinit var binding:FragmentFindBinding
     lateinit var mAdapter : FindBigAdapter
     lateinit var viewModel:FindViewModel
+    lateinit var act:MainActivity
+    lateinit var actViewModel:MainViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_find, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
 
-        val act = activity as MainActivity
-        //act.viewModel.toolbarText.value = "찾아보기"
+        act = activity as MainActivity
 
         viewModel = ViewModelProvider(this).get(FindViewModel::class.java)
         binding.bigItem =viewModel
@@ -54,7 +56,7 @@ class FindFragment : Fragment(){
             }
         })
 
-        (activity as MainActivity).viewModel.searchFlag.observe(viewLifecycleOwner,{
+        act.viewModel.searchFlag.observe(viewLifecycleOwner,{
             if(it == "finish"){
                 viewModel.bigFilterList(MainActivity.findBigForSearch)
             }
@@ -69,24 +71,25 @@ class FindFragment : Fragment(){
 
 
     fun viewClick() {
-        (activity as MainActivity).viewModel.selectedFragment.value = "findsmall"
-        activity?.supportFragmentManager?.beginTransaction()?.add(R.id.small_layout1,FindSmallFragment())?.addToBackStack(null)?.commit()
+        act.viewModel.selectedFragment.value = "findsmall"
+        act.replaceFragmentWithBackStack(FindSmallFragment(),null)
+        //act.supportFragmentManager.beginTransaction().add(R.id.small_layout1,FindSmallFragment()).addToBackStack(null).commit()
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         val act = activity as MainActivity
-        act.viewModel.selectedFragment.value = "find"
-        val v = act.viewModel
-        v.fragmentStack.push("find")
+        actViewModel = act.viewModel
+        actViewModel.selectedFragment.value = "find"
+        actViewModel.fragmentStack.push("find")
     }
 
     override fun onDetach() {
         super.onDetach()
-        val act = activity as MainActivity
-        val v = act.viewModel
-        v.fragmentStack.pop()
-        v.selectedFragment.value = v.fragmentStack.peek()
-        if(v.fragmentStack.peek() == "main") act.supportFragmentManager.beginTransaction().replace(R.id.small_layout1,MainFragment()).commit()
+        actViewModel.fragmentStack.pop()
+        actViewModel.selectedFragment.value = actViewModel.fragmentStack.peek()
+        if(actViewModel.fragmentStack.peek() == "main")
+            act.replaceFragment(MainFragment())
+           //act.supportFragmentManager.beginTransaction().replace(R.id.small_layout1,MainFragment()).commit()
     }
 }

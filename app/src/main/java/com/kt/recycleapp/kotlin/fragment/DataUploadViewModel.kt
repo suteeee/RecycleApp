@@ -7,10 +7,9 @@ import androidx.lifecycle.ViewModel
 import com.kt.recycleapp.model.DatabaseReadModel
 
 class DataUploadViewModel : ViewModel() {
-    val db = DatabaseReadModel()
+    val db = DatabaseReadModel.instance
 
     var productList = ArrayList<String>()
-    val model = DatabaseReadModel()
     val listLoadFinish = MutableLiveData<String>()
     val uploadFinish = MutableLiveData<String>()
 
@@ -25,7 +24,7 @@ class DataUploadViewModel : ViewModel() {
     var photoUri: Uri? = null
 
     fun loadingList() {
-        productList = model.getProductsList(listLoadFinish)
+        productList = db.getProductsList(listLoadFinish)
     }
 
     fun upload() {

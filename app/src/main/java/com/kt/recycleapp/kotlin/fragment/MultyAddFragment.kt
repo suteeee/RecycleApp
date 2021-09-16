@@ -19,6 +19,7 @@ import com.kt.recycleapp.kotlin.activity.MainActivity
 import com.kt.recycleapp.kotlin.activity.OnBackPressListener
 import com.kt.recycleapp.kotlin.adapter.AddAdapter
 import com.kt.recycleapp.kotlin.viewmodel.AddViewModel
+import com.kt.recycleapp.kotlin.viewmodel.MainViewModel
 import com.kt.recycleapp.model.DatabaseReadModel
 import java.recycleapp.R
 import java.recycleapp.databinding.FragmentMultyAddBinding
@@ -27,19 +28,20 @@ class MultyAddFragment : Fragment(), OnBackPressListener {
     lateinit var binding:FragmentMultyAddBinding
     lateinit var viewModel:AddViewModel
     var ld = MutableLiveData<String>()
-    var data = DatabaseReadModel()
+    var data = DatabaseReadModel.instance
     var cnt = 0
 
+    lateinit var act:MainActivity
+    lateinit var actViewModel: MainViewModel
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
- 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_multy_add, container, false)
 
-        val arr = data.getProductsList(ld)
         viewModel = ViewModelProvider(this).get(AddViewModel::class.java)
         binding.viewmodel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         Glide.with(requireContext()).load(R.drawable.default_nothing).override(300).into(binding.productImageIv)
-        var adapter = AddAdapter(viewModel)
+        val adapter = AddAdapter(viewModel)
 
         binding.multyRv.adapter = adapter
 
@@ -78,11 +80,7 @@ class MultyAddFragment : Fragment(), OnBackPressListener {
 
         binding.addAllBtn.setOnClickListener {
             viewModel.uploadAll()
-            var frg = AlertFragment()
-            val bundle = Bundle()
-            bundle.putString("AlertType","AddSuccess")
-            frg.arguments = bundle
-            frg.show(requireActivity().supportFragmentManager,null)
+            AlertFragment.showAlert(act,"AddSuccess",true)
             viewModel.photoUri = null
             productClear()
         }
@@ -118,13 +116,14 @@ class MultyAddFragment : Fragment(), OnBackPressListener {
     }
 
     override fun onBack() {
-        val act = activity as MainActivity?
-        act!!.setOnBackPressListener(null)
-        act.supportFragmentManager.beginTransaction().replace(R.id.small_layout1, MainFragment()).commit()
+        act.setOnBackPressListener(null)
+        act.replaceFragment(MainFragment())
+        //act.supportFragmentManager.beginTransaction().replace(R.id.small_layout1, MainFragment()).commit()
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         (context as MainActivity).setOnBackPressListener(this)
+        act = activity as MainActivity
     }
 }

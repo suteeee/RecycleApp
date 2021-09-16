@@ -25,7 +25,7 @@ class HistoryViewModel : ViewModel() {
     var tempList = ObservableArrayList<HistoryData>()
     var myRoomDbList :List<MyRoomDatabase>? = null
     var name:Map<String,String> = HashMap()
-    val model = DatabaseReadModel()
+    val model = DatabaseReadModel.instance
 
     fun getFireData(){
         model.getProduct(getProductName)

@@ -18,11 +18,9 @@ object BindingAdapters {
     @BindingAdapter("bind:item")
     @JvmStatic
     fun bindItem(recyclerView: RecyclerView, item:ObservableArrayList<FindBigData>){
-        val adt = FindBigAdapter()
         val lm = LinearLayoutManager(recyclerView.context)
 
         recyclerView.layoutManager = lm
-        recyclerView.adapter = adt
         (recyclerView.adapter as FindBigAdapter).items = item
         recyclerView.adapter?.notifyDataSetChanged()
     }
@@ -55,11 +53,9 @@ object BindingAdapters {
     @BindingAdapter("historyItem")
     @JvmStatic
     fun historyItem(recyclerView: RecyclerView, item:ObservableArrayList<HistoryData>) {
-        val adt = HistoryAdapter()
         val lm = LinearLayoutManager(recyclerView.context)
 
         recyclerView.layoutManager = lm
-        recyclerView.adapter = adt
         (recyclerView.adapter as HistoryAdapter).items = item
         recyclerView.adapter?.notifyDataSetChanged()
     }
@@ -67,11 +63,9 @@ object BindingAdapters {
     @BindingAdapter("favoriteItem")
     @JvmStatic
     fun favoriteItem(recyclerView: RecyclerView, item:ObservableArrayList<FavoriteData>) {
-        val adt = FavoriteAdapter()
         val lm = LinearLayoutManager(recyclerView.context)
 
         recyclerView.layoutManager = lm
-        recyclerView.adapter = adt
         (recyclerView.adapter as FavoriteAdapter).items = item
         recyclerView.adapter?.notifyDataSetChanged()
     }

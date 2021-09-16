@@ -5,6 +5,8 @@ import android.widget.ProgressBar
 import androidx.databinding.ObservableArrayList
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStoreOwner
 import com.kt.recycleapp.model.DatabaseReadModel
 
 class AddViewModel:ViewModel() {
@@ -19,7 +21,7 @@ class AddViewModel:ViewModel() {
     val listLoadFinish = MutableLiveData<String>()
     var photoUri: Uri? = null
     var itemList = ObservableArrayList<Int>()
-    val model = DatabaseReadModel()
+    val model = DatabaseReadModel.instance
 
     fun uploadAll() {
         model.uploadAll(photoUri)

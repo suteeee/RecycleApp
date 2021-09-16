@@ -17,7 +17,7 @@ public class AnnounceRecyclerViewModel extends ViewModel {
     public MutableLiveData<Boolean> isHaveBarcode = new MutableLiveData<>(false);
     public MutableLiveData<Boolean> checkBarcodeFinish = new MutableLiveData<>(false);
     public ObservableArrayList<AnnounceData> nameList = new ObservableArrayList<>();
-    private DatabaseReadModel db = new DatabaseReadModel();
+    private DatabaseReadModel db = DatabaseReadModel.Companion.getInstance();
     static MutableLiveData<String> kind = new MutableLiveData<>();
 
     public void findProductKind(String str) {

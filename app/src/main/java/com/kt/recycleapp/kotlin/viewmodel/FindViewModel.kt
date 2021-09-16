@@ -14,7 +14,7 @@ class FindViewModel: ViewModel() {
         var selectDoc = ""
         var selectItem = ""
     }
-    val model = DatabaseReadModel()
+    val model = DatabaseReadModel.instance
     val itemList = ObservableArrayList<FindBigData>()
     val smallItemList = ObservableArrayList<FindSmallData>()
     var itemData = ArrayList<String>()

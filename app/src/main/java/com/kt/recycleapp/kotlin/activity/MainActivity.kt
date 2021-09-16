@@ -5,12 +5,16 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.Button
+import android.widget.ImageView
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.kt.recycleapp.java.fragment.*
@@ -31,6 +35,9 @@ class MainActivity : AppCompatActivity() {
     var pressedTime = 0L
     lateinit var viewModel :MainViewModel
     lateinit var binding:ActivityMainBinding
+    lateinit var frgMng :FragmentManager
+    lateinit var searchView: SearchView
+    lateinit var homeBtn: ImageView
     var tempText = ""
 
     companion object{
@@ -46,16 +53,21 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
+
+        searchView = binding.toolbarSv
+        homeBtn = binding.homeBtn2
+
         viewModel.selectedFragment.value = "main"
+
         viewModel.fragmentStack.push("main")
+        frgMng = supportFragmentManager
 
         val intent = intent.extras
         if (intent?.get("darkModeRefresh") != null) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.small_layout1, AppSettingFragment()).addToBackStack(null).commit()
-            Log.d("Main", viewModel.fragmentStack.toString())
-        } else supportFragmentManager.beginTransaction().replace(R.id.small_layout1, MainFragment())
-            .commit()
+            frgMng.beginTransaction().replace(R.id.small_layout1, AppSettingFragment()).addToBackStack(null).commit()
+        }
+        else
+            frgMng.beginTransaction().replace(R.id.small_layout1, MainFragment()).commit()
 
         MainViewModel.isPopupClose.observe(this,{
             if(it == "close"){
@@ -66,11 +78,11 @@ class MainActivity : AppCompatActivity() {
 
         })
 
-        binding.toolbarSv.setOnSearchClickListener {
+        searchView.setOnSearchClickListener {
             tempText = viewModel.toolbarText.value!!
             viewModel.toolbarText.value = ""
         }
-        binding.toolbarSv.setOnCloseListener(SearchView.OnCloseListener {
+        searchView.setOnCloseListener(SearchView.OnCloseListener {
             if (binding.toolbarSv.query.isNotEmpty() || viewModel.searchFlag.value == "finish") {
                 viewModel.toolbarText.value = tempText
                 viewModel.searchFlag.value = "reset"
@@ -78,17 +90,17 @@ class MainActivity : AppCompatActivity() {
             return@OnCloseListener false
         })
         viewModel.selectedFragment.observe(this, {
-            val sv = binding.toolbarSv
+
 
             if (it != "history" && it != "favorite" && it != "find" && it != "findsmall") {
-                sv.visibility = View.INVISIBLE
+                searchView.visibility = View.INVISIBLE
             } else {
-                sv.visibility = View.VISIBLE
+                searchView.visibility = View.VISIBLE
             }
 
-            sv.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
-                    sv.setQuery("", false)
+                    searchView.setQuery("", false)
                     viewModel.searchFlag.value = "selected"
                     if (it == "history") {
                         val temp = ArrayList<HistoryData>()
@@ -150,13 +162,13 @@ class MainActivity : AppCompatActivity() {
 
         })
 
-        binding.homeBtn2.setOnClickListener {
+        homeBtn.setOnClickListener {
             goToMainFragment("home")
         }
 
         //팝업창 추가
         val popup = PopupFragmentStartpage.getInstance()
-        popup.show(supportFragmentManager, PopupFragmentStartpage.TAG_EVENT_DIALOG)
+        popup.show(frgMng, PopupFragmentStartpage.TAG_EVENT_DIALOG)
 
         //앱 테마를 noactionbar 로 설정했고 툴바를 사용할것이므로 actionbar를 우리가 만든 toolbar로 설정하는 코드
         setSupportActionBar(mainToolBar_tb1)
@@ -170,7 +182,7 @@ class MainActivity : AppCompatActivity() {
         actionBar?.setDisplayShowTitleEnabled(false)
 
 
-        //메뉴 세팅하는 함수
+        //메뉴 세팅하는 메소드
         naviSet()
 
         val header = navi_nv.getHeaderView(0)
@@ -183,10 +195,10 @@ class MainActivity : AppCompatActivity() {
         //메뉴 선택 리스너
         navi_nv.setNavigationItemSelectedListener { menuItem ->
             var fragment : Fragment? = null
-            val t =supportFragmentManager.beginTransaction()
+            var selected = ""
             menuItem.isChecked = true
             drawer_layout.closeDrawers()
-            binding.viewModel!!.isDrawerOpen.value = false
+            viewModel.isDrawerOpen.value = false
 
             //선택한 메뉴의 id
             val id = menuItem.itemId
@@ -199,44 +211,45 @@ class MainActivity : AppCompatActivity() {
                 fragment = FindFragment()
             }
             else if (id == R.id.advancedSearch) {
-                viewModel.selectedFragment.value = "adv"
+                selected = "adv"
                 fragment = AdvancedSearchFragment()
             }
             else if (id == R.id.favoriteItem) {
-                viewModel.selectedFragment.value = "favorite"
+                selected = "favorite"
                 fragment = FavoriteItemFragment()
             }
             else if (id == R.id.history) {
-                viewModel.selectedFragment.value = "history"
+                selected = "history"
                 fragment = HistoryFragment()
             }
             else if (id == R.id.recycleDayInfo) {
-                viewModel.selectedFragment.value = "recycle"
+                selected = "recycle"
                 fragment = RecycleDayInfoFragment()
             }
             else if (id == R.id.dailyTip) {
-                viewModel.selectedFragment.value = "tip"
+                selected = "tip"
                 fragment = DailyTipFragment()
             }
             else if (id == R.id.AppSetting) {
-                viewModel.selectedFragment.value = "setting"
+                selected = "setting"
                 fragment = AppSettingFragment()
             }
             else if (id == R.id.userGuide) {
-                viewModel.selectedFragment.value = "userGuide"
+                selected = "userGuide"
                 fragment = UserGuideMainFragment()
             }
             else if (id == R.id.dataUpload) {
-                viewModel.selectedFragment.value = "dataUpload"
+                selected = "dataUpload"
                 fragment = DataUploadFragment()
             }
+            viewModel.selectedFragment.value = selected
 
             if (fragment != null) {
                 //프래그먼트 트랜잭션(프래그먼트 전환)
                  if(viewModel.selectedFragment.value == "main"){
-                     t.replace(layout,fragment).addToBackStack(null).commit()
+                     frgMng.beginTransaction().replace(layout,fragment).addToBackStack(null).commit()
                  }else{
-                     t.add(layout,fragment).addToBackStack(null).commit()
+                     frgMng.beginTransaction().add(layout,fragment).addToBackStack(null).commit()
                  }
             }
 
@@ -261,22 +274,32 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    fun replaceFragment(frg:Fragment) {
+        frgMng.beginTransaction().replace(R.id.small_layout1,frg).commit()
+    }
+    fun replaceFragmentWithBackStack(frg:Fragment,name:String?) {
+        frgMng.beginTransaction().replace(R.id.small_layout1,frg).addToBackStack(name).commit()
+    }
+    fun replaceFragmentWithCommitAllowingStateLoss(frg:Fragment) {
+        frgMng.beginTransaction().replace(R.id.small_layout1,frg).commitAllowingStateLoss()
+    }
+
+
     fun setOnBackPressListener(listener: OnBackPressListener?){
             mBackPressListener = listener
     }
 
     fun goToMainFragment(flag:String) {
         viewModel.selectedFragment.value = "main"
-        while (supportFragmentManager.backStackEntryCount != 0){
-            supportFragmentManager.popBackStackImmediate()
+        while (frgMng.backStackEntryCount != 0){
+            frgMng.popBackStackImmediate()
         }
         viewModel.fragmentStack.clear()
         viewModel.fragmentStack.add("main")
-        val transaction =  supportFragmentManager.beginTransaction()
 
         when(flag){
-            "back" -> transaction.replace(R.id.small_layout1,MainFragment()).commit()
-            "home" -> transaction.add(R.id.small_layout1,MainFragment()).commit()
+            "back" -> frgMng.beginTransaction().replace(R.id.small_layout1,MainFragment()).commit()
+            "home" -> frgMng.beginTransaction().add(R.id.small_layout1,MainFragment()).commit()
         }
 
     }
@@ -284,16 +307,16 @@ class MainActivity : AppCompatActivity() {
     override fun onBackPressed() {
         if(!binding.toolbarSv.isIconified){
             viewModel.toolbarText.value = tempText
-            Log.d(binding.toolbarSv.query.length.toString(),"query")
-            if(binding.toolbarSv.query.isNotEmpty() || viewModel.searchFlag.value == "finish"){
+
+            if(searchView.query.isNotEmpty() || viewModel.searchFlag.value == "finish"){
                 viewModel.searchFlag.value = "reset"
             }
-            binding.toolbarSv.isIconified = true
+            searchView.isIconified = true
         }
-        else if(binding.viewModel!!.isDrawerOpen.value == true){
+        else if(viewModel.isDrawerOpen.value == true){
             Log.d("MainBack","1")
             drawer_layout.closeDrawer(GravityCompat.START)
-            binding.viewModel!!.isDrawerOpen.value = false
+            viewModel.isDrawerOpen.value = false
         }
         else if(viewModel.selectedFragment.value != "main"){
             Log.d("MainBack","2")

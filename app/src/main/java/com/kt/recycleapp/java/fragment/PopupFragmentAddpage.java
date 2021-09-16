@@ -38,7 +38,7 @@ public class PopupFragmentAddpage extends DialogFragment implements  OnBackPress
     private Button saveButton;
     private Button cancleButton;
     private String sendBarcode;
-    private DatabaseReadModel data = new DatabaseReadModel();
+    private DatabaseReadModel data = DatabaseReadModel.Companion.getInstance();
     MutableLiveData<String> ld = new MutableLiveData<String>();
 
     public PopupFragmentAddpage(){

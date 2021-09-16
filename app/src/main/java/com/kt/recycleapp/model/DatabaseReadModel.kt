@@ -1,5 +1,6 @@
 package com.kt.recycleapp.model
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
@@ -14,21 +15,17 @@ import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.kt.recycleapp.java.announce.AnnounceData
+import com.kt.recycleapp.kotlin.activity.MainActivity
+import com.kt.recycleapp.kotlin.fragment.AlertFragment
 import com.kt.recycleapp.kotlin.viewmodel.AddViewModel
 import com.kt.recycleapp.kotlin.viewmodel.FindViewModel
 import kotlinx.coroutines.*
 import java.recycleapp.R
 
-class DatabaseReadModel() {
-    var context:Context? = null
-    constructor(context: Context) : this() {
-        this.context = context
-    }
-
+class DatabaseReadModel {
     private val STORAGE_URL = "gs://recycleapp-e6ed9.appspot.com"
 
     val db = FirebaseFirestore.getInstance()
-    val storage2 = FirebaseStorage.getInstance(STORAGE_URL).reference
     val storage = FirebaseStorage.getInstance(STORAGE_URL).reference
     var products = db.collection("products")
     var detailInfo = db.collection("detailInfo")
@@ -36,8 +33,8 @@ class DatabaseReadModel() {
 
     companion object {
         var name = HashMap<String, String>()
-        var decodeImageList = ArrayList<Bitmap>()
         var nameForSetImage = ""
+        val instance:DatabaseReadModel = DatabaseReadModel()
     }
 
     fun findBig(findBigProgress: MutableLiveData<String>):ArrayList<String>{
@@ -327,14 +324,16 @@ class DatabaseReadModel() {
         }
    }
 
-    fun imageUpload(name:String, photoUri:Uri) {
+    fun imageUpload(name:String, photoUri:Uri,) {
         val fileName = "IMAGE_${name.replace(" ","")}"
         val imgRef = storage.child("products_image/$fileName.png")
         imgRef.putFile(photoUri).addOnCompleteListener {
             if(it.isSuccessful){
-                Toast.makeText(context,"이미지 업로드 완료",Toast.LENGTH_SHORT).show()
+                //AlertFragment.showAlert(act,"ImgAddSuccess",false)
+                //Toast.makeText(context,"이미지 업로드 완료",Toast.LENGTH_SHORT).show()
             }else{
-                Toast.makeText(context,"이미지 업로드 실패",Toast.LENGTH_SHORT).show()
+                //AlertFragment.showAlert(act,"ImgAddSuccess",false)
+                //Toast.makeText(context,"이미지 업로드 실패",Toast.LENGTH_SHORT).show()
             }
 
         }

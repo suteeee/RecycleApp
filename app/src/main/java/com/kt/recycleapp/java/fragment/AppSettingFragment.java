@@ -18,8 +18,10 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.kt.recycleapp.kotlin.activity.MainActivity;
+import com.kt.recycleapp.kotlin.fragment.AlertFragment;
 import com.kt.recycleapp.kotlin.fragment.ImageUploadFragment;
 import com.kt.recycleapp.kotlin.fragment.MainFragment;
+import com.kt.recycleapp.kotlin.viewmodel.MainViewModel;
 import com.kt.recycleapp.manager.MyPreferenceManager;
 import com.kt.recycleapp.model.RoomHelper;
 
@@ -33,6 +35,8 @@ public class AppSettingFragment extends Fragment{
     private Button darkmodButton;
     private Button uploadButton;
     private Button historyDeleteBtn;
+    MainActivity act;
+    MainViewModel actViewModel;
     MyPreferenceManager prefs;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,6 +50,7 @@ public class AppSettingFragment extends Fragment{
         darkmodButton = (Button) rootView.findViewById(R.id.darkmodonoff_bt1);
         uploadButton = rootView.findViewById(R.id.imageUpload_btn1);
         historyDeleteBtn = rootView.findViewById(R.id.historyDelete_btn);
+
 
         prefs = new MyPreferenceManager(requireContext()); //만들었던 preferenceManager를 쓸수있게 생성
 
@@ -102,6 +107,8 @@ public class AppSettingFragment extends Fragment{
         RoomHelper helper = RoomHelper.Companion.getInstance(requireContext());
         helper.databaseDao().deteteAll();
         prefs.setSQLiteIndex(0);
+
+        AlertFragment.Companion.showAlert(act,"HistoryDeleteSuccess",true);
     }
 
     /*
@@ -113,7 +120,6 @@ public class AppSettingFragment extends Fragment{
     public void onConfigurationChanged(@NonNull @NotNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         int nightmode = newConfig.uiMode & Configuration.UI_MODE_NIGHT_MASK;
-        MainActivity act = (MainActivity)getActivity();
 
         switch (nightmode){
             case Configuration.UI_MODE_NIGHT_NO : {
@@ -146,18 +152,20 @@ public class AppSettingFragment extends Fragment{
 
     public void onAttach(Context context) {
         super.onAttach(context);
-        ((MainActivity)getActivity()).viewModel.getSelectedFragment().setValue("setting");
-        ((MainActivity)getActivity()).viewModel.getFragmentStack().push("setting");
+        act = ((MainActivity)getActivity());
+        actViewModel = act.viewModel;
+        actViewModel.getSelectedFragment().setValue("setting");
+        actViewModel.getFragmentStack().push("setting");
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        MainActivity act = ((MainActivity)getActivity());
-        act.viewModel.getFragmentStack().pop();
-        act.viewModel.getSelectedFragment().setValue(act.viewModel.getFragmentStack().peek());
-        if(act.viewModel.getFragmentStack().peek().equals("main"))
-            act.getSupportFragmentManager().beginTransaction().replace(R.id.small_layout1,new MainFragment()).commitAllowingStateLoss();
+
+        actViewModel.getFragmentStack().pop();
+        actViewModel.getSelectedFragment().setValue(actViewModel.getFragmentStack().peek());
+        if(actViewModel.getFragmentStack().peek().equals("main"))
+            act.replaceFragmentWithCommitAllowingStateLoss(new MainFragment());
     }
 }
 

@@ -55,8 +55,6 @@ class MainFragment : Fragment() {
         lateinit var outputDirectory:File
     }
 
-    //private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    //private val REQUEST_CODE_PERMISSIONS = 10
     private lateinit var cameraExecutor: ExecutorService
     var processingBarcode = AtomicBoolean(false)
     lateinit var binding: FragmentMainBinding
@@ -70,7 +68,6 @@ class MainFragment : Fragment() {
     var helper :RoomHelper? = null
     lateinit var prefs :MyPreferenceManager
 
-
     var captureIsFinish = MutableLiveData<String>()
 
     var dist = 0.0f
@@ -81,6 +78,7 @@ class MainFragment : Fragment() {
         prefs = MyPreferenceManager(requireContext())
         outputDirectory = getOutputDirectory()
         cameraExecutor = Executors.newSingleThreadExecutor()
+        helper = RoomHelper.getInstance(requireContext())
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -92,23 +90,13 @@ class MainFragment : Fragment() {
             binding.viewmodel = viewModel
             binding.invalidateAll()
         }
-        //(activity as MainActivity).viewModel.toolbarText.value = "수거했어 오늘도!"
 
         val rootView = binding.root
 
-        helper = RoomHelper.getInstance(requireContext())
-
-
         binding.captureBtn.setOnClickListener {
             when(cameraInfo?.torchState?.value){
-                TorchState.ON->{
-                    cameraController?.enableTorch(false)
-                    Log.d("torch","on")
-                }
-                TorchState.OFF->{
-                    cameraController?.enableTorch(true)
-                    Log.d("torch","off")
-                }
+                TorchState.ON->{ cameraController?.enableTorch(false) }
+                TorchState.OFF->{ cameraController?.enableTorch(true) }
             }
         }
 
@@ -117,7 +105,8 @@ class MainFragment : Fragment() {
         }
 
         binding.HistoryBtn.setOnClickListener {
-            activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.small_layout1,HistoryFragment())?.commit()
+            fragmentChange(HistoryFragment())
+            //activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.small_layout1,HistoryFragment())?.commit()
         }
 
 
@@ -127,9 +116,7 @@ class MainFragment : Fragment() {
             cameraController?.setZoomRatio(f)
             binding.invalidateAll()
             var handler = Handler(Looper.getMainLooper())
-            handler.postDelayed({
-                binding.zoonShowTv.visibility = View.INVISIBLE
-            },2000)
+            handler.postDelayed({ binding.zoonShowTv.visibility = View.INVISIBLE },2000)
         })
 
         if(prefs.cameraPermission == "GRANTED"){
@@ -161,19 +148,6 @@ class MainFragment : Fragment() {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        /*if (allPermissionsGranted()) {
-            try {
-                initCamera()
-            }
-            catch (e:Exception){}
-        } else {
-            requestPermissions(REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
-        }*/
-
-    }
-
     fun takePhoto() :String{
         val imageCapture = imageCapture?:return ""
         val name = newPngFileName()
@@ -183,10 +157,8 @@ class MainFragment : Fragment() {
         imageCapture.takePicture(outputOption,ContextCompat.getMainExecutor(requireContext()),object:ImageCapture.OnImageSavedCallback{
             override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                 captureIsFinish.value="no"
-                val saveUri = Uri.fromFile(photoFile)
                 val path ="$outputDirectory/$name"
                 val bm = BitmapFactory.decodeFile(path)
-                DatabaseReadModel.decodeImageList.add(bm)
                 context?.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,Uri.fromFile(outputDirectory)))
                 captureIsFinish.value="yes"
             }
@@ -213,9 +185,7 @@ class MainFragment : Fragment() {
         cameraProviderFuture.addListener({
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
                 val preview = Preview.Builder().build().also {
-                    it.setSurfaceProvider(
-                        previewView.surfaceProvider
-                    )
+                    it.setSurfaceProvider(previewView.surfaceProvider)
                 }
             imageCapture = ImageCapture.Builder().build()
 
@@ -230,7 +200,6 @@ class MainFragment : Fragment() {
                             else {"null"}
 
                             if(prefs.storagePermission == "DENIED") captureIsFinish.value = "yes"
-                            Toast.makeText(activity?.baseContext,barcode,Toast.LENGTH_SHORT).show()
 
                             captureIsFinish.observe(viewLifecycleOwner,{fin->
                                 if(fin=="yes"){
@@ -243,7 +212,8 @@ class MainFragment : Fragment() {
                                     val frg = AnnounceRecyclerFragment()
                                     frg.arguments = bundle
 
-                                    activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.small_layout1,frg)?.commit()
+                                    fragmentChange(frg)
+                                    //activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.small_layout1,frg)?.commit()
                                 }
                             })
                         }
@@ -337,9 +307,7 @@ class MainFragment : Fragment() {
                 }
 
 
-            } catch (e: Exception) {
-                Log.e("PreviewUseCase", "Binding failed! :(", e)
-            }
+            } catch (e: Exception) { }
         }, ContextCompat.getMainExecutor(requireContext()))
     }
 
@@ -349,25 +317,6 @@ class MainFragment : Fragment() {
         return sqrt((x * x + y * y).toDouble()).toFloat()
     }
 
-   /* private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
-        ContextCompat.checkSelfPermission(requireContext(), it) == PackageManager.PERMISSION_GRANTED
-    }*/
-
-    /*override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        if (requestCode == REQUEST_CODE_PERMISSIONS) {
-            if (allPermissionsGranted()) {
-                try {
-                    initCamera()
-                }
-                catch (e:Exception){}
-            } else {
-                requestPermissions(permissions, requestCode)
-                Toast.makeText(requireContext(), "카메라 기능을 사용하실 수 없습니다.", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }*/
-
     private fun getOutputDirectory():File{
         val mediaDir = activity?.externalMediaDirs?.firstOrNull()?.let {
             File(it,resources.getString(R.string.app_name)).apply { mkdirs() }
@@ -376,14 +325,13 @@ class MainFragment : Fragment() {
         else requireActivity().filesDir
     }
 
+    fun fragmentChange(frg:Fragment) {
+        activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.small_layout1,frg)?.commit()
+    }
+
 
     override fun onDestroy() {
         cameraExecutor.shutdown()
         super.onDestroy()
-    }
-
-    override fun onAttach(context: Context) {
-        Log.d("search","create!!")
-        super.onAttach(context)
     }
 }
