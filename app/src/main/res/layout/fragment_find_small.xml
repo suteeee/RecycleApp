@@ -5,7 +5,7 @@
     <data>
         <variable
             name="smallItem"
-            type="com.kt.recycleapp.kotlin.viewmodel.FindViewModel" />
+            type="com.kt.recycleapp.kotlin.find.FindViewModel" />
 
     </data>
 
@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/main_backg_color"
-        tools:context="com.kt.recycleapp.kotlin.fragment.FindSmallFragment">
+        tools:context="com.kt.recycleapp.kotlin.find.FindSmallFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/findSmall_rv"

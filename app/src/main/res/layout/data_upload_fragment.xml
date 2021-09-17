@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewmodel"
-            type="com.kt.recycleapp.kotlin.fragment.DataUploadViewModel" />
+            type="com.kt.recycleapp.kotlin.upload.DataUploadViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
         android:background="@color/main_backg_color"
         android:clickable="true"
-        tools:context="com.kt.recycleapp.kotlin.fragment.DataUploadFragment">
+        tools:context="com.kt.recycleapp.kotlin.upload.DataUploadFragment">
 
         <ImageButton
             android:id="@+id/addProduct_btn"

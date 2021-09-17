@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.kt.recycleapp.kotlin.activity.MainActivity;
-import com.kt.recycleapp.kotlin.fragment.MainFragment;
+import com.kt.recycleapp.kotlin.main.MainActivity;
+import com.kt.recycleapp.kotlin.main.MainFragment;
 
 import java.recycleapp.R;
 

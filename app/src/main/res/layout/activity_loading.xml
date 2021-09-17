@@ -2,15 +2,20 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/loading_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/loading_layout"
-    android:background="@drawable/loading_pic"
+    android:background="@color/main_backg_color"
     tools:context="com.kt.recycleapp.java.activity.LoadingActivity">
 
 
-
-
-
-
+    <ImageView
+        android:id="@+id/loading_img"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/bg_delete_pic" />
 </androidx.constraintlayout.widget.ConstraintLayout>

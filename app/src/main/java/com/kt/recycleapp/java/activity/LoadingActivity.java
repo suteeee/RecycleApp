@@ -16,7 +16,7 @@ import android.os.Handler;
 import android.util.Log;
 
 import com.google.firebase.database.annotations.NotNull;
-import com.kt.recycleapp.kotlin.activity.MainActivity;
+import com.kt.recycleapp.kotlin.main.MainActivity;
 import com.kt.recycleapp.manager.MyPreferenceManager;
 import com.kt.recycleapp.model.DatabaseReadModel;
 

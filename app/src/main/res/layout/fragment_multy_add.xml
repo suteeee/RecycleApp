@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewmodel"
-            type="com.kt.recycleapp.kotlin.viewmodel.AddViewModel" />
+            type="com.kt.recycleapp.kotlin.upload.AddViewModel" />
 
     </data>
 

@@ -14,12 +14,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.kt.recycleapp.kotlin.activity.MainActivity;
-import com.kt.recycleapp.kotlin.activity.OnBackPressListener;
-import com.kt.recycleapp.kotlin.fragment.MainFragment;
-import com.kt.recycleapp.kotlin.fragment.MultyAddFragment;
-import com.kt.recycleapp.kotlin.viewmodel.AddViewModel;
-import com.kt.recycleapp.kotlin.viewmodel.MainViewModel;
+import com.kt.recycleapp.kotlin.main.MainActivity;
+import com.kt.recycleapp.kotlin.listener.OnBackPressListener;
+import com.kt.recycleapp.kotlin.upload.MultyAddFragment;
+import com.kt.recycleapp.kotlin.upload.AddViewModel;
+import com.kt.recycleapp.kotlin.main.MainViewModel;
 import com.kt.recycleapp.manager.MyPreferenceManager;
 import com.kt.recycleapp.model.DatabaseReadModel;
 

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="big"
-            type="com.kt.recycleapp.kotlin.etc.FindBigData"
+            type="com.kt.recycleapp.kotlin.find.FindBigData"
             />
 
     </data>

@@ -25,8 +25,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.kt.recycleapp.kotlin.activity.MainActivity;
-import com.kt.recycleapp.kotlin.fragment.MainFragment;
+import com.kt.recycleapp.kotlin.main.MainActivity;
+import com.kt.recycleapp.kotlin.main.MainFragment;
 
 import org.jetbrains.annotations.NotNull;
 

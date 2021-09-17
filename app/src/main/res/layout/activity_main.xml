@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.kt.recycleapp.kotlin.viewmodel.MainViewModel" />
+            type="com.kt.recycleapp.kotlin.main.MainViewModel" />
     </data>
 
     <androidx.drawerlayout.widget.DrawerLayout
@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/main_backg_color"
-        tools:context="com.kt.recycleapp.kotlin.activity.MainActivity">
+        tools:context="com.kt.recycleapp.kotlin.main.MainActivity">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/big_layout"

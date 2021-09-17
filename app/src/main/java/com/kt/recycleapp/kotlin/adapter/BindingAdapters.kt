@@ -8,11 +8,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestBuilder
-import com.kt.recycleapp.kotlin.etc.FavoriteData
-import com.kt.recycleapp.kotlin.etc.FindBigData
-import com.kt.recycleapp.kotlin.etc.FindSmallData
-import com.kt.recycleapp.kotlin.etc.HistoryData
-import com.kt.recycleapp.kotlin.fragment.DataUploadViewModel
+import com.kt.recycleapp.kotlin.favorite.FavoriteData
+import com.kt.recycleapp.kotlin.find.FindBigData
+import com.kt.recycleapp.kotlin.find.FindSmallData
+import com.kt.recycleapp.kotlin.favorite.FavoriteAdapter
+import com.kt.recycleapp.kotlin.find.FindBigAdapter
+import com.kt.recycleapp.kotlin.find.FindSmallAdapter
+import com.kt.recycleapp.kotlin.history.HistoryData
+import com.kt.recycleapp.kotlin.upload.DataUploadViewModel
+import com.kt.recycleapp.kotlin.history.HistoryAdapter
+import com.kt.recycleapp.kotlin.upload.AddAdapter
+import com.kt.recycleapp.kotlin.upload.UploadAdapter
 
 object BindingAdapters {
     @BindingAdapter("bind:item")

@@ -22,7 +22,7 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true">
-        <activity android:name="com.kt.recycleapp.kotlin.activity.MainActivity"
+        <activity android:name="com.kt.recycleapp.kotlin.main.MainActivity"
             android:configChanges="uiMode"
             android:launchMode="singleTask"
             />

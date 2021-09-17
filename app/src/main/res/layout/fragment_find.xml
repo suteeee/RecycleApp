@@ -6,7 +6,7 @@
     <data>
         <variable
             name="bigItem"
-            type="com.kt.recycleapp.kotlin.viewmodel.FindViewModel" />
+            type="com.kt.recycleapp.kotlin.find.FindViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,7 +16,7 @@
         android:background="@color/main_backg_color"
         android:clickable="true"
         android:focusable="true"
-        tools:context="com.kt.recycleapp.kotlin.fragment.FindFragment">
+        tools:context="com.kt.recycleapp.kotlin.find.FindFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/findBig_rv"

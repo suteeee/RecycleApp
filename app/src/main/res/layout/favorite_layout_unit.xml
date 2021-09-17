@@ -6,7 +6,7 @@
     <data>
         <variable
             name="data"
-            type="com.kt.recycleapp.kotlin.etc.FavoriteData" />
+            type="com.kt.recycleapp.kotlin.favorite.FavoriteData" />
 
     </data>
 

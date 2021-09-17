@@ -1,36 +1,37 @@
 package com.kt.recycleapp.model
 
-import android.app.Activity
 import android.content.Context
-import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.databinding.ObservableArrayList
 import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.kt.recycleapp.java.announce.AnnounceData
-import com.kt.recycleapp.kotlin.activity.MainActivity
-import com.kt.recycleapp.kotlin.fragment.AlertFragment
-import com.kt.recycleapp.kotlin.viewmodel.AddViewModel
-import com.kt.recycleapp.kotlin.viewmodel.AlertViewModel
-import com.kt.recycleapp.kotlin.viewmodel.FindViewModel
+import com.kt.recycleapp.kotlin.upload.AddViewModel
+import com.kt.recycleapp.kotlin.alert.AlertViewModel
+import com.kt.recycleapp.kotlin.find.FindViewModel
 import kotlinx.coroutines.*
 import java.recycleapp.R
 
 class DatabaseReadModel {
     private val STORAGE_URL = "gs://recycleapp-e6ed9.appspot.com"
+    private val MIXED_PRODUCT = "복합물품"
+    private val SUBLIST_PRODUCT = "sublist"
+    private val SUBLIST_INFO = "subList"
 
     val db = FirebaseFirestore.getInstance()
     val storage = FirebaseStorage.getInstance(STORAGE_URL).reference
     var products = db.collection("products")
     var detailInfo = db.collection("detailInfo")
+    var mixedProducts = products.document(MIXED_PRODUCT).collection(SUBLIST_PRODUCT).get()
+    var mixedInfo =  detailInfo.document(MIXED_PRODUCT).collection(SUBLIST_INFO)
     var kind :String = ""
+
 
     companion object {
         var name = HashMap<String, String>()
@@ -55,18 +56,18 @@ class DatabaseReadModel {
         findSmallProgress.value = "start"
         var selected = FindViewModel.selectDoc
         val collection = products
-        val multi = products.document("복합물품").collection("sublist")
+        val multi = products.document(MIXED_PRODUCT).collection(SUBLIST_PRODUCT)
         val arr = ArrayList<HashMap<String,String>>()
         //컬렉션 Arr 안에 문서 arr 안에 값 hashmap 구조
 
         val c =
-            if(selected == "복합물품") multi.get()
+            if(selected == MIXED_PRODUCT) multi.get()
             else collection.get()
 
             c.addOnCompleteListener {
                 val variable = it.result.documents
                 variable.forEach { doc->
-                    if(selected != "복합물품"){
+                    if(selected != MIXED_PRODUCT){
                         if(doc.id == selected){
 
                             for(i in 0 until doc.data?.keys?.size!!){
@@ -94,7 +95,7 @@ class DatabaseReadModel {
         var collection = products
         collection.get().addOnCompleteListener {
             for(doc in it.result.documents) {
-                if(doc.id != "복합물품"){
+                if(doc.id != MIXED_PRODUCT){
                     doc.data?.forEach { res-> name.put(res.key,res.value.toString()) }
                 }
             }
@@ -122,6 +123,7 @@ class DatabaseReadModel {
             (it.result.documents).forEach { doc ->
                 // 물품 명으로 탐색
                 if (doc.data?.values?.contains(product) == true) {
+                    Log.d(doc.data?.toString(),"test")
                     res = doc.id
                     return@forEach
                 }
@@ -139,7 +141,7 @@ class DatabaseReadModel {
         var pKind = kind
         var document: Map<String, Any>? =  null
         val resultInfo = db.collection("resultInfo").get()
-        val detalSubInfo = detailInfo.document("복합물품").collection("subList")
+
 
         resultInfo.addOnCompleteListener {
             (it.result.documents).forEach { doc ->
@@ -157,14 +159,13 @@ class DatabaseReadModel {
                 }
             }
 
-            Log.d("Load11","$name $barcode $pKind")
             if(pKind.isEmpty()) {
                 info = "데이터를 등록해주세요!"
                 pKind = "등록되지 않은 물품입니다."
                 product.add(AnnounceData(name, info ,pKind))
             }
             else {
-                detailInfo.document(pKind).get().addOnCompleteListener {
+                mixedInfo.document(pKind).get().addOnCompleteListener {
                     val res = (it.result.data)?.get(barcode)
                     if(res != null) {
                         //세부 설명이 있으면 info를 세부 설명으로
@@ -177,7 +178,7 @@ class DatabaseReadModel {
                     product.add(AnnounceData(name, info ,pKind))//첫번째 페이지(주 물품)
 
                     //두번째 물품부터
-                    products.document("복합물품").collection("sublist").get().addOnCompleteListener {
+                   mixedProducts.addOnCompleteListener {
                         var cnt = 1
                         (it.result.documents).forEach { doc->
                             val d = doc.data
@@ -186,11 +187,9 @@ class DatabaseReadModel {
                                 if(map.key.contains(name)){
                                     var str = ""
                                     //상세설명 찾아보기
-                                    detalSubInfo.document(doc.id).get().addOnCompleteListener {
-                                        Log.d("Load11",name)
+                                    mixedInfo.document(doc.id).get().addOnCompleteListener {
                                         str = it.result.data?.get("${name}_${cnt++}").toString()
-                                        Log.d("Load11",str)
-                                        if(str.isEmpty() || str.isBlank()) {
+                                        if(str.isEmpty() || str.isBlank() || str == "null") {
                                             str = document?.get(doc.id).toString()
                                         }
                                         product.add(AnnounceData(map.value.toString(),str, doc.id))
@@ -228,8 +227,7 @@ class DatabaseReadModel {
                                 return@forEach
                             }
                         }
-                        products.document("복합물품").collection("sublist").get()
-                            .addOnCompleteListener {
+                        mixedProducts.addOnCompleteListener {
                                 (it.result.documents).forEach { doc ->
                                     // 물품 명으로 탐색
                                     if (doc.data?.values?.contains(itemName) == true) {
@@ -270,8 +268,8 @@ class DatabaseReadModel {
                         products.document(AddViewModel.products[i]).update(list[i])
                         detailInfo.document(AddViewModel.products[i]).update(exList[i])
                     } else {
-                        products.document("복합물품").collection("sublist").document(AddViewModel.products[i]).update(list[i])
-                        detailInfo.document("복합물품").collection("subList").document(AddViewModel.products[i]).update(exList[i])
+                        products.document(MIXED_PRODUCT).collection(SUBLIST_PRODUCT).document(AddViewModel.products[i]).update(list[i])
+                        mixedInfo.document(AddViewModel.products[i]).update(exList[i])
                     }
                 }
             }catch (e:Exception){
@@ -288,20 +286,12 @@ class DatabaseReadModel {
         }
     }
 
-    fun uploadData(
-        barcode: String,
-        names: ArrayList<String>,
-        kinds: ArrayList<String>,
-        subnames: ArrayList<String>,
-        uploadFinish: MutableLiveData<String>,
-        photoUri: Uri?,
-        infoText: ArrayList<String>
-    ) {
-
+    fun uploadData
+                (barcode: String, names: ArrayList<String>, kinds: ArrayList<String>, subnames: ArrayList<String>, uploadFinish: MutableLiveData<String>, photoUri: Uri?, infoText: ArrayList<String>) {
         CoroutineScope(Dispatchers.IO).launch{
             uploadFinish.postValue("start")
             val col = products
-            val sub = col.document("복합물품").collection("sublist")
+            val sub = col.document(MIXED_PRODUCT).collection(SUBLIST_PRODUCT)
 
             col.document(kinds[0]).update(barcode, names[0])
 
@@ -313,7 +303,7 @@ class DatabaseReadModel {
                 sub.document(kinds[i]).update(names[i], subnames[i])
                 Log.d("Load11",infoText[i])
                 if(infoText[i].isNotBlank() && infoText[i].isNotEmpty()) {
-                    detailInfo.document("복합물품").collection("subList").document(kinds[i]).update(names[i],infoText[i])
+                    mixedInfo.document(kinds[i]).update(names[i],infoText[i])
                 }
             }
 

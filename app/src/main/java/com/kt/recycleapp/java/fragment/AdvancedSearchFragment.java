@@ -13,8 +13,8 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.kt.recycleapp.kotlin.activity.MainActivity;
-import com.kt.recycleapp.kotlin.fragment.MainFragment;
+import com.kt.recycleapp.kotlin.main.MainActivity;
+import com.kt.recycleapp.kotlin.main.MainFragment;
 
 import java.recycleapp.R;
 

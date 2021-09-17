@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewmodel"
-            type="com.kt.recycleapp.kotlin.viewmodel.AlertViewModel" />
+            type="com.kt.recycleapp.kotlin.alert.AlertViewModel" />
 
     </data>
 
@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/main_backg_color"
-        tools:context="com.kt.recycleapp.kotlin.fragment.AlertFragment">
+        tools:context="com.kt.recycleapp.kotlin.alert.AlertFragment">
 
         <TextView
             android:id="@+id/alert_tv"

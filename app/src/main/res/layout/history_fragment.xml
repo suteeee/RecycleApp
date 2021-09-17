@@ -6,7 +6,7 @@
     <data>
 <variable
     name="model"
-    type="com.kt.recycleapp.kotlin.viewmodel.HistoryViewModel" />
+    type="com.kt.recycleapp.kotlin.history.HistoryViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/main_backg_color"
-        tools:context="com.kt.recycleapp.kotlin.fragment.HistoryFragment">
+        tools:context="com.kt.recycleapp.kotlin.history.HistoryFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/history_rv"

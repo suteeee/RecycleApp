@@ -2,7 +2,6 @@ package com.kt.recycleapp.java.announce;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Context;
@@ -17,23 +16,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.kt.recycleapp.java.fragment.PopupFragmentAddpage;
 import com.kt.recycleapp.java.fragment.PopupFragmentStartpage;
-import com.kt.recycleapp.kotlin.activity.MainActivity;
-import com.kt.recycleapp.kotlin.activity.OnBackPressListener;
-import com.kt.recycleapp.kotlin.fragment.MainFragment;
-import com.kt.recycleapp.kotlin.viewmodel.MainViewModel;
-
-import org.jetbrains.annotations.NotNull;
+import com.kt.recycleapp.kotlin.main.MainActivity;
+import com.kt.recycleapp.kotlin.listener.OnBackPressListener;
+import com.kt.recycleapp.kotlin.main.MainFragment;
 
 import java.recycleapp.R;
 import java.recycleapp.databinding.AnnounceRecyclerFragmentBinding;
-import java.util.HashSet;
-import java.util.Set;
 
 public class AnnounceRecyclerFragment extends Fragment implements OnBackPressListener {
 
@@ -45,6 +35,7 @@ public class AnnounceRecyclerFragment extends Fragment implements OnBackPressLis
     DialogFragment frg = new PopupFragmentAddpage();
     MainActivity act;
     Boolean haveBarcode;
+    Boolean isCapture = false;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -53,14 +44,17 @@ public class AnnounceRecyclerFragment extends Fragment implements OnBackPressLis
         mViewModel = new ViewModelProvider(this).get(AnnounceRecyclerViewModel.class);
         bundle = getArguments();
         barcode = bundle.getString("barcode");
+        isCapture = bundle.getBoolean("capture");
+
         binding.setViewmodel(mViewModel);
         mViewModel.itemName.setValue(barcode);
         act = (MainActivity)getActivity();
 
+
         mViewModel.checkBarcode(barcode);
         mViewModel.isHaveBarcode.observe(getViewLifecycleOwner(), it -> {
             haveBarcode = it;
-            if(it) {
+            if(it || !isCapture) {
                 binding.doUploadBtn.setVisibility(View.INVISIBLE);
             }
         });
@@ -74,11 +68,10 @@ public class AnnounceRecyclerFragment extends Fragment implements OnBackPressLis
 
         mViewModel.finding.observe(getViewLifecycleOwner(), s->{
             if(s.equals("finish")){
-                Log.d("fff",mViewModel.kind.getValue());
                 mViewModel.setData(barcode);
                 binding.announcePb.setVisibility(View.INVISIBLE);
                 mViewModel.finding.setValue("waiting");
-                if(!haveBarcode) binding.doUploadBtn.setVisibility(View.VISIBLE);
+                if(!haveBarcode && isCapture) binding.doUploadBtn.setVisibility(View.VISIBLE);
             }
         });
 

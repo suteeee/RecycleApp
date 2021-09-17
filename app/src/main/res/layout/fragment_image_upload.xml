@@ -11,7 +11,7 @@
         android:layout_width="400dp"
         android:layout_height="300dp"
         android:background="@color/main_backg_color"
-        tools:context="com.kt.recycleapp.kotlin.fragment.ImageUploadFragment">
+        tools:context="com.kt.recycleapp.kotlin.upload.ImageUploadFragment">
 
         <ImageView
             android:id="@+id/imageUpload_iv"
