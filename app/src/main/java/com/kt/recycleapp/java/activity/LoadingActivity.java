@@ -10,11 +10,14 @@ import androidx.lifecycle.MutableLiveData;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.database.annotations.NotNull;
 import com.kt.recycleapp.kotlin.main.MainActivity;
 import com.kt.recycleapp.manager.MyPreferenceManager;
@@ -28,6 +31,7 @@ public class LoadingActivity extends AppCompatActivity {
     private int REQUEST_CODE_PERMISSIONS = 10;
     MyPreferenceManager prefs;
     int delay = 2000;
+    ImageView loadingImage;
     MutableLiveData<Boolean> startFlag = new MutableLiveData<>(false);
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -37,14 +41,16 @@ public class LoadingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_loading);
         model = DatabaseReadModel.Companion.getInstance();
         prefs = new MyPreferenceManager(getApplicationContext()); //만들었던 preferenceManager를 쓸수있게 생성
-
+        loadingImage = findViewById(R.id.loading_img);
 
 
         if(prefs.getDarkmodSwitch()==false){
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            Glide.with(getApplicationContext()).load(R.drawable.loading_pic).override(Resources.getSystem().getDisplayMetrics().widthPixels).fitCenter().into(loadingImage);
         }
         else if(prefs.getDarkmodSwitch()==true){
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            Glide.with(getApplicationContext()).load(R.drawable.loading_pic_night).override(Resources.getSystem().getDisplayMetrics().widthPixels).fitCenter().into(loadingImage);
         }
 
         startFlag.observe(this, flag -> {

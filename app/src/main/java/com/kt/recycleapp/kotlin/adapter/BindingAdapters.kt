@@ -89,20 +89,13 @@ object BindingAdapters {
     @BindingAdapter("upload")
     @JvmStatic
     fun uploadItem(recyclerView: RecyclerView,item:ObservableArrayList<Int>) {
-       // val adt = UploadAdapter()
         val lm = LinearLayoutManager(recyclerView.context)
         lm.orientation = RecyclerView.HORIZONTAL
 
         recyclerView.layoutManager = lm
-        //recyclerView.adapter = adt
         (recyclerView.adapter as UploadAdapter).items = item
         recyclerView.adapter?.notifyDataSetChanged()
     }
 
-    @BindingAdapter("viewmodelConnect")
-    @JvmStatic
-    fun connect(recyclerView: RecyclerView, viewModel: DataUploadViewModel){
-        //(recyclerView.adapter as UploadAdapter).viewmodel = viewModel
-    }
 
 }

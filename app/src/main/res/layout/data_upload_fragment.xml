@@ -42,7 +42,6 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/upload_rv"
             upload="@{viewmodel.itemList}"
-            viewmodelConnect="@{viewmodel}"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@+id/data_upload_btn"

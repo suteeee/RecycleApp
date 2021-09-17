@@ -29,22 +29,22 @@ class DatabaseReadModel {
     var products = db.collection("products")
     var detailInfo = db.collection("detailInfo")
     var mixedProducts = products.document(MIXED_PRODUCT).collection(SUBLIST_PRODUCT).get()
-    var mixedInfo =  detailInfo.document(MIXED_PRODUCT).collection(SUBLIST_INFO)
-    var kind :String = ""
+    var mixedInfo = detailInfo.document(MIXED_PRODUCT).collection(SUBLIST_INFO)
+    var kind: String = ""
 
 
     companion object {
         var name = HashMap<String, String>()
         var nameForSetImage = ""
-        val instance:DatabaseReadModel = DatabaseReadModel()
+        val instance: DatabaseReadModel = DatabaseReadModel()
     }
 
-    fun findBig(findBigProgress: MutableLiveData<String>):ArrayList<String>{
+    fun findBig(findBigProgress: MutableLiveData<String>): ArrayList<String> {
         findBigProgress.value = "start"
         val collection = products
         val arr = ArrayList<String>()
         collection.get().addOnCompleteListener {
-            for(document in it.result){
+            for (document in it.result) {
                 arr.add(document.id)
             }
             findBigProgress.value = "finish"
@@ -52,58 +52,60 @@ class DatabaseReadModel {
         return arr
     }
 
-    fun findSmall(findSmallProgress: MutableLiveData<String>):  ArrayList<HashMap<String,String>>{
+    fun findSmall(findSmallProgress: MutableLiveData<String>): ArrayList<HashMap<String, String>> {
         findSmallProgress.value = "start"
         var selected = FindViewModel.selectDoc
         val collection = products
         val multi = products.document(MIXED_PRODUCT).collection(SUBLIST_PRODUCT)
-        val arr = ArrayList<HashMap<String,String>>()
+        val arr = ArrayList<HashMap<String, String>>()
         //컬렉션 Arr 안에 문서 arr 안에 값 hashmap 구조
 
         val c =
-            if(selected == MIXED_PRODUCT) multi.get()
+            if (selected == MIXED_PRODUCT) multi.get()
             else collection.get()
 
-            c.addOnCompleteListener {
-                val variable = it.result.documents
-                variable.forEach { doc->
-                    if(selected != MIXED_PRODUCT){
-                        if(doc.id == selected){
+        c.addOnCompleteListener {
+            val variable = it.result.documents
+            variable.forEach { doc ->
+                if (selected != MIXED_PRODUCT) {
+                    if (doc.id == selected) {
 
-                            for(i in 0 until doc.data?.keys?.size!!){
-                                val temp = HashMap<String,String>()
-                                temp[doc.data!!.keys.elementAt(i)] = doc.data!!.values.elementAt(i).toString()
-                                arr.add(temp)
-                            }
-                        }
-                    }else{
-                        for(i in 0 until doc.data?.keys?.size!!){
-                            val temp = HashMap<String,String>()
-                            temp[doc.data!!.keys.elementAt(i)] = doc.data!!.values.elementAt(i).toString()
+                        for (i in 0 until doc.data?.keys?.size!!) {
+                            val temp = HashMap<String, String>()
+                            temp[doc.data!!.keys.elementAt(i)] =
+                                doc.data!!.values.elementAt(i).toString()
                             arr.add(temp)
                         }
                     }
+                } else {
+                    for (i in 0 until doc.data?.keys?.size!!) {
+                        val temp = HashMap<String, String>()
+                        temp[doc.data!!.keys.elementAt(i)] =
+                            doc.data!!.values.elementAt(i).toString()
+                        arr.add(temp)
+                    }
                 }
-                findSmallProgress.value = "finish"
             }
+            findSmallProgress.value = "finish"
+        }
         return arr
     }
 
-    fun getProduct(getProductName: MutableLiveData<String>){
+    fun getProduct(getProductName: MutableLiveData<String>) {
         getProductName.value = "start"
 
         var collection = products
         collection.get().addOnCompleteListener {
-            for(doc in it.result.documents) {
-                if(doc.id != MIXED_PRODUCT){
-                    doc.data?.forEach { res-> name.put(res.key,res.value.toString()) }
+            for (doc in it.result.documents) {
+                if (doc.id != MIXED_PRODUCT) {
+                    doc.data?.forEach { res -> name.put(res.key, res.value.toString()) }
                 }
             }
-            getProductName.value="finish"
+            getProductName.value = "finish"
         }
     }
 
-    fun getProductsList(arr:MutableLiveData<String>) : ArrayList<String>{
+    fun getProductsList(arr: MutableLiveData<String>): ArrayList<String> {
         arr.value = "start"
         var collection = products
         var list = ArrayList<String>()
@@ -116,14 +118,19 @@ class DatabaseReadModel {
         return list
     }
 
-    fun findProductKind(finding: MutableLiveData<String>, product: String, kind: MutableLiveData<String>, imgCode: MutableLiveData<Int>) {
+    fun findProductKind(
+        finding: MutableLiveData<String>,
+        product: String,
+        kind: MutableLiveData<String>,
+        imgCode: MutableLiveData<Int>
+    ) {
         finding.value = "start"
         var res = ""
         products.get().addOnCompleteListener {
             (it.result.documents).forEach { doc ->
                 // 물품 명으로 탐색
                 if (doc.data?.values?.contains(product) == true) {
-                    Log.d(doc.data?.toString(),"test")
+                    Log.d(doc.data?.toString(), "test")
                     res = doc.id
                     return@forEach
                 }
@@ -134,81 +141,99 @@ class DatabaseReadModel {
         }
     }
 
-    fun settingResult(setting:MutableLiveData<String>,kind: String,product: ObservableArrayList<AnnounceData>,barcode:String){
+    fun settingResult(setting: MutableLiveData<String>, kind: String, product: ObservableArrayList<AnnounceData>, barcode: String) {
         setting.value = "start"
+        /*
+        * barcode 값은 캡쳐해서 들어올 경우 880065465 등, 탐색해서 들어올 경우 물품 명. -> 히스토리 통해 없는걸로 들어오면 숫자.
+        * */
+
         var name = barcode
         var info = ""
         var pKind = kind
-        var document: Map<String, Any>? =  null
-        val resultInfo = db.collection("resultInfo").get()
+        var document: Map<String, Any>? = null
+        var resultInfo = db.collection("resultInfo").get()
+        var prd = db.collection("product")
+        var productName = prd.whereEqualTo("name", barcode)
+        var productBarcode = prd.whereEqualTo("barcode", barcode)
 
+        var productData: Map<String, Any>? = HashMap()
+
+        fun set() {
+            name = productData?.get("name").toString()
+            pKind = productData?.get("kind").toString()
+            val pInfo = productData?.get("info").toString()
+            info =
+                if (pInfo.isNotEmpty()) {
+                    pInfo
+                } else {
+                    document?.get(pKind).toString()
+                }
+        }
+
+        fun multiAdd(name:String) {
+            val multiPrd = prd.document(name).collection("multiple").get()
+            multiPrd.addOnCompleteListener {
+                it.result.documents.forEach { doc ->
+                    val tData = doc.data
+                    val tName = tData?.get("name").toString()
+                    val tKind = tData?.get("kind").toString()
+                    val tInfo =
+                        if(tData?.get("info").toString().isNotEmpty()) {tData?.get("info").toString()}
+                        else {document?.get(tKind).toString()}
+
+                    product.add(AnnounceData(tName, tInfo, tKind))
+                }
+                setting.value = "finish"
+            }
+        }
 
         resultInfo.addOnCompleteListener {
             (it.result.documents).forEach { doc ->
                 document = doc.data
             }
-            Log.d("doc", info)
-        }
 
-
-        products.get().addOnCompleteListener {
-            (it.result.documents).forEach{doc ->
-                if(doc.data?.get(barcode) != null){
-                    name = doc.data?.get(barcode).toString()
-                    pKind = doc.id
-                }
-            }
-
-            if(pKind.isEmpty()) {
-                info = "데이터를 등록해주세요!"
-                pKind = "등록되지 않은 물품입니다."
-                product.add(AnnounceData(name, info ,pKind))
-            }
-            else {
-                mixedInfo.document(pKind).get().addOnCompleteListener {
-                    val res = (it.result.data)?.get(barcode)
-                    if(res != null) {
-                        //세부 설명이 있으면 info를 세부 설명으로
-                        info = res.toString()
-                    }else {
-                        //없으면 기본 설명 탐색
-                        info = document?.get(pKind).toString()
-
+            productBarcode.get().addOnCompleteListener { bit ->
+                val barcodeRes = bit.result.documents
+                if(barcodeRes.size != 0) { //바코드 번호로 조회 완료
+                    barcodeRes.forEach { barcodeDoc ->
+                        productData = barcodeDoc.data
+                        set()
                     }
-                    product.add(AnnounceData(name, info ,pKind))//첫번째 페이지(주 물품)
+                    product.add(AnnounceData(name, info, pKind))
+                    if(productData?.get("haveMultipleProduct") as Boolean) {
+                        multiAdd(name)
+                    }
 
-                    //두번째 물품부터
-                   mixedProducts.addOnCompleteListener {
-                        var cnt = 1
-                        (it.result.documents).forEach { doc->
-                            val d = doc.data
-                            d?.forEach { map->
-                                //물품 이름이 복합물품 문서 안에 있으면
-                                if(map.key.contains(name)){
-                                    var str = ""
-                                    //상세설명 찾아보기
-                                    mixedInfo.document(doc.id).get().addOnCompleteListener {
-                                        str = it.result.data?.get("${name}_${cnt++}").toString()
-                                        if(str.isEmpty() || str.isBlank() || str == "null") {
-                                            str = document?.get(doc.id).toString()
-                                        }
-                                        product.add(AnnounceData(map.value.toString(),str, doc.id))
-                                    }
+
+                }else { //바코드 번호로 조회 실패
+                    productName.get().addOnCompleteListener { nit ->
+                        val nameRes = nit.result.documents
+                        if(nameRes.size != 0) { //물품 명으로 조회 완료
+                            nameRes.forEach { nameDoc ->
+                                productData = nameDoc.data
+                                set()
+                                product.add(AnnounceData(name, info, pKind))
+
+                                if(productData?.get("haveMultipleProduct") as Boolean) {
+                                    multiAdd(name)
                                 }
                             }
+
                         }
-                        setting.value = "finish"
+                        else { //물품 없음
+                            info = "데이터를 등록해주세요!"
+                            pKind = "등록되지 않은 물품입니다."
+                            product.add(AnnounceData(name, info, pKind))
+                            setting.value = "finish"
+                        }
                     }
                 }
             }
         }
     }
 
-
-
-
     fun setImage(context: Context, imageView: ImageView, progressBar: ProgressBar, itemName: String) {
-       // CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(Dispatchers.IO).launch {
             var k = ""
 
             storage.child("products_image/IMAGE_${itemName.replace(" ", "")}.png")
@@ -218,11 +243,12 @@ class DatabaseReadModel {
                 }
                 .addOnFailureListener {
                     var id = 0
-                    Log.d("kind", itemName)
+                    Log.d("kindname", itemName)
                     products.get().addOnCompleteListener {
                         (it.result.documents).forEach { doc ->
-                            // 물품 명으로 탐색
-                            if (doc.data?.values?.contains(itemName) == true) {
+                            // 물품 명으로 탐색doc.data?.values?.contains(itemName)
+
+                            if (doc.data?.containsValue(itemName) == true) {
                                 k = doc.id
                                 return@forEach
                             }
@@ -230,7 +256,7 @@ class DatabaseReadModel {
                         mixedProducts.addOnCompleteListener {
                                 (it.result.documents).forEach { doc ->
                                     // 물품 명으로 탐색
-                                    if (doc.data?.values?.contains(itemName) == true) {
+                                    if (doc.data?.containsValue(itemName) == true) {
                                         Log.d("kind", "find")
                                         k = doc.id
                                         return@forEach
@@ -255,7 +281,7 @@ class DatabaseReadModel {
                             }
                     }
                 }
-       // }
+        }
     }
 
     fun uploadAll(photoUri: Uri?) {
