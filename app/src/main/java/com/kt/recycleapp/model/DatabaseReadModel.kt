@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.databinding.ObservableArrayList
@@ -366,14 +367,25 @@ class DatabaseReadModel {
         prd.whereEqualTo("barcode",barcode).get().addOnCompleteListener {
             var check = false
             val size = it.result.documents.size
-            Log.d("size",size.toString())
-            if(size != 0) {
+            if(size == 0) {
+                prd.whereEqualTo("name",barcode).get().addOnCompleteListener { name ->
+                    if(name.result.documents.size != 0){
+                       check = true
+                    }
+                    isHaveBarcode.value = check
+                    checkBarcodeFinish.value = true
+                }
+            }else {
                 check = true
+                isHaveBarcode.value = check
+                checkBarcodeFinish.value = true
             }
-            isHaveBarcode.value = check
-            checkBarcodeFinish.value = true
+
+
         }
 
     }
+
+
 
 }

@@ -1,5 +1,8 @@
 package com.kt.recycleapp.java.announce;
 
+import android.widget.Button;
+import android.widget.ProgressBar;
+
 import androidx.databinding.ObservableArrayList;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -38,4 +41,5 @@ public class AnnounceRecyclerViewModel extends ViewModel {
     public void checkBarcode(String barcode) {
         db.checkBarcode(barcode,isHaveBarcode,checkBarcodeFinish);
     }
+
 }

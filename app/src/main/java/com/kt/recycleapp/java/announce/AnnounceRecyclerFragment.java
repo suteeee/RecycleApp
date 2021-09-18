@@ -34,7 +34,7 @@ public class AnnounceRecyclerFragment extends Fragment implements OnBackPressLis
     String barcode;
     DialogFragment frg = new PopupFragmentAddpage();
     MainActivity act;
-    Boolean haveBarcode;
+    Boolean haveBarcode = true;
     Boolean isCapture = false;
 
     @Override
@@ -53,8 +53,7 @@ public class AnnounceRecyclerFragment extends Fragment implements OnBackPressLis
 
         mViewModel.checkBarcode(barcode);
         mViewModel.isHaveBarcode.observe(getViewLifecycleOwner(), it -> {
-            haveBarcode = it;
-            if(it || !isCapture) {
+            if(it) {
                 binding.doUploadBtn.setVisibility(View.INVISIBLE);
             }
         });
@@ -68,9 +67,17 @@ public class AnnounceRecyclerFragment extends Fragment implements OnBackPressLis
 
         mViewModel.finding.observe(getViewLifecycleOwner(), s->{
             if(s.equals("finish")){
+                haveBarcode = mViewModel.isHaveBarcode.getValue();
                 mViewModel.setData(barcode);
-                binding.announcePb.setVisibility(View.INVISIBLE);
                 mViewModel.finding.setValue("waiting");
+            }
+        });
+
+        mViewModel.setting.observe(getViewLifecycleOwner(), it -> {
+            if(it.equals("finish")) {
+                mViewModel.setting.setValue("wating");
+                binding.announcePb.setVisibility(View.INVISIBLE);
+                haveBarcode = mViewModel.isHaveBarcode.getValue();
                 if(!haveBarcode) binding.doUploadBtn.setVisibility(View.VISIBLE);
             }
         });
