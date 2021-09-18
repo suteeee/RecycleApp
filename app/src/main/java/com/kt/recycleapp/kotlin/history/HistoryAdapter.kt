@@ -93,6 +93,7 @@ class HistoryAdapter: RecyclerView.Adapter<HistoryAdapter.MyHolder>() {
                 }catch (e:Exception){}
 
                 binding.historyUnitLayout.setOnClickListener{
+                    Log.d("pos",data.pos.toString())
                     HistoryViewModel.selected.value = data.pos
                 }
             }

@@ -2,6 +2,7 @@ package com.kt.recycleapp.kotlin.upload
 
 import android.R
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,14 +38,14 @@ class AddAdapter(val viewModel: AddViewModel, val act: MainActivity) : RecyclerV
         fun bind(pos: Int) {
             init()
             val tmpProduct= HashMap<String,Any>()
-            val tmpInfoText = HashMap<String, Any>()
+            val tmpInfoText = ArrayList<String>()
             val adt = ArrayAdapter(context, R.layout.simple_spinner_dropdown_item,viewModel.productList);
             binding.productsSp2.adapter = adt
             adt.notifyDataSetChanged()
             binding.productsSp2.onItemSelectedListener = (object : AdapterView.OnItemSelectedListener{
 
                 override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    AddViewModel.products[pos] = binding.productsSp2.getItemAtPosition(position).toString()
+                    AddViewModel.kinds[pos] = binding.productsSp2.getItemAtPosition(position).toString()
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -55,11 +56,17 @@ class AddAdapter(val viewModel: AddViewModel, val act: MainActivity) : RecyclerV
             binding.summitBtn.setOnClickListener {
                 if(pos == 0){
                     if(binding.nameEt.text.isNotBlank()){
+                        Log.d("do","plz")
                         tmpProduct.put(AddViewModel.barcode,binding.nameEt.text.toString())
                         AddViewModel.addItems[pos] = tmpProduct
+                        Log.d(AddViewModel.addItems[pos].toString(),"plz")
                         if(binding.productExplainEt.text.toString().isNotBlank()){
-                            tmpInfoText.put(binding.nameEt.text.toString(),binding.productExplainEt.text.toString())
-                            AddViewModel.infoText[pos] = tmpInfoText
+                            tmpInfoText.add(binding.productExplainEt.text.toString())
+                            AddViewModel.infoText[pos] = binding.productExplainEt.text.toString()
+                        }
+                        else {
+                            //tmpInfoText.put(binding.nameEt.text.toString(),binding.productExplainEt.text.toString())
+                            AddViewModel.infoText[pos] = ""
                         }
                         AlertFragment.showAlert(act,"SaveSuccess",true)
                     }
@@ -72,8 +79,8 @@ class AddAdapter(val viewModel: AddViewModel, val act: MainActivity) : RecyclerV
                         tmpProduct.put(name, binding.nameEt.text.toString())
                         AddViewModel.addItems[pos] = tmpProduct
                         if(binding.productExplainEt.text.toString().isNotBlank()){
-                            tmpInfoText.put(name,binding.productExplainEt.text.toString())
-                            AddViewModel.infoText[pos] = tmpInfoText
+                            //tmpInfoText.put(name,binding.productExplainEt.text.toString())
+                            AddViewModel.infoText[pos] = binding.productExplainEt.text.toString()
                         }
                         Toast.makeText(context,"저장 완료!",Toast.LENGTH_SHORT).show()
                     }

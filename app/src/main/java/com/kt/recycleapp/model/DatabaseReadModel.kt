@@ -28,6 +28,8 @@ class DatabaseReadModel {
     val storage = FirebaseStorage.getInstance(STORAGE_URL).reference
     var products = db.collection("products")
     var detailInfo = db.collection("detailInfo")
+    var prd = db.collection("product")
+    var resultInfo = db.collection("resultInfo")
     var mixedProducts = products.document(MIXED_PRODUCT).collection(SUBLIST_PRODUCT).get()
     var mixedInfo = detailInfo.document(MIXED_PRODUCT).collection(SUBLIST_INFO)
     var kind: String = ""
@@ -55,88 +57,78 @@ class DatabaseReadModel {
     fun findSmall(findSmallProgress: MutableLiveData<String>): ArrayList<HashMap<String, String>> {
         findSmallProgress.value = "start"
         var selected = FindViewModel.selectDoc
-        val collection = products
-        val multi = products.document(MIXED_PRODUCT).collection(SUBLIST_PRODUCT)
         val arr = ArrayList<HashMap<String, String>>()
-        //컬렉션 Arr 안에 문서 arr 안에 값 hashmap 구조
 
-        val c =
-            if (selected == MIXED_PRODUCT) multi.get()
-            else collection.get()
-
-        c.addOnCompleteListener {
-            val variable = it.result.documents
-            variable.forEach { doc ->
-                if (selected != MIXED_PRODUCT) {
-                    if (doc.id == selected) {
-
-                        for (i in 0 until doc.data?.keys?.size!!) {
-                            val temp = HashMap<String, String>()
-                            temp[doc.data!!.keys.elementAt(i)] =
-                                doc.data!!.values.elementAt(i).toString()
-                            arr.add(temp)
-                        }
-                    }
-                } else {
-                    for (i in 0 until doc.data?.keys?.size!!) {
-                        val temp = HashMap<String, String>()
-                        temp[doc.data!!.keys.elementAt(i)] =
-                            doc.data!!.values.elementAt(i).toString()
-                        arr.add(temp)
-                    }
-                }
+        prd.whereEqualTo("kind",selected).get().addOnCompleteListener {
+            it.result.documents.forEach { doc->
+                val temp = HashMap<String, String>()
+                temp[doc.data?.get("barcode").toString()] = doc.data?.get("name").toString()
+                arr.add(temp)
             }
             findSmallProgress.value = "finish"
         }
         return arr
     }
 
+
+    /*
+    *History, Favorite에서 사용됨
+    *물품 바코드와 이름을 로딩
+    * */
+
     fun getProduct(getProductName: MutableLiveData<String>) {
         getProductName.value = "start"
 
-        var collection = products
-        collection.get().addOnCompleteListener {
-            for (doc in it.result.documents) {
-                if (doc.id != MIXED_PRODUCT) {
-                    doc.data?.forEach { res -> name.put(res.key, res.value.toString()) }
-                }
+        prd.get().addOnCompleteListener {
+            it.result.documents.forEach { doc ->
+                val data = doc.data
+                name.put(data?.get("barcode").toString(), data?.get("name").toString())
             }
             getProductName.value = "finish"
         }
     }
 
+    /*
+    * AddPopupPage, AddViewModel, DataUploadViewModel에서 사용됨
+    * 물품 분류 리스트를 로드하는 함수
+    * */
     fun getProductsList(arr: MutableLiveData<String>): ArrayList<String> {
         arr.value = "start"
-        var collection = products
-        var list = ArrayList<String>()
-        collection.get().addOnCompleteListener {
-            (it.result.documents).forEach {
-                list.add(it.id)
+        val list = ArrayList<String>()
+
+        resultInfo.get().addOnCompleteListener {
+            it.result.documents.forEach { doc->
+                doc.data?.keys?.forEach { key->
+                    list.add(key)
+                }
             }
             arr.value = "finish"
         }
         return list
     }
 
-    fun findProductKind(
-        finding: MutableLiveData<String>,
-        product: String,
-        kind: MutableLiveData<String>,
-        imgCode: MutableLiveData<Int>
-    ) {
+    /*
+    * AnnounceRecycler에서 사용
+    * 특정 물품의 분류를 조회하는 함수
+    * */
+    fun findProductKind(finding: MutableLiveData<String>, product: String, kind: MutableLiveData<String>) {
         finding.value = "start"
         var res = ""
-        products.get().addOnCompleteListener {
-            (it.result.documents).forEach { doc ->
-                // 물품 명으로 탐색
-                if (doc.data?.values?.contains(product) == true) {
-                    Log.d(doc.data?.toString(), "test")
-                    res = doc.id
-                    return@forEach
+
+        //물품 명으로 조회
+        prd.whereEqualTo("name",product).get().addOnCompleteListener {
+            if(!it.result.isEmpty) {
+                it.result.documents.forEach { doc->
+                    res = doc.data?.get("kind").toString()
+                    kind.value = res
+                    this.kind = res
                 }
+            }
+            else {
                 kind.value = res
                 this.kind = res
             }
+
             finding.value = "finish"
         }
     }
@@ -151,8 +143,7 @@ class DatabaseReadModel {
         var info = ""
         var pKind = kind
         var document: Map<String, Any>? = null
-        var resultInfo = db.collection("resultInfo").get()
-        var prd = db.collection("product")
+
         var productName = prd.whereEqualTo("name", barcode)
         var productBarcode = prd.whereEqualTo("barcode", barcode)
 
@@ -187,7 +178,7 @@ class DatabaseReadModel {
             }
         }
 
-        resultInfo.addOnCompleteListener {
+        resultInfo.get().addOnCompleteListener {
             (it.result.documents).forEach { doc ->
                 document = doc.data
             }
@@ -234,7 +225,21 @@ class DatabaseReadModel {
 
     fun setImage(context: Context, imageView: ImageView, progressBar: ProgressBar, itemName: String) {
         CoroutineScope(Dispatchers.IO).launch {
-            var k = ""
+            fun initImg() :Int{
+                var id = R.drawable.default_nothing
+                when (kind) {
+                    "건전지" -> id = R.drawable.ic_baterry_default
+                    "고철" -> id = R.drawable.ic_iron_default
+                    "비닐" -> id = R.drawable.ic_vinyl_default
+                    "유리" -> id = R.drawable.ic_glass_default
+                    "일반쓰레기" -> id = R.drawable.ic_trash_default
+                    "종이" -> id = R.drawable.ic_paper_default
+                    "캔" -> id = R.drawable.ic_can_default
+                    "페트병" -> id = R.drawable.ic_pet_default
+                    "플라스틱" -> id = R.drawable.ic_plastic_default
+                }
+                return id
+            }
 
             storage.child("products_image/IMAGE_${itemName.replace(" ", "")}.png")
                 .downloadUrl.addOnSuccessListener {
@@ -242,74 +247,97 @@ class DatabaseReadModel {
                     progressBar.visibility = View.INVISIBLE
                 }
                 .addOnFailureListener {
-                    var id = 0
+                    var id = R.drawable.default_nothing
                     Log.d("kindname", itemName)
-                    products.get().addOnCompleteListener {
-                        (it.result.documents).forEach { doc ->
-                            // 물품 명으로 탐색doc.data?.values?.contains(itemName)
 
-                            if (doc.data?.containsValue(itemName) == true) {
-                                k = doc.id
-                                return@forEach
-                            }
-                        }
-                        mixedProducts.addOnCompleteListener {
-                                (it.result.documents).forEach { doc ->
-                                    // 물품 명으로 탐색
-                                    if (doc.data?.containsValue(itemName) == true) {
-                                        Log.d("kind", "find")
-                                        k = doc.id
-                                        return@forEach
-                                    }
-                                }
-
-                                when (k) {
-                                    "건전지" -> id = R.drawable.ic_baterry_default
-                                    "고철" -> id = R.drawable.ic_iron_default
-                                    "비닐" -> id = R.drawable.ic_vinyl_default
-                                    "유리" -> id = R.drawable.ic_glass_default
-                                    "일반쓰레기" -> id = R.drawable.ic_trash_default
-                                    "종이" -> id = R.drawable.ic_paper_default
-                                    "캔" -> id = R.drawable.ic_can_default
-                                    "페트병" -> id = R.drawable.ic_pet_default
-                                    "플라스틱" -> id = R.drawable.ic_plastic_default
-                                }
-                                Log.d("kind", "$id $k")
-
+                    //해당 물품명으로 조회
+                    prd.whereEqualTo("name",itemName).get().addOnCompleteListener {
+                        //일반 물품중에서 존재할때
+                        Log.d(it.result.isEmpty.toString(),"kindname")
+                        if(!it.result.isEmpty) {
+                            it.result.forEach { res ->
+                                kind = res.data["kind"].toString()
+                                id = initImg()
                                 Glide.with(context).load(id).override(500).into(imageView)
                                 progressBar.visibility = View.INVISIBLE
                             }
+                        }else { //없을때
+                            prd.document(nameForSetImage).collection("multiple").get().addOnCompleteListener { mit ->
+                                if(!mit.result.isEmpty) { //복합물품 안에는 존재할때
+                                    mit.result.forEach { mRes ->
+                                        kind = mRes.data["kind"].toString()
+                                        id = initImg()
+                                        Glide.with(context).load(id).override(500).into(imageView)
+                                        progressBar.visibility = View.INVISIBLE
+                                    }
+                                }
+                                else { //다 없으면
+                                    Glide.with(context).load(id).override(500).into(imageView)
+                                    progressBar.visibility = View.INVISIBLE
+                                }
+                            }
+                        }
                     }
                 }
         }
     }
 
-    fun uploadAll(photoUri: Uri?) {
-        CoroutineScope(Dispatchers.IO).launch {
-            val list = AddViewModel.addItems
-            val exList = AddViewModel.infoText
-            try {
-                for (i in 0 until list.size) {
-                    if (i == 0) {
-                        products.document(AddViewModel.products[i]).update(list[i])
-                        detailInfo.document(AddViewModel.products[i]).update(exList[i])
-                    } else {
-                        products.document(MIXED_PRODUCT).collection(SUBLIST_PRODUCT).document(AddViewModel.products[i]).update(list[i])
-                        mixedInfo.document(AddViewModel.products[i]).update(exList[i])
-                    }
-                }
-            }catch (e:Exception){
+    fun uploadAll(photoUri: Uri?, list: ArrayList<HashMap<String, Any>>,exList : ArrayList<String>) {
+        //CoroutineScope(Dispatchers.IO).launch {
+            var check = false
+            val names =ArrayList<String>()
+            val barcode = list[0].keys.elementAt(0)
+            list.forEach { it.values.forEach { name -> names.add(name.toString()) }}
+            Log.d(list.toString(),"plz")
+            if(names.size != 1) { check = true }
 
+            fun makeData(idx:Int) :HashMap<String,Any>{
+                val item:HashMap<String,Any>?
+                item = hashMapOf(
+                    "name" to names[idx],
+                    "barcode" to barcode,
+                    "kind" to AddViewModel.kinds[idx],
+                    "haveMultipleProduct" to check,
+                    "info" to exList[idx]
+                )
+                return item
             }
 
+            fun makeMultiData(idx:Int) :HashMap<String,Any>{
+                val item:HashMap<String,Any>?
+                item = hashMapOf(
+                    "name" to names[idx],
+                    "kind" to AddViewModel.kinds[idx],
+                    "info" to exList[idx]
+                )
+                return item
+            }
+
+                for (i in 0 until list.size) {
+                    if (i == 0) {
+                        prd.document(names[i]).set(makeData(i))
+
+                        //products.document(AddViewModel.kinds[i]).update(list[i])
+                        //detailInfo.document(AddViewModel.kinds[i]).update(exList[i])
+                    } else {
+                        prd.document(names[i]).set(makeMultiData(i))
+
+                        //products.document(MIXED_PRODUCT).collection(SUBLIST_PRODUCT).document(AddViewModel.kinds[i]).update(list[i])
+                        //mixedInfo.document(AddViewModel.kinds[i]).update(exList[i])
+                    }
+                }
+
+
+        CoroutineScope(Dispatchers.IO).launch{
             if(photoUri != null) {
                 val fileName = "IMAGE_${list[0][AddViewModel.barcode]}"
                 val imgRef = storage.child("products_image/$fileName.png")
                 imgRef.putFile(photoUri)
             }
+        }
 
             AddViewModel.addItems.clear()
-        }
+       // }
     }
 
     fun uploadData

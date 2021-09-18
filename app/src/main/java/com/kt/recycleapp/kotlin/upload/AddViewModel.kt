@@ -13,9 +13,9 @@ class AddViewModel:ViewModel() {
    companion object{
        var barcode = ""
        var summit = MutableLiveData<String>()
-       var products = ArrayList<String>()
+       var kinds = ArrayList<String>()
        var addItems = ArrayList<HashMap<String,Any>>()
-       var infoText = ArrayList<HashMap<String,Any>>()
+       var infoText = ArrayList<String>()
    }
     var productList =ArrayList<String>()
     val listLoadFinish = MutableLiveData<String>()
@@ -24,7 +24,7 @@ class AddViewModel:ViewModel() {
     val model = DatabaseReadModel.instance
 
     fun uploadAll() {
-        model.uploadAll(photoUri)
+        model.uploadAll(photoUri, addItems, infoText)
     }
 
     fun loadingList() {

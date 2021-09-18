@@ -16,7 +16,6 @@ class HistoryViewModel : ViewModel() {
     }
 
     var getProductName = MutableLiveData<String>()
-    var cnt = 0
     var itemList = ObservableArrayList<HistoryData>()
     var tempList = ObservableArrayList<HistoryData>()
     var myRoomDbList :List<MyRoomDatabase>? = null
@@ -28,7 +27,7 @@ class HistoryViewModel : ViewModel() {
     }
 
     fun getData(helper: RoomHelper?, prefs: MyPreferenceManager, activity: MainActivity) {
-
+        var cnt = 0
         myRoomDbList = helper?.databaseDao()?.getAll()
         myRoomDbList?.forEach {
             var date1:String? = ""

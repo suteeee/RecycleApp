@@ -13,7 +13,6 @@ public class AnnounceRecyclerViewModel extends ViewModel {
     public MutableLiveData<String> itemName = new MutableLiveData<>();
     public MutableLiveData<String> finding = new MutableLiveData<>();
     public MutableLiveData<String> setting = new MutableLiveData<>();
-    public MutableLiveData<Integer> imgCode = new MutableLiveData<>(R.drawable.default_nothing);
     public MutableLiveData<Boolean> isHaveBarcode = new MutableLiveData<>(false);
     public MutableLiveData<Boolean> checkBarcodeFinish = new MutableLiveData<>(false);
     public ObservableArrayList<AnnounceData> nameList = new ObservableArrayList<>();
@@ -21,7 +20,7 @@ public class AnnounceRecyclerViewModel extends ViewModel {
     static MutableLiveData<String> kind = new MutableLiveData<>();
 
     public void findProductKind(String str) {
-        db.findProductKind(finding,str,kind,imgCode);
+        db.findProductKind(finding,str,kind);
     }
 
     public void setData(String barcode) {

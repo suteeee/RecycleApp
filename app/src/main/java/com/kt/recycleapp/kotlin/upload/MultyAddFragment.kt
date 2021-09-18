@@ -24,7 +24,7 @@ import java.recycleapp.databinding.FragmentMultyAddBinding
 class MultyAddFragment : Fragment(), OnBackPressListener {
     lateinit var binding:FragmentMultyAddBinding
     lateinit var viewModel: AddViewModel
-    var ld = MutableLiveData<String>()
+    //var ld = MutableLiveData<String>()
     var data = DatabaseReadModel.instance
     var cnt = 0
 
@@ -46,21 +46,17 @@ class MultyAddFragment : Fragment(), OnBackPressListener {
         viewModel.listLoadFinish.observe(viewLifecycleOwner, {
             if(it == "finish") {
                 viewModel.itemList.add(cnt++)
-                AddViewModel.products.add("")
-                AddViewModel.infoText.add(HashMap())
+                AddViewModel.kinds.add("")
+                AddViewModel.infoText.add("")
                 AddViewModel.addItems.add(HashMap())
 
-                ld.observe(viewLifecycleOwner, {
-                    if (it.equals("finish")) {
-                        binding.multyPb.visibility = View.INVISIBLE
-                        binding.itemaddBtn.setOnClickListener {
-                            viewModel.itemList.add(cnt++)
-                            AddViewModel.products.add("")
-                            AddViewModel.infoText.add(HashMap())
-                            AddViewModel.addItems.add(HashMap())
-                        }
-                    }
-                })
+                binding.multyPb.visibility = View.INVISIBLE
+                binding.itemaddBtn.setOnClickListener {
+                    viewModel.itemList.add(cnt++)
+                    AddViewModel.kinds.add("")
+                    AddViewModel.infoText.add("")
+                    AddViewModel.addItems.add(HashMap())
+                }
             }
         })
 
@@ -99,14 +95,14 @@ class MultyAddFragment : Fragment(), OnBackPressListener {
 
     fun addNewProduct(){
         viewModel.itemList.add(cnt++)
-        AddViewModel.products.add("")
-        AddViewModel.infoText.add(HashMap())
+        AddViewModel.kinds.add("")
+        AddViewModel.infoText.add("")
         AddViewModel.addItems.add(HashMap())
     }
 
     fun productClear() {
         viewModel.itemList.clear()
-        AddViewModel.products.clear()
+        AddViewModel.kinds.clear()
         AddViewModel.infoText.clear()
         AddViewModel.addItems.clear()
         addNewProduct()
