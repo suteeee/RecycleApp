@@ -20,20 +20,14 @@ import java.recycleapp.R
 
 class DatabaseReadModel {
     private val STORAGE_URL = "gs://recycleapp-e6ed9.appspot.com"
-    private val MIXED_PRODUCT = "복합물품"
-    private val SUBLIST_PRODUCT = "sublist"
-    private val SUBLIST_INFO = "subList"
+    private val MULTIPLE = "multiple"
+    private val HAVE_MULTIPLE_CHECK = "haveMultipleProduct"
 
     val db = FirebaseFirestore.getInstance()
     val storage = FirebaseStorage.getInstance(STORAGE_URL).reference
-    var products = db.collection("products")
-    var detailInfo = db.collection("detailInfo")
     var prd = db.collection("product")
     var resultInfo = db.collection("resultInfo")
-    var mixedProducts = products.document(MIXED_PRODUCT).collection(SUBLIST_PRODUCT).get()
-    var mixedInfo = detailInfo.document(MIXED_PRODUCT).collection(SUBLIST_INFO)
     var kind: String = ""
-
 
     companion object {
         var name = HashMap<String, String>()
@@ -43,11 +37,12 @@ class DatabaseReadModel {
 
     fun findBig(findBigProgress: MutableLiveData<String>): ArrayList<String> {
         findBigProgress.value = "start"
-        val collection = products
         val arr = ArrayList<String>()
-        collection.get().addOnCompleteListener {
-            for (document in it.result) {
-                arr.add(document.id)
+        resultInfo.get().addOnCompleteListener {
+            it.result.documents.forEach { doc->
+                doc.data?.keys?.forEach { key ->
+                    arr.add(key)
+                }
             }
             findBigProgress.value = "finish"
         }
@@ -162,7 +157,7 @@ class DatabaseReadModel {
         }
 
         fun multiAdd(name:String) {
-            val multiPrd = prd.document(name).collection("multiple").get()
+            val multiPrd = prd.document(name).collection(MULTIPLE).get()
             multiPrd.addOnCompleteListener {
                 it.result.documents.forEach { doc ->
                     val tData = doc.data
@@ -191,7 +186,7 @@ class DatabaseReadModel {
                         set()
                     }
                     product.add(AnnounceData(name, info, pKind))
-                    if(productData?.get("haveMultipleProduct") as Boolean) {
+                    if(productData?.get(HAVE_MULTIPLE_CHECK) as Boolean) {
                         multiAdd(name)
                     }
 
@@ -205,7 +200,7 @@ class DatabaseReadModel {
                                 set()
                                 product.add(AnnounceData(name, info, pKind))
 
-                                if(productData?.get("haveMultipleProduct") as Boolean) {
+                                if(productData?.get(HAVE_MULTIPLE_CHECK) as Boolean) {
                                     multiAdd(name)
                                 }
                             }
@@ -262,7 +257,7 @@ class DatabaseReadModel {
                                 progressBar.visibility = View.INVISIBLE
                             }
                         }else { //없을때
-                            prd.document(nameForSetImage).collection("multiple").get().addOnCompleteListener { mit ->
+                            prd.document(nameForSetImage).collection(MULTIPLE).get().addOnCompleteListener { mit ->
                                 if(!mit.result.isEmpty) { //복합물품 안에는 존재할때
                                     mit.result.forEach { mRes ->
                                         kind = mRes.data["kind"].toString()
@@ -282,51 +277,40 @@ class DatabaseReadModel {
         }
     }
 
+    fun makeData(idx:Int, kinds:ArrayList<String>, names: ArrayList<String>, barcode: String, exList: ArrayList<String>,check:Boolean) :HashMap<String,Any>{
+        val item:HashMap<String,Any>?
+        item = hashMapOf(
+            "name" to names[idx],
+            "barcode" to barcode,
+            "kind" to kinds[idx],
+             HAVE_MULTIPLE_CHECK to check,
+            "info" to exList[idx]
+        )
+        return item
+    }
+
+    fun makeMultiData(idx:Int,kinds:ArrayList<String>,names: ArrayList<String>, exList: ArrayList<String>) :HashMap<String,Any>{
+        val item:HashMap<String,Any>?
+        item = hashMapOf(
+            "name" to names[idx],
+            "kind" to kinds[idx],
+            "info" to exList[idx]
+        )
+        return item
+    }
+
     fun uploadAll(photoUri: Uri?, list: ArrayList<HashMap<String, Any>>,exList : ArrayList<String>) {
-        //CoroutineScope(Dispatchers.IO).launch {
-            var check = false
-            val names =ArrayList<String>()
-            val barcode = list[0].keys.elementAt(0)
-            list.forEach { it.values.forEach { name -> names.add(name.toString()) }}
-            Log.d(list.toString(),"plz")
-            if(names.size != 1) { check = true }
+        var check = false
+        val names =ArrayList<String>()
+        val barcode = list[0].keys.elementAt(0)
+        list.forEach { it.values.forEach { name -> names.add(name.toString()) }}
+        Log.d(list.toString(),"plz")
+        if(names.size != 1) { check = true }
 
-            fun makeData(idx:Int) :HashMap<String,Any>{
-                val item:HashMap<String,Any>?
-                item = hashMapOf(
-                    "name" to names[idx],
-                    "barcode" to barcode,
-                    "kind" to AddViewModel.kinds[idx],
-                    "haveMultipleProduct" to check,
-                    "info" to exList[idx]
-                )
-                return item
-            }
-
-            fun makeMultiData(idx:Int) :HashMap<String,Any>{
-                val item:HashMap<String,Any>?
-                item = hashMapOf(
-                    "name" to names[idx],
-                    "kind" to AddViewModel.kinds[idx],
-                    "info" to exList[idx]
-                )
-                return item
-            }
-
-                for (i in 0 until list.size) {
-                    if (i == 0) {
-                        prd.document(names[i]).set(makeData(i))
-
-                        //products.document(AddViewModel.kinds[i]).update(list[i])
-                        //detailInfo.document(AddViewModel.kinds[i]).update(exList[i])
-                    } else {
-                        prd.document(names[i]).set(makeMultiData(i))
-
-                        //products.document(MIXED_PRODUCT).collection(SUBLIST_PRODUCT).document(AddViewModel.kinds[i]).update(list[i])
-                        //mixedInfo.document(AddViewModel.kinds[i]).update(exList[i])
-                    }
-                }
-
+        for (i in 0 until list.size) {
+            if (i == 0) { prd.document(names[i]).set(makeData(i,AddViewModel.kinds,names,barcode,exList,check)) }
+            else { prd.document(names[0]).collection(MULTIPLE).document(names[i]).set(makeMultiData(i,AddViewModel.kinds,names,exList)) }
+        }
 
         CoroutineScope(Dispatchers.IO).launch{
             if(photoUri != null) {
@@ -335,29 +319,26 @@ class DatabaseReadModel {
                 imgRef.putFile(photoUri)
             }
         }
-
-            AddViewModel.addItems.clear()
-       // }
+        AddViewModel.addItems.clear()
     }
 
     fun uploadData
-                (barcode: String, names: ArrayList<String>, kinds: ArrayList<String>, subnames: ArrayList<String>, uploadFinish: MutableLiveData<String>, photoUri: Uri?, infoText: ArrayList<String>) {
+                (barcode: String, names: ArrayList<String>, kinds: ArrayList<String>, subnames: ArrayList<String>,
+                 uploadFinish: MutableLiveData<String>, photoUri: Uri?, infoText: ArrayList<String>) {
         CoroutineScope(Dispatchers.IO).launch{
             uploadFinish.postValue("start")
-            val col = products
-            val sub = col.document(MIXED_PRODUCT).collection(SUBLIST_PRODUCT)
+            var check = false
 
-            col.document(kinds[0]).update(barcode, names[0])
+            if(kinds.size != 1) check = true
 
-            if(infoText[0].isNotBlank() && infoText[0].isNotEmpty()) {
-                detailInfo.document(kinds[0]).update(names[0],infoText[0])
-            }
-
-            for(i in 1 until names.size){
-                sub.document(kinds[i]).update(names[i], subnames[i])
-                Log.d("Load11",infoText[i])
-                if(infoText[i].isNotBlank() && infoText[i].isNotEmpty()) {
-                    mixedInfo.document(kinds[i]).update(names[i],infoText[i])
+            for(i in 0 until kinds.size) {
+                if(i == 0) {
+                    prd.document(names[i])
+                        .set(makeData(i,kinds,names,barcode,infoText,check))
+                }
+                else {
+                    prd.document(names[0]).collection(MULTIPLE).document(names[i])
+                        .set(makeMultiData(i,kinds,names,infoText))
                 }
             }
 
@@ -381,18 +362,18 @@ class DatabaseReadModel {
     fun checkBarcode(barcode: String, isHaveBarcode: MutableLiveData<Boolean>, checkBarcodeFinish: MutableLiveData<Boolean>){
         checkBarcodeFinish.value = false
         isHaveBarcode.value = false
-        products.get().addOnCompleteListener {
+
+        prd.whereEqualTo("barcode",barcode).get().addOnCompleteListener {
             var check = false
-            (it.result.documents).forEach { doc->
-                Log.d("Main1",doc.data?.get(barcode).toString())
-                if(doc.data?.get(barcode) != null) {
-                    check = true
-                    return@forEach
-                }
+            val size = it.result.documents.size
+            Log.d("size",size.toString())
+            if(size != 0) {
+                check = true
             }
             isHaveBarcode.value = check
             checkBarcodeFinish.value = true
         }
+
     }
 
 }
