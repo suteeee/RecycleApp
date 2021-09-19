@@ -19,6 +19,7 @@ import com.kt.recycleapp.kotlin.find.FindViewModel
 import kotlinx.coroutines.*
 import java.recycleapp.R
 
+
 class DatabaseReadModel {
     private val STORAGE_URL = "gs://recycleapp-e6ed9.appspot.com"
     private val MULTIPLE = "multiple"
@@ -112,7 +113,8 @@ class DatabaseReadModel {
         var res = ""
 
         //물품 명으로 조회
-        prd.whereEqualTo("name",product).get().addOnCompleteListener {
+        prd.whereEqualTo("name",product).get()
+            .addOnCompleteListener {
             if(!it.result.isEmpty) {
                 it.result.documents.forEach { doc->
                     res = doc.data?.get("kind").toString()
@@ -326,6 +328,7 @@ class DatabaseReadModel {
     fun uploadData
                 (barcode: String, names: ArrayList<String>, kinds: ArrayList<String>, subnames: ArrayList<String>,
                  uploadFinish: MutableLiveData<String>, photoUri: Uri?, infoText: ArrayList<String>) {
+
         CoroutineScope(Dispatchers.IO).launch{
             uploadFinish.postValue("start")
             var check = false

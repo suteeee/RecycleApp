@@ -26,9 +26,8 @@ import com.kt.recycleapp.model.DatabaseReadModel;
 import java.recycleapp.R;
 
 public class LoadingActivity extends AppCompatActivity {
-    DatabaseReadModel model;
-    private  String[] REQUIRED_PERMISSIONS = {Manifest.permission.CAMERA,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE};
-    private int REQUEST_CODE_PERMISSIONS = 10;
+    private final String[] REQUIRED_PERMISSIONS = {Manifest.permission.CAMERA,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    private final int REQUEST_CODE_PERMISSIONS = 10;
     MyPreferenceManager prefs;
     int delay = 2000;
     ImageView loadingImage;
@@ -39,7 +38,6 @@ public class LoadingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
-        model = DatabaseReadModel.Companion.getInstance();
         prefs = new MyPreferenceManager(getApplicationContext()); //만들었던 preferenceManager를 쓸수있게 생성
         loadingImage = findViewById(R.id.loading_img);
 

@@ -53,7 +53,7 @@ class HistoryFragment : Fragment(){
         })
         HistoryViewModel.selected.observe(viewLifecycleOwner,{
             if(it > -1){
-                val list = helper?.databaseDao()?.getAll()
+                val list = helper?.databaseDao()?.getAllDesc()
                 val barcodes = ArrayList<String>()
                 list?.forEach {res -> barcodes.add(res.barcode!!) }
 
@@ -71,7 +71,7 @@ class HistoryFragment : Fragment(){
         })
 
 
-        mAdapter = HistoryAdapter()
+        mAdapter = HistoryAdapter(viewModel)
         binding.historyRv.adapter = mAdapter
 
         actViewModel.searchFlag.observe(viewLifecycleOwner,{
@@ -99,7 +99,6 @@ class HistoryFragment : Fragment(){
         actViewModel.fragmentStack.pop()
         actViewModel.selectedFragment.value = actViewModel.fragmentStack.peek()
         if(actViewModel.fragmentStack.peek() == "main")
-            act.replaceFragment(MainFragment())
-            //act.supportFragmentManager.beginTransaction().replace(R.id.small_layout1,MainFragment()).commitAllowingStateLoss()
+            act.replaceFragmentWithCommitAllowingStateLoss(MainFragment())
     }
 }

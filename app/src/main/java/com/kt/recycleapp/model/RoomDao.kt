@@ -8,6 +8,9 @@ interface RoomDAO {
     @Query("select * from `Database`")
     fun getAll():List<MyRoomDatabase>
 
+    @Query("select * from `Database` order by `no` desc")
+    fun getAllDesc():List<MyRoomDatabase>
+
     @Insert(onConflict = REPLACE)
     fun insert(db:MyRoomDatabase)
 

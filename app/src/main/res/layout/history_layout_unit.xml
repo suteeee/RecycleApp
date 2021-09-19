@@ -49,7 +49,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/historyName_tv"
+                    android:id="@+id/history_tv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/font1"
@@ -78,7 +78,7 @@
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_weight="3"
                     app:layout_constraintStart_toEndOf="@+id/history_iv"
-                    app:layout_constraintTop_toBottomOf="@+id/historyName_tv" />
+                    app:layout_constraintTop_toBottomOf="@+id/history_tv" />
 
                 <ImageView
                     android:id="@+id/history_btn"
@@ -87,7 +87,7 @@
                     android:background="#00ff0000"
                     app:layout_constraintBottom_toTopOf="@+id/historyDate_tv"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/historyName_tv"
+                    app:layout_constraintStart_toEndOf="@+id/history_tv"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_star" />
             </androidx.constraintlayout.widget.ConstraintLayout>

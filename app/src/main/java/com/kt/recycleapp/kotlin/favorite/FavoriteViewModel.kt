@@ -36,17 +36,11 @@ class FavoriteViewModel: ViewModel() {
           }
           var newDate = "${date1}년 ${date2}월 ${date3}일"
 
-          DatabaseReadModel.name.forEach {
-              Log.d(it.key,it.value)
-          }
-
-          if(barcode == null){
+          if(DatabaseReadModel.name[barcode].toString() != "null") {
+              barcode = "제품명 : ${DatabaseReadModel.name[barcode]}"
+          }else {
               barcode = "바코드 값 : ${barcode}"
           }
-          else{
-              barcode = "제품명 : ${DatabaseReadModel.name[barcode].toString()}"
-          }
-
 
           itemList.add(FavoriteData(image,barcode,newDate,idx++))
       }

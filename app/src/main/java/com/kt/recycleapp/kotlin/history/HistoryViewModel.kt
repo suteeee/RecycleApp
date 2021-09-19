@@ -9,8 +9,11 @@ import com.kt.recycleapp.manager.MyPreferenceManager
 import com.kt.recycleapp.model.DatabaseReadModel
 import com.kt.recycleapp.model.MyRoomDatabase
 import com.kt.recycleapp.model.RoomHelper
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
-class HistoryViewModel : ViewModel() {
+class HistoryViewModel() : ViewModel() {
     companion object{
         var selected = MutableLiveData<Int>(-1)
     }
@@ -20,6 +23,7 @@ class HistoryViewModel : ViewModel() {
     var tempList = ObservableArrayList<HistoryData>()
     var myRoomDbList :List<MyRoomDatabase>? = null
     var name:Map<String,String> = HashMap()
+    var itemCountList = LinkedList<Int>()
     val model = DatabaseReadModel.instance
 
     fun getFireData(){
@@ -28,7 +32,7 @@ class HistoryViewModel : ViewModel() {
 
     fun getData(helper: RoomHelper?, prefs: MyPreferenceManager, activity: MainActivity) {
         var cnt = 0
-        myRoomDbList = helper?.databaseDao()?.getAll()
+        myRoomDbList = helper?.databaseDao()?.getAllDesc()
         myRoomDbList?.forEach {
             var date1:String? = ""
             var date2 :String?= ""
@@ -54,6 +58,7 @@ class HistoryViewModel : ViewModel() {
             else{
                 barcode = "제품명 : ${DatabaseReadModel.name[it.barcode]}"
             }
+            itemCountList.addFirst(cnt)
             itemList.add(HistoryData(date,image,barcode,cnt++))
         }
 

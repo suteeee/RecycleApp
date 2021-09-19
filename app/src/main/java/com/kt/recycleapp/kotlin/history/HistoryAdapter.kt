@@ -19,7 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.recycleapp.databinding.HistoryLayoutUnitBinding
 
-class HistoryAdapter: RecyclerView.Adapter<HistoryAdapter.MyHolder>() {
+class HistoryAdapter(val viewModel: HistoryViewModel): RecyclerView.Adapter<HistoryAdapter.MyHolder>() {
     var items = ArrayList<HistoryData>()
     lateinit var prefs :MyPreferenceManager
     var helper:RoomHelper? = null
@@ -31,7 +31,7 @@ class HistoryAdapter: RecyclerView.Adapter<HistoryAdapter.MyHolder>() {
         helper = RoomHelper.getInstance(parent.context)
 
         CoroutineScope(Dispatchers.IO).launch {
-            list = helper?.databaseDao()?.getAll()
+            list = helper?.databaseDao()?.getAllDesc()
         }
 
         val holder = MyHolder(binding,parent.context)
@@ -72,7 +72,7 @@ class HistoryAdapter: RecyclerView.Adapter<HistoryAdapter.MyHolder>() {
 
                             CoroutineScope(Dispatchers.IO).launch {
                                 Log.d("${position} ${state}","test")
-                                helper?.databaseDao()?.updateFavorite(position,state)
+                                helper?.databaseDao()?.updateFavorite(viewModel.itemCountList[position],state)
                             }
 
                         }

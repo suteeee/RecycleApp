@@ -25,7 +25,7 @@ class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHoler>(
         val holder = FavoriteViewHoler(binding,parent.context)
         helper = getInstance(parent.context)
 
-        list = helper?.databaseDao()?.getAll()
+        list = helper?.databaseDao()?.getAllDesc()
 
         return holder
     }
@@ -45,7 +45,7 @@ class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHoler>(
             val handler = android.os.Handler(Looper.getMainLooper())
 
             handler.postDelayed({
-                Glide.with(context).load(path).into(binding.historyIv)
+                Glide.with(context).load(path).into(binding.favoriteIv)
                 binding.favoriteBtn.setOnClickListener {
                     GlobalScope.launch {
                         helper?.databaseDao()?.updateFavorite(position+1,"false")

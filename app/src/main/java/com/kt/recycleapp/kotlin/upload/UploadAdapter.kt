@@ -70,15 +70,11 @@ class UploadAdapter(val viewmodel: DataUploadViewModel, val act: MainActivity) :
             var name = ""
             var info = binding.uploadInfoEt.text.toString()
             viewmodel.kinds[i] = selected
-            //if(i == 0) {
                 name = binding.uploadNameEt.text.toString()
-                viewmodel.barcodes[i] = binding.uploadBarcodeEt.text.toString()
+                viewmodel.barcodes[i] = binding.uploadBarcodeEt
+                    .text.toString()
                 viewmodel.names[i] = name
-            //}
-            /*else {
-                viewmodel.subNames[i] = binding.uploadNameEt.text.toString()
-                viewmodel.names[i] = "${viewmodel.names[0]}_$i"
-            }*/
+
             if(info.isNotEmpty() && info.isNotBlank()) {
                 viewmodel.infoText[i] = info
             }

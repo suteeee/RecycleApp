@@ -36,17 +36,17 @@
                 android:background="@color/sub_backg_color">
 
                 <ImageView
-                    android:id="@+id/history_iv"
+                    android:id="@+id/favorite_iv"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/historyDate_tv"
+                    app:layout_constraintEnd_toStartOf="@+id/favorite_tv"
                     app:layout_constraintHorizontal_weight="1"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/historyDate_tv"
+                    android:id="@+id/favoriteDate_tv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:clickable="true"
@@ -60,11 +60,11 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_weight="3"
-                    app:layout_constraintStart_toEndOf="@+id/history_iv"
-                    app:layout_constraintTop_toBottomOf="@+id/historyName_tv" />
+                    app:layout_constraintStart_toEndOf="@+id/favorite_iv"
+                    app:layout_constraintTop_toBottomOf="@+id/favorite_tv" />
 
                 <TextView
-                    android:id="@+id/historyName_tv"
+                    android:id="@+id/favorite_tv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/font1"
@@ -72,9 +72,10 @@
                     android:text="@{data.name}"
                     android:textColor="@color/main_text_color"
                     android:textSize="18sp"
-                    app:layout_constraintBottom_toTopOf="@+id/historyDate_tv"
+                    app:layout_constraintHorizontal_weight="3"
+                    app:layout_constraintBottom_toTopOf="@+id/favoriteDate_tv"
                     app:layout_constraintEnd_toStartOf="@+id/favorite_btn"
-                    app:layout_constraintStart_toEndOf="@+id/history_iv"
+                    app:layout_constraintStart_toEndOf="@+id/favorite_iv"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
@@ -83,9 +84,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
                     android:layout_marginBottom="20dp"
-                    app:layout_constraintBottom_toTopOf="@+id/historyDate_tv"
+                    app:layout_constraintBottom_toTopOf="@+id/favoriteDate_tv"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/historyName_tv"
+                    app:layout_constraintStart_toEndOf="@+id/favorite_tv"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_star" />
 
