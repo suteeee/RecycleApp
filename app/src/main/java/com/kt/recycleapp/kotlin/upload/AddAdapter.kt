@@ -56,10 +56,9 @@ class AddAdapter(val viewModel: AddViewModel, val act: MainActivity) : RecyclerV
             binding.summitBtn.setOnClickListener {
                 if(pos == 0){
                     if(binding.nameEt.text.isNotBlank()){
-                        Log.d("do","plz")
                         tmpProduct.put(AddViewModel.barcode,binding.nameEt.text.toString())
                         AddViewModel.addItems[pos] = tmpProduct
-                        Log.d(AddViewModel.addItems[pos].toString(),"plz")
+
                         if(binding.productExplainEt.text.toString().isNotBlank()){
                             tmpInfoText.add(binding.productExplainEt.text.toString())
                             AddViewModel.infoText[pos] = binding.productExplainEt.text.toString()
@@ -82,9 +81,10 @@ class AddAdapter(val viewModel: AddViewModel, val act: MainActivity) : RecyclerV
                             //tmpInfoText.put(name,binding.productExplainEt.text.toString())
                             AddViewModel.infoText[pos] = binding.productExplainEt.text.toString()
                         }
-                        Toast.makeText(context,"저장 완료!",Toast.LENGTH_SHORT).show()
+                        AlertFragment.showAlert(act,"SaveSuccess",true)
+                        //Toast.makeText(context,"저장 완료!",Toast.LENGTH_SHORT).show()
                     }
-                    else{ Toast.makeText(context,"빈칸으로 저장할 수 없습니다.",Toast.LENGTH_SHORT).show() }
+                    else{ AlertFragment.showAlert(act,"NotEmptyEditText",true) }
                 }
             }
         }
