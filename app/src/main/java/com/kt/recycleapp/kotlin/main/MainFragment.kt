@@ -86,7 +86,7 @@ class MainFragment : Fragment() {
 
         val rootView = binding.root
 
-        binding.captureBtn.setOnClickListener {
+        binding.flashBtn.setOnClickListener {
             when(cameraInfo?.torchState?.value){
                 TorchState.ON->{ cameraController?.enableTorch(false) }
                 TorchState.OFF->{ cameraController?.enableTorch(true) }

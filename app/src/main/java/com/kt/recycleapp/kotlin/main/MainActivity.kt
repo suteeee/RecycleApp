@@ -89,10 +89,12 @@ class MainActivity : AppCompatActivity() {
         })
 
         searchView.setOnSearchClickListener {
+            binding.homeBtn2.visibility = View.INVISIBLE
             tempText = viewModel.toolbarText.value!!
             viewModel.toolbarText.value = ""
         }
         searchView.setOnCloseListener(SearchView.OnCloseListener {
+            binding.homeBtn2.visibility = View.VISIBLE
             if (binding.toolbarSv.query.isNotEmpty() || viewModel.searchFlag.value == "finish") {
                 viewModel.toolbarText.value = tempText
                 viewModel.searchFlag.value = "reset"
