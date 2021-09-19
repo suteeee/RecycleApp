@@ -205,9 +205,10 @@ class DatabaseReadModel {
 
                                 if(productData?.get(HAVE_MULTIPLE_CHECK) as Boolean) {
                                     multiAdd(name)
+                                }else {
+                                    setting.value = "finish"
                                 }
                             }
-
                         }
                         else { //물품 없음
                             info = "데이터를 등록해주세요!"
@@ -306,6 +307,15 @@ class DatabaseReadModel {
         var check = false
         val names =ArrayList<String>()
         val barcode = list[0].keys.elementAt(0)
+
+        fun uploadImg(name:String,photoUri: Uri) {
+            CoroutineScope(Dispatchers.IO).launch{
+                val fileName = "IMAGE_$name"
+                val imgRef = storage.child("products_image/$fileName.png")
+                imgRef.putFile(photoUri)
+            }
+        }
+
         list.forEach { it.values.forEach { name -> names.add(name.toString()) }}
         Log.d(list.toString(),"plz")
         if(names.size != 1) { check = true }
@@ -315,13 +325,12 @@ class DatabaseReadModel {
             else { prd.document(names[0]).collection(MULTIPLE).document(names[i]).set(makeMultiData(i,AddViewModel.kinds,names,exList)) }
         }
 
-        CoroutineScope(Dispatchers.IO).launch{
-            if(photoUri != null) {
-                val fileName = "IMAGE_${list[0][AddViewModel.barcode]}"
-                val imgRef = storage.child("products_image/$fileName.png")
-                imgRef.putFile(photoUri)
-            }
+        if(photoUri != null) {
+            uploadImg(names[0],photoUri)
         }
+
+
+
         AddViewModel.addItems.clear()
     }
 

@@ -1,6 +1,8 @@
 package com.kt.recycleapp.kotlin.history
 
 import android.util.Log
+import android.view.View
+import android.widget.TextView
 import androidx.databinding.ObservableArrayList
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -30,7 +32,7 @@ class HistoryViewModel() : ViewModel() {
         model.getProduct(getProductName)
     }
 
-    fun getData(helper: RoomHelper?, prefs: MyPreferenceManager, activity: MainActivity) {
+    fun getData(helper: RoomHelper?, prefs: MyPreferenceManager, historyNoItemTv: TextView) {
         var cnt = 0
         myRoomDbList = helper?.databaseDao()?.getAllDesc()
         myRoomDbList?.forEach {
@@ -60,6 +62,9 @@ class HistoryViewModel() : ViewModel() {
             }
             itemCountList.addFirst(cnt)
             itemList.add(HistoryData(date,image,barcode,cnt++))
+        }
+        if(itemList.isEmpty()) {
+            historyNoItemTv.visibility = View.VISIBLE
         }
 
         MainActivity.historyItemsForSearch = itemList

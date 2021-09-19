@@ -98,7 +98,7 @@ class MainFragment : Fragment() {
         }
 
         binding.HistoryBtn.setOnClickListener {
-            fragmentChange(HistoryFragment())
+            (activity as MainActivity).replaceFragmentWithBackStack(HistoryFragment(),null)
         }
 
 

@@ -2,7 +2,6 @@ package com.kt.recycleapp.kotlin.favorite
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -32,10 +31,8 @@ class FavoriteItemFragment : Fragment() {
     var helper:RoomHelper? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        Log.d("fff","ffff")
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_favorite_item, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
-       // act = activity as MainActivity
 
         helper = RoomHelper.getInstance(requireContext())
 
@@ -49,7 +46,7 @@ class FavoriteItemFragment : Fragment() {
         viewModel.getProductName.observe(viewLifecycleOwner,{
             if(it == "finish"){
                 progressBar.visibility = View.INVISIBLE
-                viewModel.setData(helper!!)
+                viewModel.setData(helper!!,binding.favoriteNoItemTv)
             }
         })
 

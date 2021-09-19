@@ -1,6 +1,7 @@
 package com.kt.recycleapp.kotlin.favorite
 
-import android.util.Log
+import android.view.View
+import android.widget.TextView
 import androidx.databinding.ObservableArrayList
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,7 +19,7 @@ class FavoriteViewModel: ViewModel() {
     var getProductName = MutableLiveData<String>()
     var idx = 0
 
-    fun setData(helper: RoomHelper) {
+    fun setData(helper: RoomHelper, favoriteNoItemTv: TextView) {
       helper.databaseDao().getFavoriteAll().forEach {
           val image = it.image
           val date = it.dateTime
@@ -44,6 +45,9 @@ class FavoriteViewModel: ViewModel() {
 
           itemList.add(FavoriteData(image,barcode,newDate,idx++))
       }
+        if(itemList.isEmpty()) {
+            favoriteNoItemTv.visibility = View.VISIBLE
+        }
         MainActivity.favoriteItemForSearch = itemList
     }
 

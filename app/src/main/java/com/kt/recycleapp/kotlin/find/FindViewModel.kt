@@ -1,5 +1,7 @@
 package com.kt.recycleapp.kotlin.find
 
+import android.view.View
+import android.widget.TextView
 import androidx.databinding.ObservableArrayList
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -31,7 +33,7 @@ class FindViewModel: ViewModel() {
         itemList.add(FindBigData(imgArr[index],itemData[index],bigidx++))
     }
 
-    fun addSmallItem(){
+    fun addSmallItem(findNoItemTv: TextView) {
         var idx = 0
         when(selectDoc){
             "건전지"-> idx = 0
@@ -52,6 +54,9 @@ class FindViewModel: ViewModel() {
         itemDataSmall.forEach {
             smallItemList.add(FindSmallData(temp,itemDataSmall[cnt].values.elementAt(0),smallidx++))
             cnt++
+        }
+        if(smallItemList.isEmpty()) {
+            findNoItemTv.visibility = View.VISIBLE
         }
     }
 
