@@ -150,7 +150,6 @@ class MainFragment : Fragment() {
             override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                 captureIsFinish.value="no"
                 val path ="$outputDirectory/$name"
-                val bm = BitmapFactory.decodeFile(path)
                 context?.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,Uri.fromFile(
                     outputDirectory
                 )))

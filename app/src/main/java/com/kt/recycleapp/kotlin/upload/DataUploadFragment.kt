@@ -74,6 +74,10 @@ class DataUploadFragment : Fragment() {
             startActivityForResult(photoPickerIntent,0)
         }
 
+        binding.uploadMinusBtn.setOnClickListener {
+            subtractProduct()
+        }
+
         return binding.root
     }
 
@@ -94,6 +98,19 @@ class DataUploadFragment : Fragment() {
         viewModel.subNames.clear()
         viewModel.infoText.clear()
         addNewProduct()
+    }
+
+    fun subtractProduct() {
+        if(viewModel.itemList.size != 0) {
+            viewModel.itemList.removeLastOrNull()
+            viewModel.barcodes.removeLastOrNull()
+            viewModel.names.removeLastOrNull()
+            viewModel.kinds.removeLastOrNull()
+            viewModel.subNames.removeLastOrNull()
+            viewModel.infoText.removeLastOrNull()
+        }else {
+            AlertFragment.showAlert(act, "UnderFlow",true)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

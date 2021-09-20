@@ -58,6 +58,9 @@ class AlertFragment : DialogFragment() {
             "NotEmptyEditText" -> {
                 text = "빈칸으로 등록할 수 없습니다."
             }
+            "UnderFlow" -> {
+                text = "더이상 삭제할 수 없습니다!"
+            }
             "ImgLoading" -> {
                 binding.alertPb.visibility = View.VISIBLE
                 binding.AlertBtn.visibility = View.INVISIBLE

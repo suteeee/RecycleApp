@@ -101,5 +101,16 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_begin="10dp" />
 
+        <ImageButton
+            android:id="@+id/multi_minus_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/common_buttom_design"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/multy_rv"
+            app:srcCompat="@drawable/ic_minus_24" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

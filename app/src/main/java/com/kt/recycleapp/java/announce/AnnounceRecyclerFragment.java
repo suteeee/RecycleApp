@@ -74,11 +74,12 @@ public class AnnounceRecyclerFragment extends Fragment implements OnBackPressLis
         });
 
         mViewModel.setting.observe(getViewLifecycleOwner(), it -> {
+            Log.d("Test",it);
             if(it.equals("finish")) {
-                mViewModel.setting.setValue("wating");
                 binding.announcePb.setVisibility(View.INVISIBLE);
                 haveBarcode = mViewModel.isHaveBarcode.getValue();
                 if(!haveBarcode) binding.doUploadBtn.setVisibility(View.VISIBLE);
+                mViewModel.setting.setValue("wating");
             }
         });
 

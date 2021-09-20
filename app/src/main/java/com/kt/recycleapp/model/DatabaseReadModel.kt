@@ -192,7 +192,9 @@ class DatabaseReadModel {
                     if(productData?.get(HAVE_MULTIPLE_CHECK) as Boolean) {
                         multiAdd(name)
                     }
-
+                    else {
+                        setting.value = "finish"
+                    }
 
                 }else { //바코드 번호로 조회 실패
                     productName.get().addOnCompleteListener { nit ->

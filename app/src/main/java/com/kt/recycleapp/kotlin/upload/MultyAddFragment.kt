@@ -60,6 +60,10 @@ class MultyAddFragment : Fragment(), OnBackPressListener {
             }
         })
 
+        binding.multiMinusBtn.setOnClickListener {
+            subtractProduct()
+        }
+
 
 
         AddViewModel.summit.observe(viewLifecycleOwner,{
@@ -106,6 +110,17 @@ class MultyAddFragment : Fragment(), OnBackPressListener {
         AddViewModel.infoText.clear()
         AddViewModel.addItems.clear()
         addNewProduct()
+    }
+
+    fun subtractProduct() {
+        if(viewModel.itemList.size != 0) {
+            viewModel.itemList.removeLastOrNull()
+            AddViewModel.kinds.removeLastOrNull()
+            AddViewModel.infoText.removeLastOrNull()
+            AddViewModel.addItems.removeLastOrNull()
+        }else {
+            AlertFragment.showAlert(act, "UnderFlow",true)
+        }
     }
 
     override fun onBack() {

@@ -29,6 +29,8 @@
     <string name="guidebook5">5. 그 외에 다양한 기능들을 둘러보세요~</string>
     <string name="guidebook6">6.아직미작성</string>
     <string name="noItem">데이터가 없습니다.</string>
+    <string name="userGuideTitle">유저가이드</string>
+    <string name="dataUploadTitle">데이터 업로드</string>
 
 
 </resources>
