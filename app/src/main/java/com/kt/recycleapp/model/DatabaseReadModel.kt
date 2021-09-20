@@ -322,10 +322,12 @@ class DatabaseReadModel {
         Log.d(list.toString(),"plz")
         if(names.size != 1) { check = true }
 
-        for (i in 0 until list.size) {
-            if (i == 0) { prd.document(names[i]).set(makeData(i,AddViewModel.kinds,names,barcode,exList,check)) }
-            else { prd.document(names[0]).collection(MULTIPLE).document(names[i]).set(makeMultiData(i,AddViewModel.kinds,names,exList)) }
-        }
+        try {
+            for (i in 0 until list.size) {
+                if (i == 0) { prd.document(names[i]).set(makeData(i,AddViewModel.kinds,names,barcode,exList,check)) }
+                else { prd.document(names[0]).collection(MULTIPLE).document(names[i]).set(makeMultiData(i,AddViewModel.kinds,names,exList)) }
+            }
+        }catch (e:Exception) {}
 
         if(photoUri != null) {
             uploadImg(names[0],photoUri)

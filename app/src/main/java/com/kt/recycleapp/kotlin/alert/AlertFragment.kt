@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.kt.recycleapp.kotlin.main.MainActivity
+import com.kt.recycleapp.kotlin.main.MainFragment
 import java.recycleapp.R
 import java.recycleapp.databinding.FragmentAlertBinding
 
@@ -16,6 +17,9 @@ class AlertFragment : DialogFragment() {
     companion object {
         val instance = AlertFragment()
         val bundle = Bundle()
+        fun putBundleBoolean(key:String, value: Boolean) {
+            bundle.putBoolean(key, value)
+        }
         fun showAlert(activity: MainActivity, value:String, cancel:Boolean) {
             bundle.putString("AlertType", value)
             instance.arguments = bundle
@@ -85,5 +89,13 @@ class AlertFragment : DialogFragment() {
         }
 
         return binding.root
+    }
+
+    override fun dismiss() {
+        if(bundle.getBoolean("MultiAdd")) {
+            bundle.putBoolean("MultiAdd",false)
+            (requireActivity() as MainActivity).replaceFragment(MainFragment())
+        }
+        super.dismiss()
     }
 }

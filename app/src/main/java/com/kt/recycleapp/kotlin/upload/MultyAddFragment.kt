@@ -77,6 +77,7 @@ class MultyAddFragment : Fragment(), OnBackPressListener {
 
         binding.addAllBtn.setOnClickListener {
             viewModel.uploadAll()
+            AlertFragment.putBundleBoolean("MultiAdd",true)
             AlertFragment.showAlert(act, "AddSuccess", true)
             viewModel.photoUri = null
             productClear()
