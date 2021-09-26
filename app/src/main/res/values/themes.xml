@@ -18,4 +18,8 @@
         <item name="android:fontFamily">@font/font1</item>
     </style>
 
+    <style name="spinnerStyle">
+        <item name="android:fontFamily">@font/font1</item>
+    </style>
+
 </resources>

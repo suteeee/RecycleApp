@@ -39,7 +39,7 @@ class AddAdapter(val viewModel: AddViewModel, val act: MainActivity) : RecyclerV
             init()
             val tmpProduct= HashMap<String,Any>()
             val tmpInfoText = ArrayList<String>()
-            val adt = ArrayAdapter(context, R.layout.simple_spinner_dropdown_item,viewModel.productList);
+            val adt = ArrayAdapter(context, R.layout.simple_spinner_dropdown_item,viewModel.productList)
             binding.productsSp2.adapter = adt
             adt.notifyDataSetChanged()
             binding.productsSp2.onItemSelectedListener = (object : AdapterView.OnItemSelectedListener{

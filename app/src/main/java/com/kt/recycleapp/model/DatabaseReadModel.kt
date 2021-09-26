@@ -26,10 +26,11 @@ class DatabaseReadModel {
 
     val db = FirebaseFirestore.getInstance()
     val storage = FirebaseStorage.getInstance(STORAGE_URL).reference
-    var prd = db.collection("product")
+    var product = db.collection("product")
     var resultInfo = db.collection("resultInfo")
     var kind: String = ""
     var myRoomDbList :List<MyRoomDatabase>? = null
+    var myRoomDbListR :List<MyRoomDatabase>? = null
     var myRoomFDBList :List<MyRoomDatabase>? = null
     var productName = HashMap<String, String>()
     var nameForSetImage = ""
@@ -63,7 +64,7 @@ class DatabaseReadModel {
         var selected = FindViewModel.selectDoc
         val arr = ArrayList<HashMap<String, String>>()
 
-        prd.whereEqualTo("kind",selected).get().addOnCompleteListener {
+        product.whereEqualTo("kind",selected).get().addOnCompleteListener {
             it.result.documents.forEach { doc->
                 val temp = HashMap<String, String>()
                 temp[doc.data?.get("barcode").toString()] = doc.data?.get("name").toString()
@@ -82,6 +83,13 @@ class DatabaseReadModel {
         return myRoomDbList!!
     }
 
+    fun getSQLiteDataR(helper: RoomHelper?, getSQLDataFinish: MutableLiveData<Boolean>){
+        getSQLDataFinish.value = false
+        if(myRoomDbListR == null) { myRoomDbListR = helper?.databaseDao()?.getAll() }
+        getSQLDataFinish.value = true
+
+    }
+
     fun getSQLitefavoriteData(helper: RoomHelper?, getSQLiteFDataFinish: MutableLiveData<Boolean>) {
         getSQLiteFDataFinish.value = false
         if(myRoomFDBList == null) { myRoomFDBList = helper?.databaseDao()?.getFavoriteAll() }
@@ -96,7 +104,7 @@ class DatabaseReadModel {
     fun getProduct(getProductName: MutableLiveData<String>) {
         getProductName.value = "start"
         if(productName.isEmpty()) {
-            prd.get().addOnCompleteListener {
+            product.get().addOnCompleteListener {
                 it.result.documents.forEach { doc ->
                     val data = doc.data
                     productName.put(data?.get("barcode").toString(), data?.get("name").toString())
@@ -141,7 +149,7 @@ class DatabaseReadModel {
         var res = ""
 
         //물품 명으로 조회
-        prd.whereEqualTo("name",product).get()
+        this.product.whereEqualTo("name",product).get()
             .addOnCompleteListener {
             if(!it.result.isEmpty) {
                 it.result.documents.forEach { doc->
@@ -170,8 +178,8 @@ class DatabaseReadModel {
         var pKind = kind
         var document: Map<String, Any>? = null
 
-        var productName = prd.whereEqualTo("name", barcode)
-        var productBarcode = prd.whereEqualTo("barcode", barcode)
+        var productName = this.product.whereEqualTo("name", barcode)
+        var productBarcode = this.product.whereEqualTo("barcode", barcode)
 
         var productData: Map<String, Any>? = HashMap()
 
@@ -188,7 +196,7 @@ class DatabaseReadModel {
         }
 
         fun multiAdd(name:String) {
-            val multiPrd = prd.document(name).collection(MULTIPLE).get()
+            val multiPrd = this.product.document(name).collection(MULTIPLE).get()
             multiPrd.addOnCompleteListener {
                 it.result.documents.forEach { doc ->
                     val tData = doc.data
@@ -280,7 +288,7 @@ class DatabaseReadModel {
                     Log.d("kindname", itemName)
 
                     //해당 물품명으로 조회
-                    prd.whereEqualTo("name",itemName).get().addOnCompleteListener {
+                    product.whereEqualTo("name",itemName).get().addOnCompleteListener {
                         //일반 물품중에서 존재할때
                         Log.d(it.result.isEmpty.toString(),"kindname")
                         if(!it.result.isEmpty) {
@@ -291,7 +299,7 @@ class DatabaseReadModel {
                                 progressBar.visibility = View.INVISIBLE
                             }
                         }else { //없을때
-                            prd.document(nameForSetImage).collection(MULTIPLE).get().addOnCompleteListener { mit ->
+                            product.document(nameForSetImage).collection(MULTIPLE).get().addOnCompleteListener { mit ->
                                 if(!mit.result.isEmpty) { //복합물품 안에는 존재할때
                                     mit.result.forEach { mRes ->
                                         kind = mRes.data["kind"].toString()
@@ -352,8 +360,8 @@ class DatabaseReadModel {
 
         try {
             for (i in 0 until list.size) {
-                if (i == 0) { prd.document(names[i]).set(makeData(i,AddViewModel.kinds,names,barcode,exList,check)) }
-                else { prd.document(names[0]).collection(MULTIPLE).document(names[i]).set(makeMultiData(i,AddViewModel.kinds,names,exList)) }
+                if (i == 0) { product.document(names[i]).set(makeData(i,AddViewModel.kinds,names,barcode,exList,check)) }
+                else { product.document(names[0]).collection(MULTIPLE).document(names[i]).set(makeMultiData(i,AddViewModel.kinds,names,exList)) }
             }
         }catch (e:Exception) {}
 
@@ -378,11 +386,11 @@ class DatabaseReadModel {
 
             for(i in 0 until kinds.size) {
                 if(i == 0) {
-                    prd.document(names[i])
+                    product.document(names[i])
                         .set(makeData(i,kinds,names,barcode,infoText,check))
                 }
                 else {
-                    prd.document(names[0]).collection(MULTIPLE).document(names[i])
+                    product.document(names[0]).collection(MULTIPLE).document(names[i])
                         .set(makeMultiData(i,kinds,names,infoText))
                 }
             }
@@ -408,11 +416,11 @@ class DatabaseReadModel {
         checkBarcodeFinish.value = false
         isHaveBarcode.value = false
 
-        prd.whereEqualTo("barcode",barcode).get().addOnCompleteListener {
+        product.whereEqualTo("barcode",barcode).get().addOnCompleteListener {
             var check = false
             val size = it.result.documents.size
             if(size == 0) {
-                prd.whereEqualTo("name",barcode).get().addOnCompleteListener { name ->
+                product.whereEqualTo("name",barcode).get().addOnCompleteListener { name ->
                     if(name.result.documents.size != 0){
                        check = true
                     }

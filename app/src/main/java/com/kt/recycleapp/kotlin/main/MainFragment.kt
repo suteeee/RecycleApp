@@ -226,7 +226,7 @@ class MainFragment : Fragment() {
 
                         MotionEvent.ACTION_MOVE ->{
                             if(event.pointerCount == 2) {
-                                if (zoomCnt >= 1){
+                                if (zoomCnt >= 2){
                                     zoomCnt = 0
                                     multiTouch = true
                                 val max = 3.0f

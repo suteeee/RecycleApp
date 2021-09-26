@@ -6,6 +6,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -13,6 +15,7 @@ import com.kt.recycleapp.java.announce.AnnounceRecyclerFragment
 import com.kt.recycleapp.kotlin.main.MainActivity
 import com.kt.recycleapp.kotlin.main.MainFragment
 import com.kt.recycleapp.kotlin.main.MainViewModel
+import com.kt.recycleapp.kotlin.upload.AddViewModel
 import com.kt.recycleapp.manager.MyPreferenceManager
 import com.kt.recycleapp.model.DatabaseReadModel
 import com.kt.recycleapp.model.RoomHelper
@@ -28,14 +31,9 @@ class HistoryFragment : Fragment(){
     var model = DatabaseReadModel.instance
     lateinit var act: MainActivity
     lateinit var actViewModel: MainViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.d("history","onCreate")
-    }
+    val sortList = arrayOf("최신순", "과거순")
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        Log.d("history","onCreateView")
         binding = DataBindingUtil.inflate(inflater,R.layout.history_fragment, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
 
@@ -48,10 +46,25 @@ class HistoryFragment : Fragment(){
 
         viewModel = ViewModelProvider(this).get(HistoryViewModel::class.java)
         binding.model = viewModel
-        viewModel.itemList.clear()
 
-        viewModel.getFireData()
 
+        mAdapter = HistoryAdapter(viewModel)
+        binding.historyRv.adapter = mAdapter
+
+
+        val adt = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item,sortList)
+        binding.sortSp.adapter = adt
+        binding.sortSp.onItemSelectedListener = (object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                viewModel.selectedSort.value = parent?.getItemAtPosition(position).toString()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        })
+
+        viewModel.selectedSort.observe(viewLifecycleOwner, {
+            viewModel.getFireData()
+        })
 
         viewModel.getProductName.observe(viewLifecycleOwner,{
             if(it == "finish"){
@@ -68,7 +81,9 @@ class HistoryFragment : Fragment(){
 
         HistoryViewModel.selected.observe(viewLifecycleOwner,{
             if(it > -1){
-                val list = helper?.databaseDao()?.getAllDesc()
+                val list = if(viewModel.selectedSort.value == "최신순") { model.myRoomDbList }
+                else { model.myRoomDbListR }
+
                 val barcodes = ArrayList<String>()
                 list?.forEach {res -> barcodes.add(res.barcode!!) }
 
@@ -85,9 +100,6 @@ class HistoryFragment : Fragment(){
             }
         })
 
-
-        mAdapter = HistoryAdapter(viewModel)
-        binding.historyRv.adapter = mAdapter
 
         actViewModel.searchFlag.observe(viewLifecycleOwner,{
             if(it == "finish"){

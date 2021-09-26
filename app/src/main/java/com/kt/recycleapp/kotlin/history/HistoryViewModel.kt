@@ -28,18 +28,29 @@ class HistoryViewModel() : ViewModel() {
     var name:Map<String,String> = HashMap()
     var itemCountList = LinkedList<Int>()
     val model = DatabaseReadModel.instance
+    val selectedSort = MutableLiveData<String>("최신순")
 
     fun getFireData(){
         model.getProduct(getProductName)
     }
 
     fun getSQLData(helper: RoomHelper?) {
-        model.getSQLiteData(helper,getSQLDataFinish)
+        if(selectedSort.value == "최신순") {
+            model.getSQLiteData(helper,getSQLDataFinish)
+        }else {
+            model.getSQLiteDataR(helper,getSQLDataFinish)
+        }
+
     }
 
     fun getData(helper: RoomHelper?, prefs: MyPreferenceManager, historyNoItemTv: TextView) {
+        itemList.clear()
         var cnt = 0
-        model.myRoomDbList?.forEach {
+        val db =
+            if(selectedSort.value == "최신순") model.myRoomDbList
+            else model.myRoomDbListR
+
+        db?.forEach {
             var date1:String? = ""
             var date2 :String?= ""
             var date3 :String?= ""
