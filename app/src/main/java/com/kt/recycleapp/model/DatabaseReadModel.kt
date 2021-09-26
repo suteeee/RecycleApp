@@ -4,7 +4,6 @@ import android.content.Context
 import android.net.Uri
 import android.util.Log
 import android.view.View
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.databinding.ObservableArrayList
@@ -30,25 +29,33 @@ class DatabaseReadModel {
     var prd = db.collection("product")
     var resultInfo = db.collection("resultInfo")
     var kind: String = ""
+    var myRoomDbList :List<MyRoomDatabase>? = null
+    var myRoomFDBList :List<MyRoomDatabase>? = null
+    var productName = HashMap<String, String>()
+    var nameForSetImage = ""
+
+    var productsKindList = ArrayList<String>()
 
     companion object {
-        var name = HashMap<String, String>()
-        var nameForSetImage = ""
         val instance: DatabaseReadModel = DatabaseReadModel()
     }
 
     fun findBig(findBigProgress: MutableLiveData<String>): ArrayList<String> {
         findBigProgress.value = "start"
-        val arr = ArrayList<String>()
-        resultInfo.get().addOnCompleteListener {
-            it.result.documents.forEach { doc->
-                doc.data?.keys?.forEach { key ->
-                    arr.add(key)
+        if(productsKindList.isEmpty()) {
+            resultInfo.get().addOnCompleteListener {
+                it.result.documents.forEach { doc->
+                    doc.data?.keys?.forEach { key ->
+                        productsKindList.add(key)
+                    }
                 }
+                findBigProgress.value = "finish"
             }
+        }else {
             findBigProgress.value = "finish"
         }
-        return arr
+
+        return productsKindList
     }
 
     fun findSmall(findSmallProgress: MutableLiveData<String>): ArrayList<HashMap<String, String>> {
@@ -68,6 +75,19 @@ class DatabaseReadModel {
     }
 
 
+    fun getSQLiteData(helper: RoomHelper?, getSQLDataFinish: MutableLiveData<Boolean>):List<MyRoomDatabase> {
+        getSQLDataFinish.value = false
+        if(myRoomDbList == null) { myRoomDbList = helper?.databaseDao()?.getAllDesc() }
+        getSQLDataFinish.value = true
+        return myRoomDbList!!
+    }
+
+    fun getSQLitefavoriteData(helper: RoomHelper?, getSQLiteFDataFinish: MutableLiveData<Boolean>) {
+        getSQLiteFDataFinish.value = false
+        if(myRoomFDBList == null) { myRoomFDBList = helper?.databaseDao()?.getFavoriteAll() }
+        getSQLiteFDataFinish.value = true
+    }
+
     /*
     *History, Favorite에서 사용됨
     *물품 바코드와 이름을 로딩
@@ -75,12 +95,16 @@ class DatabaseReadModel {
 
     fun getProduct(getProductName: MutableLiveData<String>) {
         getProductName.value = "start"
-
-        prd.get().addOnCompleteListener {
-            it.result.documents.forEach { doc ->
-                val data = doc.data
-                name.put(data?.get("barcode").toString(), data?.get("name").toString())
+        if(productName.isEmpty()) {
+            prd.get().addOnCompleteListener {
+                it.result.documents.forEach { doc ->
+                    val data = doc.data
+                    productName.put(data?.get("barcode").toString(), data?.get("name").toString())
+                }
+                getProductName.value = "finish"
             }
+        }
+        else {
             getProductName.value = "finish"
         }
     }
@@ -91,17 +115,21 @@ class DatabaseReadModel {
     * */
     fun getProductsList(arr: MutableLiveData<String>): ArrayList<String> {
         arr.value = "start"
-        val list = ArrayList<String>()
 
-        resultInfo.get().addOnCompleteListener {
-            it.result.documents.forEach { doc->
-                doc.data?.keys?.forEach { key->
-                    list.add(key)
+        if(productName.isEmpty()) {
+            resultInfo.get().addOnCompleteListener {
+                it.result.documents.forEach { doc->
+                    doc.data?.keys?.forEach { key->
+                        productsKindList.add(key)
+                    }
                 }
+                arr.value = "finish"
             }
+        }else {
             arr.value = "finish"
         }
-        return list
+
+        return productsKindList
     }
 
     /*

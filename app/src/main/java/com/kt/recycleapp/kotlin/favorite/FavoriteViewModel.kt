@@ -17,10 +17,15 @@ class FavoriteViewModel: ViewModel() {
     var tempList = ObservableArrayList<FavoriteData>()
     val model = DatabaseReadModel.instance
     var getProductName = MutableLiveData<String>()
+    var getSQLiteFDataFinish = MutableLiveData<Boolean>()
     var idx = 0
 
+    fun getSQLiteFavoriteData(helper: RoomHelper) {
+        model.getSQLitefavoriteData(helper,getSQLiteFDataFinish)
+    }
+
     fun setData(helper: RoomHelper, favoriteNoItemTv: TextView) {
-      helper.databaseDao().getFavoriteAll().forEach {
+      model.myRoomFDBList?.forEach {
           val image = it.image
           val date = it.dateTime
           var barcode = it.barcode
@@ -37,8 +42,8 @@ class FavoriteViewModel: ViewModel() {
           }
           var newDate = "${date1}년 ${date2}월 ${date3}일"
 
-          if(DatabaseReadModel.name[barcode].toString() != "null") {
-              barcode = "제품명 : ${DatabaseReadModel.name[barcode]}"
+          if(model.productName[barcode].toString() != "null") {
+              barcode = "제품명 : ${model.productName[barcode]}"
           }else {
               barcode = "바코드 값 : ${barcode}"
           }

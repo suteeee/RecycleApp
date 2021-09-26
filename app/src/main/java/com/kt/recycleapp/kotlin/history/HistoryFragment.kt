@@ -2,6 +2,7 @@ package com.kt.recycleapp.kotlin.history
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,7 +29,13 @@ class HistoryFragment : Fragment(){
     lateinit var act: MainActivity
     lateinit var actViewModel: MainViewModel
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.d("history","onCreate")
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        Log.d("history","onCreateView")
         binding = DataBindingUtil.inflate(inflater,R.layout.history_fragment, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
 
@@ -45,12 +52,20 @@ class HistoryFragment : Fragment(){
 
         viewModel.getFireData()
 
+
         viewModel.getProductName.observe(viewLifecycleOwner,{
             if(it == "finish"){
-                binding.historyPb.visibility = View.INVISIBLE
-                viewModel.getData(helper, prefs,binding.historyNoItemTv)
+                viewModel.getSQLData(helper)
             }
         })
+
+        viewModel.getSQLDataFinish.observe(viewLifecycleOwner, {
+            if(it) {
+                viewModel.getData(helper, prefs,binding.historyNoItemTv)
+                binding.historyPb.visibility = View.INVISIBLE
+            }
+        })
+
         HistoryViewModel.selected.observe(viewLifecycleOwner,{
             if(it > -1){
                 val list = helper?.databaseDao()?.getAllDesc()
@@ -59,7 +74,7 @@ class HistoryFragment : Fragment(){
 
                 val frg = AnnounceRecyclerFragment()
                 val bundle = Bundle()
-                val temp = DatabaseReadModel.name[barcodes[it]]
+                val temp = model.productName[barcodes[it]]
 
                 bundle.putString("barcode", temp ?: barcodes[it])
                 bundle.putBoolean("capture",false)

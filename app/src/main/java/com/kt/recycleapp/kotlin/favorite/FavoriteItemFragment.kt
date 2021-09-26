@@ -29,6 +29,7 @@ class FavoriteItemFragment : Fragment() {
     lateinit var act: MainActivity
     lateinit var actViewModel: MainViewModel
     var helper:RoomHelper? = null
+    var model = DatabaseReadModel.instance
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_favorite_item, container, false)
@@ -45,8 +46,17 @@ class FavoriteItemFragment : Fragment() {
 
         viewModel.getProductName.observe(viewLifecycleOwner,{
             if(it == "finish"){
-                progressBar.visibility = View.INVISIBLE
+
+                viewModel.getSQLiteFavoriteData(helper!!)
+
+
+            }
+        })
+
+        viewModel.getSQLiteFDataFinish.observe(viewLifecycleOwner, {
+            if(it) {
                 viewModel.setData(helper!!,binding.favoriteNoItemTv)
+                progressBar.visibility = View.INVISIBLE
             }
         })
 
@@ -61,7 +71,7 @@ class FavoriteItemFragment : Fragment() {
                 list?.forEach {res-> barcodes.add(res.barcode!!) }
                 val frg = AnnounceRecyclerFragment()
                 val bundle = Bundle()
-                val temp = DatabaseReadModel.name[barcodes[it]]
+                val temp = model.productName[barcodes[it]]
                 bundle.putString("barcode", temp ?: barcodes[it])
                 bundle.putBoolean("capture",false)
                 frg.arguments = bundle

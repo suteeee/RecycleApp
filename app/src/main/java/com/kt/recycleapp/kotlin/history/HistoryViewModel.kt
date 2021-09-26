@@ -21,6 +21,7 @@ class HistoryViewModel() : ViewModel() {
     }
 
     var getProductName = MutableLiveData<String>()
+    var getSQLDataFinish = MutableLiveData<Boolean>()
     var itemList = ObservableArrayList<HistoryData>()
     var tempList = ObservableArrayList<HistoryData>()
     var myRoomDbList :List<MyRoomDatabase>? = null
@@ -32,10 +33,13 @@ class HistoryViewModel() : ViewModel() {
         model.getProduct(getProductName)
     }
 
+    fun getSQLData(helper: RoomHelper?) {
+        model.getSQLiteData(helper,getSQLDataFinish)
+    }
+
     fun getData(helper: RoomHelper?, prefs: MyPreferenceManager, historyNoItemTv: TextView) {
         var cnt = 0
-        myRoomDbList = helper?.databaseDao()?.getAllDesc()
-        myRoomDbList?.forEach {
+        model.myRoomDbList?.forEach {
             var date1:String? = ""
             var date2 :String?= ""
             var date3 :String?= ""
@@ -54,11 +58,11 @@ class HistoryViewModel() : ViewModel() {
 
             val date = "${date1}년 ${date2}월 ${date3}일"
 
-            if(DatabaseReadModel.name[it.barcode] == null){
+            if(model.productName[it.barcode] == null){
                 barcode = "바코드 값 : ${it.barcode}"
             }
             else{
-                barcode = "제품명 : ${DatabaseReadModel.name[it.barcode]}"
+                barcode = "제품명 : ${model.productName[it.barcode]}"
             }
             itemCountList.addFirst(cnt)
             itemList.add(HistoryData(date,image,barcode,cnt++))
