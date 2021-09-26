@@ -316,6 +316,10 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    fun showToast(str:String) {
+        Toast.makeText(applicationContext,str,Toast.LENGTH_SHORT).show()
+    }
+
     override fun onBackPressed() {
         if(!binding.toolbarSv.isIconified){
             viewModel.toolbarText.value = tempText

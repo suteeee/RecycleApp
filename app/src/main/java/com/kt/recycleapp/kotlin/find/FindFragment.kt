@@ -2,6 +2,7 @@ package com.kt.recycleapp.kotlin.find
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,9 +10,12 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
+import com.kt.recycleapp.kotlin.Internet
+import com.kt.recycleapp.kotlin.alert.AlertFragment
 import com.kt.recycleapp.kotlin.main.MainActivity
 import com.kt.recycleapp.kotlin.main.MainFragment
 import com.kt.recycleapp.kotlin.main.MainViewModel
+import com.kt.recycleapp.manager.MyPreferenceManager
 import java.recycleapp.R
 import java.recycleapp.databinding.FragmentFindBinding
 
@@ -22,12 +26,14 @@ class FindFragment : Fragment(){
     lateinit var viewModel: FindViewModel
     lateinit var act: MainActivity
     lateinit var actViewModel: MainViewModel
+    lateinit var prefs :MyPreferenceManager
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_find, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
 
         act = activity as MainActivity
+        prefs = MyPreferenceManager(requireContext())
 
         viewModel = ViewModelProvider(this).get(FindViewModel::class.java)
         binding.bigItem =viewModel
@@ -36,6 +42,22 @@ class FindFragment : Fragment(){
 
         mAdapter = FindBigAdapter()
         binding.findBigRv.adapter = mAdapter
+
+        val iStatus = Internet.getStatus(requireContext())
+
+        when(iStatus) {
+            Internet.MOBILE_DATA -> {
+                Log.d("find","${prefs.mobileInternetShow}")
+                if(!(prefs.mobileInternetShow)) {
+                    act.showToast(resources.getString(R.string.mobileData))
+                    prefs.mobileInternetShow = true
+                }
+
+            }
+            Internet.NOT_CONNECT -> {
+                act.showToast(resources.getString(R.string.internetNotConnected))
+            }
+        }
 
         viewModel.findBig()
         viewModel.findBigProgress.observe(viewLifecycleOwner,{

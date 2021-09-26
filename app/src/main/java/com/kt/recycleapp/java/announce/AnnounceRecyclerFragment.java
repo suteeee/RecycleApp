@@ -18,9 +18,13 @@ import android.view.ViewGroup;
 
 import com.kt.recycleapp.java.fragment.PopupFragmentAddpage;
 import com.kt.recycleapp.java.fragment.PopupFragmentStartpage;
+import com.kt.recycleapp.kotlin.Internet;
+import com.kt.recycleapp.kotlin.alert.AlertFragment;
 import com.kt.recycleapp.kotlin.main.MainActivity;
 import com.kt.recycleapp.kotlin.listener.OnBackPressListener;
 import com.kt.recycleapp.kotlin.main.MainFragment;
+import com.kt.recycleapp.kotlin.main.MainViewModel;
+import com.kt.recycleapp.manager.MyPreferenceManager;
 
 import java.recycleapp.R;
 import java.recycleapp.databinding.AnnounceRecyclerFragmentBinding;
@@ -34,8 +38,10 @@ public class AnnounceRecyclerFragment extends Fragment implements OnBackPressLis
     String barcode;
     DialogFragment frg = new PopupFragmentAddpage();
     MainActivity act;
+    MainViewModel viewModel;
     Boolean haveBarcode = true;
     Boolean isCapture = false;
+    MyPreferenceManager prefs;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -45,10 +51,20 @@ public class AnnounceRecyclerFragment extends Fragment implements OnBackPressLis
         bundle = getArguments();
         barcode = bundle.getString("barcode");
         isCapture = bundle.getBoolean("capture");
+        prefs = new MyPreferenceManager(requireContext());
 
         binding.setViewmodel(mViewModel);
         mViewModel.itemName.setValue(barcode);
-        act = (MainActivity)getActivity();
+
+        int iStatus = Internet.INSTANCE.getStatus(requireContext());
+
+        if(iStatus == Internet.INSTANCE.getMOBILE_DATA() && !(prefs.getMobileInternetShow())) {
+            act.showToast(getResources().getString(R.string.mobileData));
+            prefs.setMobileInternetShow(true);
+        }
+        else if(iStatus == Internet.INSTANCE.getNOT_CONNECT()){
+            act.showToast(getResources().getString(R.string.internetNotConnected));
+        }
 
 
         mViewModel.checkBarcode(barcode);
@@ -117,7 +133,9 @@ public class AnnounceRecyclerFragment extends Fragment implements OnBackPressLis
 
     public void onAttach(Context context) {
         super.onAttach(context);
-        ((MainActivity)context).setOnBackPressListener(this);
+        act = (MainActivity)getActivity();
+        viewModel = act.viewModel;
+        act.setOnBackPressListener(this);
     }
 
 

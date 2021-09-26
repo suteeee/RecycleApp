@@ -30,6 +30,7 @@ public class MyPreferenceManager {
     private static final String CAMERA_PERMISSION = "CP";
     private static final String STORAGE_PERMISSION = "SP";
     private static final String SQLITE_INDEX = "SI";
+    private static final String MOBILE_INTERNET_SHOW = "MIS";
 
 
     public String getStoredTime(){
@@ -62,6 +63,9 @@ public class MyPreferenceManager {
 
     public int getSQLiteIndex() {return prefs.getInt(SQLITE_INDEX,0);}
     public void setSQLiteIndex(int index) {prefs.edit().putInt(SQLITE_INDEX,index).apply();}
+
+    public boolean getMobileInternetShow() {return prefs.getBoolean(MOBILE_INTERNET_SHOW,false);}
+    public void setMobileInternetShow(boolean b) {prefs.edit().putBoolean(MOBILE_INTERNET_SHOW,b).apply();}
 
 
     public ArrayList<String> getFavoriteList() throws JSONException {

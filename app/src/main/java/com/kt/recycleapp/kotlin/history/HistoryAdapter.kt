@@ -48,41 +48,38 @@ class HistoryAdapter(val viewModel: HistoryViewModel): RecyclerView.Adapter<Hist
 
     inner class MyHolder(private val binding: HistoryLayoutUnitBinding, val context: Context) : RecyclerView.ViewHolder(binding.root){
         fun bind(data: HistoryData, position: Int) {
-            CoroutineScope(Dispatchers.Main).launch {
+           // CoroutineScope(Dispatchers.Main).launch {
 
                 binding.history = data
                 val path ="${context.externalMediaDirs?.get(0)}/수거했어 오늘도!/${data.bm}"
 
                 val handler = android.os.Handler(Looper.getMainLooper())
                 handler.postDelayed({
-                    Glide.with(context).load(path).into(binding.historyIv)
-                    binding.historyBtn.setOnClickListener {
-                        var colorString = "#000000"
-                        var state = "false"
-                        if(list?.get(position)?.favorite == "false"){
-                            colorString = "#ff0000"
-                            state = "true"
-                        }
-                        var check = 0
-                        list?.forEach { if(list?.get(position)?.favorite == "true"){ check += 1 } }
+                    CoroutineScope(Dispatchers.Main).launch { Glide.with(context).load(path).into(binding.historyIv) }
+                                    },0)
+            binding.historyBtn.setOnClickListener {
+                var colorString = "#000000"
+                var state = "false"
+                if(list?.get(position)?.favorite == "false"){
+                    colorString = "#ff0000"
+                    state = "true"
+                }
+                var check = 0
+                list?.forEach { if(list?.get(position)?.favorite == "true"){ check += 1 } }
 
-                        Log.d("check",check.toString())
-                        if(check < 10){
-                            (it as ImageView).setColorFilter(Color.parseColor(colorString), PorterDuff.Mode.SRC_ATOP)
+                if(check < 10){
+                    (it as ImageView).setColorFilter(Color.parseColor(colorString), PorterDuff.Mode.SRC_ATOP)
 
-                            CoroutineScope(Dispatchers.IO).launch {
-                                Log.d("${position} ${state}","test")
-                                helper?.databaseDao()?.updateFavorite(viewModel.itemCountList[position],state)
-                            }
-
-                        }
-                        else{
-                            Toast.makeText(context,"즐겨찾기는 최대 10개까지 등록 가능합니다.",Toast.LENGTH_SHORT).show()
-                        }
-
+                    CoroutineScope(Dispatchers.IO).launch {
+                        helper?.databaseDao()?.updateFavorite(viewModel.itemCountList[position],state)
                     }
-                },0)
 
+                }
+                else{
+                    Toast.makeText(context,"즐겨찾기는 최대 10개까지 등록 가능합니다.",Toast.LENGTH_SHORT).show()
+                }
+
+            }
                 try {
                     if (list?.get(position)?.favorite == "true") {
                         binding.historyBtn.setColorFilter(
@@ -93,10 +90,9 @@ class HistoryAdapter(val viewModel: HistoryViewModel): RecyclerView.Adapter<Hist
                 }catch (e:Exception){}
 
                 binding.historyUnitLayout.setOnClickListener{
-                    Log.d("pos",data.pos.toString())
                     HistoryViewModel.selected.value = data.pos
                 }
-            }
+           // }
         }
     }
 }

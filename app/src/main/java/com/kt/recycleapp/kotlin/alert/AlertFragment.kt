@@ -65,6 +65,15 @@ class AlertFragment : DialogFragment() {
             "UnderFlow" -> {
                 text = "더이상 삭제할 수 없습니다!"
             }
+            "InternetNotConnected" -> {
+                text = "인터넷이 불안정하거나 연결되있지 않습니다. 데이터가 제대로 표시되지 않을 수 있습니다."
+            }
+            "InternetNotConnectedToUpload" -> {
+                text = "인터넷 연결이 불안정하여 데이터를 업로드할 수 없습니다."
+            }
+            "CantWebOpen" -> {
+                text = "인터넷 연결이 불안정하여 페이지를 열 수 없습니다."
+            }
             "ImgLoading" -> {
                 binding.alertPb.visibility = View.VISIBLE
                 binding.AlertBtn.visibility = View.INVISIBLE

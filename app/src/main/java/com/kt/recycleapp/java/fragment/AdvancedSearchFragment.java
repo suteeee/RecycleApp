@@ -13,8 +13,12 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.kt.recycleapp.kotlin.Internet;
+import com.kt.recycleapp.kotlin.alert.AlertFragment;
 import com.kt.recycleapp.kotlin.main.MainActivity;
 import com.kt.recycleapp.kotlin.main.MainFragment;
+import com.kt.recycleapp.kotlin.main.MainViewModel;
+import com.kt.recycleapp.manager.MyPreferenceManager;
 
 import java.recycleapp.R;
 
@@ -24,6 +28,11 @@ public class AdvancedSearchFragment extends Fragment{
     private WebView webView;
     private String url = "http://m.me.go.kr/m/mob/main.do"; //모바일 링크
 
+    MainActivity act;
+    MainViewModel viewModel;
+
+    MyPreferenceManager prefs;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //rootView는 액티비티를 나타냄 (container는 우리끼리 mainactivity레이아웃을 의미하는 것으로 약속)
@@ -31,9 +40,28 @@ public class AdvancedSearchFragment extends Fragment{
         View rootView = inflater.inflate(R.layout.fragment_advanced_search, container, false);
        // ((MainActivity)getActivity()).viewModel.getToolbarText().setValue("상세정보검색");
 
-
-
+        prefs = new MyPreferenceManager(requireContext());
         webView = (WebView)rootView.findViewById(R.id.webresult_wv1);
+
+        int iStatus = Internet.INSTANCE.getStatus(requireContext());
+
+        if(iStatus == Internet.INSTANCE.getNOT_CONNECT()){
+            AlertFragment.Companion.showAlert(act, "CantWebOpen", true);
+            act.replaceFragment(new MainFragment());
+        }
+        else if(iStatus == Internet.INSTANCE.getMOBILE_DATA() && !(prefs.getMobileInternetShow())) {
+            act.showToast(getResources().getString(R.string.mobileData));
+            prefs.setMobileInternetShow(true);
+            webInit(webView);
+        }
+        else{
+            webInit(webView);
+        }
+
+        return rootView;
+    }
+
+    public void webInit(WebView webView) {
         webView.loadUrl(url);
         webView.setWebViewClient(new WebViewClient()); // 클릭시 새창 안뜨게
 
@@ -59,27 +87,25 @@ public class AdvancedSearchFragment extends Fragment{
         webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         webSettings.setAppCacheEnabled(true);
 
-        return rootView;
     }
-
-
 
     public void onAttach(Context context) {
         super.onAttach(context);
-        ((MainActivity)getActivity()).viewModel.getSelectedFragment().setValue("adv");
-        ((MainActivity)getActivity()).viewModel.getFragmentStack().push("adv");
+        act = (MainActivity)getActivity();
+        viewModel = act.viewModel;
+
+        viewModel.getSelectedFragment().setValue("adv");
+        viewModel.getFragmentStack().push("adv");
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        MainActivity act = ((MainActivity)getActivity());
-        act.viewModel.getFragmentStack().pop();
-        ((MainActivity)getActivity()).viewModel.getSelectedFragment().setValue(
-                ((MainActivity)getActivity()).viewModel.getFragmentStack().peek());
+        viewModel.getFragmentStack().pop();
+        viewModel.getSelectedFragment().setValue(viewModel.getFragmentStack().peek());
 
-        if(((MainActivity)getActivity()).viewModel.getFragmentStack().peek().equals("main"))
-            act.getSupportFragmentManager().beginTransaction().replace(R.id.small_layout1,new MainFragment()).commit();
-
+        if(viewModel.getFragmentStack().peek().equals("main"))
+            act.replaceFragment(new MainFragment());
+            //act.getSupportFragmentManager().beginTransaction().replace(R.id.small_layout1,new MainFragment()).commit();
     }
 }

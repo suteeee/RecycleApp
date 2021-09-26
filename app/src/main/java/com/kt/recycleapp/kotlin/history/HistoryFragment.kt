@@ -51,7 +51,6 @@ class HistoryFragment : Fragment(){
         mAdapter = HistoryAdapter(viewModel)
         binding.historyRv.adapter = mAdapter
 
-
         val adt = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item,sortList)
         binding.sortSp.adapter = adt
         binding.sortSp.onItemSelectedListener = (object : AdapterView.OnItemSelectedListener{

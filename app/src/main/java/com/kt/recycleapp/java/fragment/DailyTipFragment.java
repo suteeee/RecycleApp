@@ -19,8 +19,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.kt.recycleapp.kotlin.Internet;
 import com.kt.recycleapp.kotlin.main.MainActivity;
 import com.kt.recycleapp.kotlin.main.MainFragment;
+import com.kt.recycleapp.kotlin.main.MainViewModel;
+import com.kt.recycleapp.manager.MyPreferenceManager;
 
 import java.recycleapp.R;
 import java.util.HashSet;
@@ -38,7 +41,9 @@ public class DailyTipFragment extends Fragment {
             R.drawable.tip21,R.drawable.tip22,R.drawable.tip23,R.drawable.tip24,R.drawable.tip25,
             R.drawable.tip26,R.drawable.tip27,R.drawable.tip28,R.drawable.tip29,R.drawable.tip30};
 
-
+    MainActivity act;
+    MainViewModel viewModel;
+    MyPreferenceManager prefs;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,6 +56,17 @@ public class DailyTipFragment extends Fragment {
         textView = (TextView)rootView.findViewById(R.id.todaytip_tv1);
         imageView = (ImageView)rootView.findViewById(R.id.tippicture_iv1);
         button = (Button)rootView.findViewById(R.id.nexttip_bt1);
+        prefs = new MyPreferenceManager(requireContext());
+
+        int iStatus = Internet.INSTANCE.getStatus(requireContext());
+
+        if(iStatus == Internet.INSTANCE.getMOBILE_DATA() && !(prefs.getMobileInternetShow())) {
+            act.showToast(getResources().getString(R.string.mobileData));
+            prefs.setMobileInternetShow(true);
+        }
+        else if(iStatus == Internet.INSTANCE.getNOT_CONNECT()){
+            act.showToast(getResources().getString(R.string.internetNotConnected));
+        }
 
         button.setOnClickListener(new View.OnClickListener(){
             @Override   //ctrl+o를 누른다
@@ -97,17 +113,18 @@ public class DailyTipFragment extends Fragment {
 
     public void onAttach(Context context) {
         super.onAttach(context);
-        ((MainActivity)getActivity()).viewModel.getSelectedFragment().setValue("tip");
-        ((MainActivity)getActivity()).viewModel.getFragmentStack().push("tip");
+        act = ((MainActivity)getActivity());
+        viewModel = act.viewModel;
+        viewModel.getSelectedFragment().setValue("tip");
+        viewModel.getFragmentStack().push("tip");
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        MainActivity act = ((MainActivity)getActivity());
-        act.viewModel.getFragmentStack().pop();
-        act.viewModel.getSelectedFragment().setValue(act.viewModel.getFragmentStack().peek());
-        if(act.viewModel.getFragmentStack().peek().equals("main"))
-            act.getSupportFragmentManager().beginTransaction().replace(R.id.small_layout1,new MainFragment()).commit();
+        viewModel.getFragmentStack().pop();
+        viewModel.getSelectedFragment().setValue(viewModel.getFragmentStack().peek());
+        if(viewModel.getFragmentStack().peek().equals("main"))
+            act.replaceFragment(new MainFragment());
     }
 }

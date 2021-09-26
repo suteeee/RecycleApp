@@ -19,6 +19,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.annotations.NotNull;
+import com.kt.recycleapp.kotlin.Internet;
 import com.kt.recycleapp.kotlin.main.MainActivity;
 import com.kt.recycleapp.manager.MyPreferenceManager;
 import com.kt.recycleapp.model.DatabaseReadModel;
@@ -40,7 +41,6 @@ public class LoadingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_loading);
         prefs = new MyPreferenceManager(getApplicationContext()); //만들었던 preferenceManager를 쓸수있게 생성
         loadingImage = findViewById(R.id.loading_img);
-
 
         if(prefs.getDarkmodSwitch()==false){
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);

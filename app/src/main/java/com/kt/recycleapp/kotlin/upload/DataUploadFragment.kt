@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,10 +13,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.kt.recycleapp.kotlin.Internet
 import com.kt.recycleapp.kotlin.main.MainActivity
 import com.kt.recycleapp.kotlin.alert.AlertFragment
 import com.kt.recycleapp.kotlin.main.MainFragment
 import com.kt.recycleapp.kotlin.main.MainViewModel
+import com.kt.recycleapp.manager.MyPreferenceManager
 import java.recycleapp.R
 import java.recycleapp.databinding.DataUploadFragmentBinding
 
@@ -25,6 +28,7 @@ class DataUploadFragment : Fragment() {
     lateinit var progressBar: ProgressBar
     lateinit var act: MainActivity
     lateinit var actViewModel: MainViewModel
+    lateinit var prefs : MyPreferenceManager
     var cnt = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -35,11 +39,27 @@ class DataUploadFragment : Fragment() {
             lifecycleOwner = viewLifecycleOwner
         }
         progressBar = binding.uploadPb
+        prefs = MyPreferenceManager(requireContext())
 
         val adt = UploadAdapter(viewModel,act)
 
         binding.uploadRv.adapter = adt
         Glide.with(requireContext()).load(R.drawable.default_nothing).override(300).into(binding.imagePreviewIv)
+
+        val iStatus = Internet.getStatus(requireContext())
+
+        when(iStatus) {
+            Internet.MOBILE_DATA -> {
+                if(!prefs.mobileInternetShow) {
+                    act.showToast(resources.getString(R.string.mobileData))
+                    prefs.mobileInternetShow = true
+                }
+            }
+            Internet.NOT_CONNECT -> {
+                AlertFragment.showAlert((requireActivity() as MainActivity), "InternetNotConnectedToUpload", true)
+                act.replaceFragment(MainFragment())
+            }
+        }
 
         viewModel.loadingList()
         viewModel.listLoadFinish.observe(viewLifecycleOwner,{
@@ -70,7 +90,7 @@ class DataUploadFragment : Fragment() {
         binding.uploadImageBtn.setOnClickListener {
             val uri: Uri = Uri.parse("${MainFragment.outputDirectory}")
             var photoPickerIntent = Intent(Intent.ACTION_PICK)
-            photoPickerIntent.setDataAndType(uri, "image/*")
+            photoPickerIntent.setDataAndType(uri, MediaStore.Images.Media.CONTENT_TYPE)
             startActivityForResult(photoPickerIntent,0)
         }
 

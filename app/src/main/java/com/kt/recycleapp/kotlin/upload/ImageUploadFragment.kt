@@ -12,9 +12,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.kt.recycleapp.kotlin.Internet
 import com.kt.recycleapp.kotlin.main.MainActivity
 import com.kt.recycleapp.kotlin.alert.AlertFragment
 import com.kt.recycleapp.kotlin.main.MainFragment
+import com.kt.recycleapp.manager.MyPreferenceManager
 import com.kt.recycleapp.model.DatabaseReadModel
 import java.recycleapp.R
 import java.recycleapp.databinding.FragmentImageUploadBinding
@@ -23,6 +25,8 @@ class ImageUploadFragment : DialogFragment() {
     lateinit var binding:FragmentImageUploadBinding
     lateinit var viewModel: ImageUploadViewModel
     lateinit var db :DatabaseReadModel
+    lateinit var prefs:MyPreferenceManager
+    lateinit var act:MainActivity
 
     override fun onResume() {
         super.onResume()
@@ -37,6 +41,23 @@ class ImageUploadFragment : DialogFragment() {
         viewModel = ViewModelProvider(this).get(ImageUploadViewModel::class.java)
         db = DatabaseReadModel.instance
         Glide.with(requireContext()).load(R.drawable.default_nothing).override(300).into(binding.imageUploadIv)
+        prefs = MyPreferenceManager(requireContext())
+        act = requireActivity() as MainActivity
+
+        val iStatus = Internet.getStatus(requireContext())
+
+        when(iStatus) {
+            Internet.MOBILE_DATA -> {
+                if(!prefs.mobileInternetShow) {
+                    act.showToast(resources.getString(R.string.mobileData))
+                    prefs.mobileInternetShow = true
+                }
+            }
+            Internet.NOT_CONNECT -> {
+                AlertFragment.showAlert((requireActivity() as MainActivity), "InternetNotConnectedToUpload", true)
+                dismiss()
+            }
+        }
 
         binding.imageUploadFrgOk.setOnClickListener {
             if(binding.imageUploadFrgName.text.isEmpty()) {
