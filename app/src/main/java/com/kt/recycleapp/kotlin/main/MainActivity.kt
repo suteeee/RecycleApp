@@ -161,7 +161,7 @@ class MainActivity : AppCompatActivity() {
             when(it) {
                 "main" -> {title = "수거했어 오늘도!"}
                 "find" -> {title = "찾아보기"}
-                "adv" -> {title = "상세정보검색!"}
+                "adv" -> {title = "상세정보검색"}
                 "favorite" -> {title = "즐겨찾기"}
                 "history" -> {title = "히스토리"}
                 "recycle" -> {title = "분리수거 요일제"}
