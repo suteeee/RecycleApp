@@ -18,6 +18,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.kt.recycleapp.java.fragment.*
+import com.kt.recycleapp.java.userguide.UserGuideMainFragment
 import com.kt.recycleapp.kotlin.listener.OnBackPressListener
 import com.kt.recycleapp.kotlin.favorite.FavoriteData
 import com.kt.recycleapp.kotlin.find.FindBigData
@@ -248,7 +249,8 @@ class MainActivity : AppCompatActivity() {
             }
             else if (id == R.id.userGuide) {
                 selected = "userGuide"
-                fragment = UserGuideMainFragment()
+                fragment =
+                    UserGuideMainFragment()
             }
             else if (id == R.id.dataUpload) {
                 selected = "dataUpload"

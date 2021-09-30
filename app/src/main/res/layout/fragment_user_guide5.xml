@@ -4,10 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_backg_color"
-    tools:context="com.kt.recycleapp.java.fragment.UserGuideFragment5">
+    tools:context="com.kt.recycleapp.java.userguide.fragments.UserGuideFragment5">
 
     <TextView
-        android:id="@+id/count_bt1"
+        android:id="@+id/count_bt5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
@@ -20,26 +20,40 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView2"
-        android:layout_width="350dp"
-        android:layout_height="125dp"
+        android:id="@+id/info_tv5"
+        android:layout_width="380dp"
+        android:layout_height="wrap_content"
         android:fontFamily="@font/font3"
-        android:textColor="@color/main_text_color"
+        android:gravity="center"
         android:text="@string/guidebook5"
+        android:textColor="@color/main_text_color"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/infoImg_5" />
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="250dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="100dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView2"
+        android:id="@+id/infoImg_5"
+        android:layout_width="350dp"
+        android:layout_height="300dp"
+        app:layout_constraintBottom_toTopOf="@+id/info_tv5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@tools:sample/avatars" />
+        app:layout_constraintTop_toBottomOf="@+id/count_bt5"
+        tools:src="@drawable/g5" />
+
+    <TextView
+        android:id="@+id/guideTitle_tv5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/font3"
+        android:text="&lt;히스토리 &amp; 즐겨찾기&gt;"
+        android:textColor="@color/main_text_color"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/count_bt5" />
 </androidx.constraintlayout.widget.ConstraintLayout>

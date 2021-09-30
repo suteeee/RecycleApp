@@ -4,57 +4,71 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_backg_color"
-    tools:context="com.kt.recycleapp.java.userguide.fragments.UserGuideFragment4">
+    tools:context="com.kt.recycleapp.java.userguide.fragments.UserGuideFragment8">
 
     <TextView
-        android:id="@+id/count_bt4"
+        android:id="@+id/count_bt8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
-        android:bufferType="spannable"
         android:fontFamily="@font/font3"
-        android:text="04"
         android:textSize="50sp"
+        android:bufferType="spannable"
+        android:text="08"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/info_tv4"
+        android:id="@+id/info_tv8"
         android:layout_width="380dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:fontFamily="@font/font3"
         android:gravity="center"
-        android:text="@string/guidebook4"
+        android:text="@string/guidebook8"
         android:textColor="@color/main_text_color"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/imgUploadAlert_tv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/infoImg_4" />
+        app:layout_constraintTop_toBottomOf="@+id/infoImg_8" />
 
     <ImageView
-        android:id="@+id/infoImg_4"
+        android:id="@+id/infoImg_8"
         android:layout_width="350dp"
         android:layout_height="300dp"
-        app:layout_constraintBottom_toTopOf="@+id/info_tv4"
+        app:layout_constraintBottom_toTopOf="@+id/info_tv8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/count_bt4"
-        tools:src="@drawable/g4" />
+        app:layout_constraintTop_toBottomOf="@+id/guideTitle_tv8"
+        tools:src="@drawable/g8" />
 
     <TextView
-        android:id="@+id/guideTitle_tv4"
+        android:id="@+id/guideTitle_tv8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:fontFamily="@font/font3"
-        android:text="&lt;상세정보검색&gt;"
+        android:text="&lt;환경 설정&gt;"
         android:textColor="@color/main_text_color"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/count_bt4" />
+        app:layout_constraintTop_toBottomOf="@+id/count_bt8" />
+
+    <TextView
+        android:id="@+id/imgUploadAlert_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/warningImageUpload"
+        android:textColor="@color/red"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/info_tv8" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

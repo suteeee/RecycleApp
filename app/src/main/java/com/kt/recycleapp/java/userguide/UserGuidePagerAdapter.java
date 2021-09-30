@@ -1,4 +1,4 @@
-package com.kt.recycleapp.java.fragment;
+package com.kt.recycleapp.java.userguide;
 
 import android.os.Bundle;
 

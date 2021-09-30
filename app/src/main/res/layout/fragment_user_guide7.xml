@@ -4,57 +4,58 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_backg_color"
-    tools:context="com.kt.recycleapp.java.userguide.fragments.UserGuideFragment4">
+    tools:context="com.kt.recycleapp.java.userguide.fragments.UserGuideFragment7">
 
     <TextView
-        android:id="@+id/count_bt4"
+        android:id="@+id/count_bt7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
-        android:bufferType="spannable"
         android:fontFamily="@font/font3"
-        android:text="04"
         android:textSize="50sp"
+        android:bufferType="spannable"
+        android:text="07"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/info_tv4"
+        android:id="@+id/info_tv7"
         android:layout_width="380dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/font3"
         android:gravity="center"
-        android:text="@string/guidebook4"
+        android:text="@string/guidebook7"
         android:textColor="@color/main_text_color"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/infoImg_4" />
+        app:layout_constraintTop_toBottomOf="@+id/infoImg_7" />
 
     <ImageView
-        android:id="@+id/infoImg_4"
+        android:id="@+id/infoImg_7"
         android:layout_width="350dp"
         android:layout_height="300dp"
-        app:layout_constraintBottom_toTopOf="@+id/info_tv4"
+        app:layout_constraintBottom_toTopOf="@+id/info_tv7"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/count_bt4"
-        tools:src="@drawable/g4" />
+        app:layout_constraintTop_toBottomOf="@+id/count_bt7"
+        tools:src="@drawable/g7" />
 
     <TextView
-        android:id="@+id/guideTitle_tv4"
+        android:id="@+id/guideTitle_tv7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:fontFamily="@font/font3"
-        android:text="&lt;상세정보검색&gt;"
+        android:text="&lt;오늘의 팁&gt;"
         android:textColor="@color/main_text_color"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/count_bt4" />
+        app:layout_constraintTop_toBottomOf="@+id/count_bt7" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

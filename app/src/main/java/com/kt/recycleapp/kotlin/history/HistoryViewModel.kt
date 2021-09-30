@@ -78,6 +78,7 @@ class HistoryViewModel() : ViewModel() {
             itemCountList.addFirst(cnt)
             itemList.add(HistoryData(date,image,barcode,cnt++))
         }
+
         if(itemList.isEmpty()) {
             historyNoItemTv.visibility = View.VISIBLE
         }

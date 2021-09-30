@@ -5,23 +5,26 @@
     android:layout_height="match_parent"
     android:background="@color/main_backg_color"
     android:clickable="true"
-    tools:context="com.kt.recycleapp.java.fragment.UserGuideMainFragment">
+    tools:context="com.kt.recycleapp.java.userguide.UserGuideMainFragment">
 
     <Button
         android:id="@+id/gotohome_bt1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:background="@drawable/common_buttom_design"
         android:text="처음으로"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.95" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

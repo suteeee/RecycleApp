@@ -1,9 +1,10 @@
-package com.kt.recycleapp.java.fragment;
+package com.kt.recycleapp.java.userguide;
 
 import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
@@ -11,44 +12,40 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.kt.recycleapp.java.userguide.fragments.UserGuideFragment;
 import com.kt.recycleapp.kotlin.main.MainActivity;
 import com.kt.recycleapp.kotlin.main.MainFragment;
 
 import java.recycleapp.R;
+import java.util.ArrayList;
 
 
 public class UserGuideMainFragment extends Fragment {
 
     private Button homeButton;
+    private GuideViewModel viewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_user_guide_main, container, false);
+        viewModel = new ViewModelProvider(this).get(GuideViewModel.class);
 
-       // ((MainActivity)getActivity()).viewModel.getToolbarText().setValue("유저 가이드");
 
         ViewPager pager = rootView.findViewById(R.id.pager);
-        pager.setOffscreenPageLimit(6); //3개까지 caching
+        pager.setOffscreenPageLimit(10); //3개까지 caching
+
+        viewModel.initList();
 
         UserGuidePagerAdapter adapter = new UserGuidePagerAdapter(getChildFragmentManager(), 1);    //suport가 아니다.
 
-        UserGuideFragment1 fragment1 = new UserGuideFragment1();
-        adapter.addItem(fragment1);
+        for(Fragment f : viewModel.getFrgList()) {
+            adapter.addItem(f);
+        }
 
-        UserGuideFragment2 fragment2 = new UserGuideFragment2();
-        adapter.addItem(fragment2);
 
-        UserGuideFragment3 fragment3 = new UserGuideFragment3();
-        adapter.addItem(fragment3);
+       /* UserGuideFragment fragment = new UserGuideFragment();
+        adapter.addItem(fragment);*/
 
-        UserGuideFragment4 fragment4 = new UserGuideFragment4();
-        adapter.addItem(fragment4);
-
-        UserGuideFragment5 fragment5 = new UserGuideFragment5();
-        adapter.addItem(fragment5);
-
-        UserGuideFragment6 fragment6 = new UserGuideFragment6();
-        adapter.addItem(fragment6);
 
         pager.setAdapter(adapter);
         homeButton = (Button) rootView.findViewById(R.id.gotohome_bt1);
