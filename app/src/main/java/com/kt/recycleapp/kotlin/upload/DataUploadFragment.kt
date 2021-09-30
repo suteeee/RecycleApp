@@ -85,6 +85,12 @@ class DataUploadFragment : Fragment() {
                 AlertFragment.showAlert(act, "AddSuccess", true)
                 productClear()
             }
+            if(it == "exception") {
+                viewModel.photoUri = null
+                progressBar.visibility = View.INVISIBLE
+                AlertFragment.showAlert(act, "AddFail", true)
+                productClear()
+            }
         })
 
         binding.uploadImageBtn.setOnClickListener {

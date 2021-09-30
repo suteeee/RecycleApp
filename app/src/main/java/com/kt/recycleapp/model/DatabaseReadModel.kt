@@ -342,36 +342,46 @@ class DatabaseReadModel {
     }
 
     fun uploadAll(photoUri: Uri?, list: ArrayList<HashMap<String, Any>>,exList : ArrayList<String>) {
-        var check = false
-        val names =ArrayList<String>()
-        val barcode = list[0].keys.elementAt(0)
-
-        fun uploadImg(name:String,photoUri: Uri) {
-            CoroutineScope(Dispatchers.IO).launch{
-                val fileName = "IMAGE_$name"
-                val imgRef = storage.child("products_image/$fileName.png")
-                imgRef.putFile(photoUri)
-            }
-        }
-
-        list.forEach { it.values.forEach { name -> names.add(name.toString()) }}
-        Log.d(list.toString(),"plz")
-        if(names.size != 1) { check = true }
-
         try {
-            for (i in 0 until list.size) {
-                if (i == 0) { product.document(names[i]).set(makeData(i,AddViewModel.kinds,names,barcode,exList,check)) }
-                else { product.document(names[0]).collection(MULTIPLE).document(names[i]).set(makeMultiData(i,AddViewModel.kinds,names,exList)) }
+            var check = false
+            val names = ArrayList<String>()
+            val barcode = list[0].keys.elementAt(0)
+
+            fun uploadImg(name: String, photoUri: Uri) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    val fileName = "IMAGE_$name"
+                    val imgRef = storage.child("products_image/$fileName.png")
+                    imgRef.putFile(photoUri)
+                }
             }
-        }catch (e:Exception) {}
 
-        if(photoUri != null) {
-            uploadImg(names[0],photoUri)
+            list.forEach { it.values.forEach { name -> names.add(name.toString()) } }
+            Log.d(list.toString(), "plz")
+            if (names.size != 1) {
+                check = true
+            }
+
+            try {
+                for (i in 0 until list.size) {
+                    if (i == 0) {
+                        product.document(names[i])
+                            .set(makeData(i, AddViewModel.kinds, names, barcode, exList, check))
+                    } else {
+                        product.document(names[0]).collection(MULTIPLE).document(names[i])
+                            .set(makeMultiData(i, AddViewModel.kinds, names, exList))
+                    }
+                }
+            } catch (e: Exception) {
+            }
+
+            if (photoUri != null) {
+                uploadImg(names[0], photoUri)
+            }
+
+            AddViewModel.addItems.clear()
+        }catch (e:java.lang.Exception) {
+
         }
-
-
-
-        AddViewModel.addItems.clear()
     }
 
     fun uploadData
@@ -379,27 +389,30 @@ class DatabaseReadModel {
                  uploadFinish: MutableLiveData<String>, photoUri: Uri?, infoText: ArrayList<String>) {
 
         CoroutineScope(Dispatchers.IO).launch{
-            uploadFinish.postValue("start")
-            var check = false
+            try {
+                uploadFinish.postValue("start")
+                var check = false
 
-            if(kinds.size != 1) check = true
+                if (kinds.size != 1) check = true
 
-            for(i in 0 until kinds.size) {
-                if(i == 0) {
-                    product.document(names[i])
-                        .set(makeData(i,kinds,names,barcode,infoText,check))
+                for (i in 0 until kinds.size) {
+                    if (i == 0) {
+                        product.document(names[i])
+                            .set(makeData(i, kinds, names, barcode, infoText, check))
+                    } else {
+                        product.document(names[0]).collection(MULTIPLE).document(names[i])
+                            .set(makeMultiData(i, kinds, names, infoText))
+                    }
                 }
-                else {
-                    product.document(names[0]).collection(MULTIPLE).document(names[i])
-                        .set(makeMultiData(i,kinds,names,infoText))
+
+                if (photoUri != null) {
+                    imageUpload(names[0], photoUri)
                 }
-            }
 
-            if(photoUri != null) {
-                imageUpload(names[0],photoUri)
+                uploadFinish.postValue("finish")
+            }catch (e:Exception) {
+                uploadFinish.postValue("exception")
             }
-
-            uploadFinish.postValue("finish")
         }
    }
 

@@ -53,6 +53,9 @@ class AlertFragment : DialogFragment() {
             "AddSuccess" -> {
                 text = "상품 등록이 완료되었습니다!"
             }
+            "AddFail" -> {
+                text = "상품 등록에 실패했습니다."
+            }
             "HistoryDeleteSuccess" -> {
                 text = "히스토리 삭제가 완료되었습니다!"
             }

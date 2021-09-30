@@ -43,6 +43,8 @@
             android:layout_height="wrap_content"
             android:text="@string/noItem"
             android:visibility="invisible"
+            android:fontFamily="@font/font3"
+            android:textColor="@color/main_text_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

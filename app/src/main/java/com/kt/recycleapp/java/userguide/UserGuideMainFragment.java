@@ -22,7 +22,6 @@ import java.util.ArrayList;
 
 public class UserGuideMainFragment extends Fragment {
 
-    private Button homeButton;
     private GuideViewModel viewModel;
 
     @Override
@@ -42,22 +41,7 @@ public class UserGuideMainFragment extends Fragment {
             adapter.addItem(f);
         }
 
-
-       /* UserGuideFragment fragment = new UserGuideFragment();
-        adapter.addItem(fragment);*/
-
-
         pager.setAdapter(adapter);
-        homeButton = (Button) rootView.findViewById(R.id.gotohome_bt1);
-
-        homeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                pager.setCurrentItem(0);
-            }
-        });
-
-
 
         return rootView;
     }
